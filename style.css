@@ -215,23 +215,3 @@ font-size: small;
 .generator-options input[type="checkbox"] {
     margin-right: 5px;
 }
-
-/* Change font color for password strength */
-.password-strength-text {
-    font-size: small; /* Set font size to small */
-    font-weight: bold;
-}
-
-/* Define different font colors for different password strengths */
-.password-weak {
-    color: yellow; /* Yellow for Weak */
-}
-
-.password-moderate {
-    color: orange; /* Orange for Moderate */
-}
-
-.password-strong {
-    color: green; /* Green for Strong */
-}
-/* Additional styles can be added as needed */
