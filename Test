@@ -53,26 +53,71 @@
     </div>
 
     <!-- Password Generator Section -->
-    <div class="generator-container">
-        <h1>Password Generator</h1>
-        <div class="generator-header">
+<div class="generator-container">
+    <h1>Password Generator</h1>
+    <div class="generator-controls">
+        <div class="generator-input">
             <input type="text" id="generatedPassword" placeholder="Enter or Generate Password">
             <button id="generateBtn">Generate</button>
-        <div class="password-generator-options">
-                <label for="plength">Password Length:</label>
-                <input type="number" id="plength" value="8" min="1" max="30">
-                <input type="checkbox" id="puppercase" checked>
-                <label for="puppercase">Uppercase:</label>
-                <input type="checkbox" id="plowercase">
-                <label for="plowercase">Lowercase:</label>
-                <input type="checkbox" id="pnumber">
-                <label for="pnumber">Number:</label>
-                <input type="checkbox" id="psymbol">
-                <label for="psymbol">Special Character:</label>
-            </div>
+        </div>
+        <div class="generator-options">
+            <label for="plength">Password Length:</label>
+            <input type="number" id="plength" value="8" min="1" max="30">
+            <label for="puppercase">Uppercase:</label>
+            <input type="checkbox" id="puppercase" checked>
+            <label for="plowercase">Lowercase:</label>
+            <input type="checkbox" id="plowercase">
+            <label for="pnumber">Number:</label>
+            <input type="checkbox" id="pnumber">
+            <label for="psymbol">Special Character:</label>
+            <input type="checkbox" id="psymbol">
         </div>
     </div>
+</div>
 
     <script src="script.js"></script>
 </body>
 </html>
+
+
+/* Style the generator-controls container */
+.generator-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* Style the generator-input and generator-options containers */
+.generator-input, .generator-options {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+/* Style the generator-input text box and generate button */
+.generator-input input[type="text"] {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+.generator-input button {
+    padding: 8px 15px;
+    background: black;
+    color: white;
+    font-weight: 900;
+    border: 2px solid gray;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* Style the generator-options labels and checkboxes in one line */
+.generator-options label {
+    margin-right: 10px;
+}
+
+.generator-options input[type="checkbox"] {
+    margin-right: 5px;
+}
