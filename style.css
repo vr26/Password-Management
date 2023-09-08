@@ -1,0 +1,177 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,700;1,300&family=Poppins:wght@300;400;600&display=swap');
+
+/* Reset some default styles */
+body, ul {
+    margin: 0;
+    padding: 0;
+}
+
+/* Set a background color for the body */
+body {
+    background-color: #f4f4f4;
+    font-family: 'Noto Sans', sans-serif;
+}
+
+/* Style the navigation bar */
+nav {
+    background-color: #333;
+    color: white;
+    padding: 12px 3px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.logo {
+    margin: 0 23px;
+    font-weight: 800;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+ul {
+    display: flex;
+    margin: 0 23px;
+    align-items: center;
+}
+
+ul > li {
+    list-style: none;
+    margin: 0 13px;
+    cursor: pointer;
+}
+
+ul > li:hover {
+    color: white;
+}
+
+/* Style the container for Password Manager */
+.container {
+    max-width: 80vw;
+    margin: 23px auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: 'Poppins', sans-serif;
+}
+
+h1, h2, h3 {
+    margin: 23px 0;
+}
+
+/* Style the table for Password Manager */
+table, th, td {
+    border: 2px solid black;
+    border-collapse: collapse;
+    padding: 5px 13px;
+    text-align: left;
+}
+
+th {
+    background-color: #333;
+    color: white;
+}
+
+/* Style the form inputs and buttons for Password Manager */
+label {
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button.btn {
+    padding: 8px 17px;
+    background: black;
+    color: white;
+    font-weight: 900;
+    border: 2px solid gray;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* Style the Password Generator section */
+.generator-container {
+    max-width: 80vw;
+    margin: 23px auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: 'Poppins', sans-serif;
+}
+
+.generator-container h1 {
+    margin: 0 0 20px;
+}
+
+.generator-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+input[disabled] {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button.copy {
+    margin-left: 10px;
+    padding: 8px 12px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.generator-body {
+    margin-top: 20px;
+}
+
+.generator-body small {
+    font-weight: bolder;
+    color: darkgreen;
+    margin-top: 15px;
+    margin-left: 50px;
+}
+
+.form-control {
+    margin-top: 15px;
+}
+
+.form-control label {
+    font-weight: bold;
+    color: darkred;
+}
+
+input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+hr {
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+
+#generateBtn {
+    padding: 8px 17px;
+    background: black;
+    color: white;
+    font-weight: 900;
+    border: 2px solid gray;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* Additional styles can be added as needed */
