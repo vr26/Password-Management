@@ -1,4 +1,3 @@
-   <!-- Password Generator Section -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,8 +17,7 @@
     </nav>
     <div class="container">
         <h1>Password Manager</h1>
-        <p>We're thrilled to have you here. Your digital life contains a myriad of passwords, and we know how
-            challenging it can be to manage them all. That's why we're here to make it easy for you.</p>
+        <p>We're thrilled to have you here. Your digital life contains a myriad of passwords, and we know how challenging it can be to manage them all. That's why we're here to make it easy for you.</p>
         <h2>Your Passwords <span id="alert">(Copied!)</span></h2>
         <table>
             <tr>
@@ -42,50 +40,42 @@
             <!-- Password input -->
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
-	    <div class="password-strength">
-            <div class="password-strength-bar" id="password-bar"></div>
-            <p class="password-strength-text" id="password-strength-text">Password Strength: Weak</p>
-          </div>
+            <br>
+            <!-- Password Strength Checker -->
+<div class="password-strength">
+    <div class="password-strength-bar" id="password-bar"></div>
+    <p class="password-strength-text" id="password-strength-text">Password Strength: Weak</p>
+</div>
+
             <br>
             <!-- Submit button -->
             <button class="btn" type="submit">Submit</button>
         </form>
     </div>
-   <!-- Password Generator Section -->
-    <div class="generator-container">
-        <h1>Password Generator</h1>
-        <div class="generator-header">
-            <input disabled type="text" id="generatedPassword">
-            <button class="copy" id="copy">
-                <i class="fas fa-copy"></i>
-            </button>
-        </div>
-        <div class="generator-body">
-            <div class="form-control">
-                <label for="plength">Password Length:</label>
-                <input type="number" id="plength" value="8" min="1" max="30">
-            </div>
-            <div class="form-control">
-                <label for="puppercase"> Uppercase:</label>
-                <input type="checkbox" id="puppercase" checked>
-            </div>
-            <div class="form-control">
-                <label for="plowercase"> Lowercase:</label>
-                <input type="checkbox" id="plowercase">
-            </div>
-            <div class="form-control">
-                <label for="pnumber"> Number:</label>
-                <input type="checkbox" id="pnumber">
-            </div>
-            <div class="form-control">
-                <label for="psymbol"> Special Character:</label>
-                <input type="checkbox" id="psymbol">
-            </div>
+
+    <!-- Password Generator Section -->
+<div class="generator-container">
+    <h1>Password Generator</h1>
+    <div class="generator-controls">
+        <div class="generator-input">
+            <input type="text" id="generatedPassword" placeholder="Enter or Generate Password">
             <button id="generateBtn">Generate</button>
         </div>
-        
+        <div class="generator-options">
+            <label for="plength">Password Length:</label>
+            <input type="number" id="plength" value="8" min="1" max="30">
+	    <input type="checkbox" id="puppercase" checked>
+            <label for="puppercase">Uppercase:</label>
+	    <input type="checkbox" id="plowercase">            
+	    <label for="plowercase">Lowercase:</label>
+            <input type="checkbox" id="pnumber">    
+            <label for="pnumber">Number:</label>
+            <input type="checkbox" id="psymbol">
+            <label for="psymbol">Special Character:</label>
+            
+        </div>
     </div>
-
+</div>
     <script src="script.js"></script>
 </body>
 </html>
