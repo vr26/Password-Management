@@ -173,5 +173,65 @@ hr {
     border-radius: 8px;
     cursor: pointer;
 }
+* Style the generator-controls container */
+.generator-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
 
+/* Style the generator-input and generator-options containers */
+.generator-input, .generator-options {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+/* Style the generator-input text box and generate button */
+.generator-input input[type="text"] {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+.generator-input button {
+    padding: 8px 15px;
+    background: black;
+    color: white;
+    font-weight: 900;
+    border: 2px solid gray;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* Style the generator-options labels and checkboxes in one line */
+.generator-options label {
+    margin-right: 10px;
+font-size: small;
+}
+
+.generator-options input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+/* Change font color for password strength */
+.password-strength-text {
+    font-size: small; /* Set font size to small */
+    font-weight: bold;
+}
+
+/* Define different font colors for different password strengths */
+.password-weak {
+    color: yellow; /* Yellow for Weak */
+}
+
+.password-moderate {
+    color: orange; /* Orange for Moderate */
+}
+
+.password-strong {
+    color: green; /* Green for Strong */
+}
 /* Additional styles can be added as needed */

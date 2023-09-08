@@ -142,6 +142,7 @@ function copyText(txt) {
         }
     );
 }
+
 // Password Strength Checker Logic
 
 const passwordBar = document.getElementById('password-bar');
@@ -164,6 +165,29 @@ function calculatePasswordStrength(password) {
     return 3; // Strong password
 }
 
+// Calculate the password strength and set the appropriate text and class
+function setPasswordStrength(strength) {
+    const passwordStrengthText = document.getElementById("password-strength-text");
+
+    if (strength === "Weak") {
+        passwordStrengthText.textContent = "Password Strength: Weak";
+        passwordStrengthText.classList.remove("password-moderate", "password-strong");
+        passwordStrengthText.classList.add("password-weak");
+    } else if (strength === "Moderate") {
+        passwordStrengthText.textContent = "Password Strength: Moderate";
+        passwordStrengthText.classList.remove("password-weak", "password-strong");
+        passwordStrengthText.classList.add("password-moderate");
+    } else if (strength === "Strong") {
+        passwordStrengthText.textContent = "Password Strength: Strong";
+        passwordStrengthText.classList.remove("password-weak", "password-moderate");
+        passwordStrengthText.classList.add("password-strong");
+    }
+}
+
+// Example usage:
+// Call this function with the calculated password strength (e.g., "Weak", "Moderate", "Strong")
+setPasswordStrength("Moderate");
+
 function updatePasswordStrengthMeter(strength) {
     const colors = ['#FF0000', '#FF5733', '#FFA500', '#00FF00'];
     passwordBar.style.backgroundColor = colors[strength];
@@ -172,6 +196,8 @@ function updatePasswordStrengthMeter(strength) {
     const strengthText = ['Weak', 'Moderate', 'Good', 'Strong'];
     passwordStrengthText.innerText = `Password Strength: ${strengthText[strength]}`;
 }
+
+
 
 // Initial setup for Password Manager and Password Strength Checker
 console.log("Working");
