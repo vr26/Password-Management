@@ -1,3 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Manager & Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <div class="logo">PassX</div>
+        <ul>
+            <li>Home</li>
+            <li>About</li>
+            <li>Contact</li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h1>Password Manager</h1>
+        <p>We're thrilled to have you here. Your digital life contains a myriad of passwords, and we know how challenging it can be to manage them all. That's why we're here to make it easy for you.</p>
+        <h2>Your Passwords <span id="alert">(Copied!)</span></h2>
+        <table>
+            <tr>
+                <th>Website</th>
+                <th>Username</th>
+                <th>Password</th>
+                <th>Delete</th>
+            </tr>
+        </table>
+        <h2>Add a Password</h2>
+        <form action="/submit" method="post">
+            <!-- Text input for website -->
+            <label for="website">Website:</label>
+            <input type="text" id="website" name="website" required>
+            <br><br>
+            <!-- Text input for username -->
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <br><br>
+            <!-- Password input -->
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <br>
+            <!-- Password Strength Checker -->
+            <div class="password-strength">
+                <div class="password-strength-bar" id="password-bar"></div>
+                <p class="password-strength-text" id="password-strength-text">Password Strength: Weak</p>
+            </div>
+            <br>
+            <!-- Submit button -->
+            <button class="btn" type="submit">Submit</button>
+        </form>
+    </div>
+
+    <!-- Password Generator Section -->
+    <div class="generator-container">
+        <h1>Password Generator</h1>
+        <div class="generator-header">
+            <input type="text" id="generatedPassword" placeholder="Enter or Generate Password">
+            <button class="copy" id="copy">
+                <i class="fas fa-copy"></i>
+            </button>
+        </div>
+        <div class="generator-body">
+            <div class="form-control">
+                <label for="plength">Password Length:</label>
+                <input type="number" id="plength" value="8" min="1" max="30">
+            </div>
+            <div class="form-control">
+                <label for="puppercase"> Uppercase:</label>
+                <input type="checkbox" id="puppercase" checked>
+            </div>
+            <div class="form-control">
+                <label for="plowercase"> Lowercase:</label>
+                <input type="checkbox" id="plowercase">
+            </div>
+            <div class="form-control">
+                <label for="pnumber"> Number:</label>
+                <input type="checkbox" id="pnumber">
+            </div>
+            <div class="form-control">
+                <label for="psymbol"> Special Character:</label>
+                <input type="checkbox" id="psymbol">
+            </div>
+            <button id="generateBtn">Generate</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+
 // Password Manager Functionality
 const passwordManager = {
     getPasswords: () => {
