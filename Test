@@ -1,28 +1,10 @@
-<div class="password-strength">
-    <div class="password-strength-bar" id="password-bar"></div>
-    <p class="password-strength-text" id="password-strength-text">Password Strength: Weak</p>
-</div>
+Write-Output ("`nI Drive of PRD - Used Space `n")
 
-
-// Calculate the password strength and set the appropriate text and class
-function setPasswordStrength(strength) {
-    const passwordStrengthText = document.getElementById("password-strength-text");
-
-    if (strength === "Weak") {
-        passwordStrengthText.textContent = "Password Strength: Weak";
-        passwordStrengthText.classList.remove("password-moderate", "password-strong");
-        passwordStrengthText.classList.add("password-weak");
-    } else if (strength === "Moderate") {
-        passwordStrengthText.textContent = "Password Strength: Moderate";
-        passwordStrengthText.classList.remove("password-weak", "password-strong");
-        passwordStrengthText.classList.add("password-moderate");
-    } else if (strength === "Strong") {
-        passwordStrengthText.textContent = "Password Strength: Strong";
-        passwordStrengthText.classList.remove("password-weak", "password-moderate");
-        passwordStrengthText.classList.add("password-strong");
-    }
+foreach ($client in $clients) {
+    
+    $disk = Get-WmiObject Win32_logicaldisk -ComputerName $server -Filter "DeviceID='I:'"
+    $sizeGB = [decimal]($disk.Size / 1gb)
+    $freeGB = [decimal]($disk.FreeSpace / 1gb)
+    $usedGB = $sizeGB - $freeGB
+    Write-Host "$usedGB" -ForegroundColor Green
 }
-
-// Example usage:
-// Call this function with the calculated password strength (e.g., "Weak", "Moderate", "Strong")
-setPasswordStrength("Moderate");
