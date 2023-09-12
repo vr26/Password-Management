@@ -49,16 +49,16 @@ $tableI += "Client`tDrive ID`tSpace Needed (GB) for I Drive"
 # Compare PRD and UAT for G Drive and add rows to the G Drive table only when space is needed
 foreach ($client in $clients) {
     $difference = $uatTotalSpaceG[$client] - $prdUsedSpaceG[$client]
-    if ($difference -gt 0) {
-        $tableG += "$client`tG:`t$difference"
+    if ($difference -lt 0) {
+        $tableG += "$client`tG:`t$($difference * -1)"
     }
 }
 
 # Compare PRD and UAT for I Drive and add rows to the I Drive table only when space is needed
 foreach ($client in $clients) {
     $difference = $uatTotalSpaceI[$client] - $prdUsedSpaceI[$client]
-    if ($difference -gt 0) {
-        $tableI += "$client`tI:`t$difference"
+    if ($difference -lt 0) {
+        $tableI += "$client`tI:`t$($difference * -1)"
     }
 }
 
