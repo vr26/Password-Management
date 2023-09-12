@@ -1,5 +1,78 @@
+# PRD Section for J Drive
+$clients = "BHAR", "BHME", "CCHHS", "LWWA", "MAMC", "MPMD", "NMHC", "NPA", "PHKY", "PMAK", "PMWA", "SMNY"
+$prdUsedSpaceJ = @{}  # Create a hashtable to store PRD used space values for J Drive
+
+foreach ($client in $clients) {
+    $server = "aldprddb$client" + "01.chicago.local"
+    $disk = Get-WmiObject Win32_logicaldisk -ComputerName $server -Filter "DeviceID='J:'"
+    $usedGB = [decimal]($disk.Size / 1gb - $disk.FreeSpace / 1gb)
+    $prdUsedSpaceJ[$client] = $usedGB  # Store used space in the hashtable
+}
+
+# PRD Section for I Drive
+$prdUsedSpaceI = @{}  # Create a hashtable to store PRD used space values for I Drive
+
+foreach ($client in $clients) {
+    $server = "aldprddb$client" + "01.chicago.local"
+    $disk = Get-WmiObject Win32_logicaldisk -ComputerName $server -Filter "DeviceID='I:'"
+    $usedGB = [decimal]($disk.Size / 1gb - $disk.FreeSpace / 1gb)
+    $prdUsedSpaceI[$client] = $usedGB  # Store used space in the hashtable
+}
+
+# UAT Section for J Drive
+$uatTotalSpaceJ = @{}  # Create a hashtable to store UAT total space values for J Drive
+
+foreach ($client in $clients) {
+    $server = "alduatdb$client" + "01.chicago.local"
+    $disk = Get-WmiObject Win32_logicaldisk -ComputerName $server -Filter "DeviceID='J:'"
+    $sizeGB = [decimal]($disk.Size / 1gb)
+    $uatTotalSpaceJ[$client] = $sizeGB  # Store total space in the hashtable
+}
+
+# UAT Section for I Drive
+$uatTotalSpaceI = @{}  # Create a hashtable to store UAT total space values for I Drive
+
+foreach ($client in $clients) {
+    $server = "alduatdb$client" + "01.chicago.local"
+    $disk = Get-WmiObject Win32_logicaldisk -ComputerName $server -Filter "DeviceID='I:'"
+    $sizeGB = [decimal]($disk.Size / 1gb)
+    $uatTotalSpaceI[$client] = $sizeGB  # Store total space in the hashtable
+}
+
+# Create plain text tables for J Drive and I Drive comparisons
+$tableG = @()
+$tableG += "Client`tDrive ID`tSpace Needed (GB) for J Drive"
+
+$tableI = @()
+$tableI += "Client`tDrive ID`tSpace Needed (GB) for I Drive"
+
+# Compare PRD and UAT for J Drive and add rows to the J Drive table only when space is needed
+foreach ($client in $clients) {
+    $difference = $uatTotalSpaceJ[$client] - $prdUsedSpaceJ[$client]
+    if ($difference -gt 0) {
+        $tableJ += "$client`tJ:`t$($difference * -1)"
+    }
+}
+
+# Compare PRD and UAT for I Drive and add rows to the I Drive table only when space is needed
+foreach ($client in $clients) {
+    $difference = $uatTotalSpaceI[$client] - $prdUsedSpaceI[$client]
+    if ($difference -gt 0) {
+        $tableI += "$client`tI:`t$($difference * -1)"
+    }
+}
+
+# Output the plain text tables for J Drive and I Drive comparisons only if space is needed
+if ($tableJ.Count -gt 1) {
+    $tableJ | Format-Table -AutoSize | Out-String | Write-Host
+}
+
+if ($tableI.Count -gt 1) {
+    $tableI | Format-Table -AutoSize | Out-String | Write-Host
+}
+
 # PRD Section for G Drive
-$clients = "MPMD"
+$clients = "BHAR", "BHME", "CCHHS", "LWWA", "MAMC", "MPMD", "NMHC", "NPA", "PHKY", "PMAK", "PMWA", "SMNY"
 $prdUsedSpaceG = @{}  # Create a hashtable to store PRD used space values for G Drive
 
 foreach ($client in $clients) {
@@ -23,7 +96,7 @@ foreach ($client in $clients) {
 $uatTotalSpaceG = @{}  # Create a hashtable to store UAT total space values for G Drive
 
 foreach ($client in $clients) {
-    $server = "ptlpsdb$client" + "01.chicago.local"
+    $server = "ptluatdb$client" + "01.chicago.local"
     $disk = Get-WmiObject Win32_logicaldisk -ComputerName $server -Filter "DeviceID='G:'"
     $sizeGB = [decimal]($disk.Size / 1gb)
     $uatTotalSpaceG[$client] = $sizeGB  # Store total space in the hashtable
@@ -33,7 +106,7 @@ foreach ($client in $clients) {
 $uatTotalSpaceI = @{}  # Create a hashtable to store UAT total space values for I Drive
 
 foreach ($client in $clients) {
-    $server = "ptlpsdb$client" + "01.chicago.local"
+    $server = "ptluatdb$client" + "01.chicago.local"
     $disk = Get-WmiObject Win32_logicaldisk -ComputerName $server -Filter "DeviceID='I:'"
     $sizeGB = [decimal]($disk.Size / 1gb)
     $uatTotalSpaceI[$client] = $sizeGB  # Store total space in the hashtable
