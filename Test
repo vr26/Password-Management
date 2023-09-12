@@ -1,5 +1,4 @@
 # PRD Section
-Write-Output ("`nG Drive of PRD - Used Space `n")
 $clients = "bhar", "bhme", "cchhs"
 $prdUsedSpace = @{}  # Create a hashtable to store PRD used space values
 
@@ -7,29 +6,33 @@ foreach ($client in $clients) {
     $server = "ptlprddb$client" + "01.chicago.local"
     $disk = Get-WmiObject Win32_logicaldisk -ComputerName $server -Filter "DeviceID='G:'"
     $usedGB = [decimal]($disk.Size / 1gb - $disk.FreeSpace / 1gb)
-    Write-Host "$client: $usedGB GB" -ForegroundColor Green
     $prdUsedSpace[$client] = $usedGB  # Store used space in the hashtable
 }
 
 # UAT Section
-Write-Output ("`nG Drive of UAT - Total Space `n")
 $uatTotalSpace = @{}  # Create a hashtable to store UAT total space values
 
 foreach ($client in $clients) {
     $server = "ptluatdb$client" + "01.chicago.local"
     $disk = Get-WmiObject Win32_logicaldisk -ComputerName $server -Filter "DeviceID='G:'"
     $sizeGB = [decimal]($disk.Size / 1gb)
-    Write-Host "$client: $sizeGB GB" -ForegroundColor Blue
     $uatTotalSpace[$client] = $sizeGB  # Store total space in the hashtable
 }
 
-# Compare PRD and UAT
-Write-Output ("`nComparison between PRD and UAT `n")
+# Create an HTML table
+$htmlTable = "<table border='1'><tr><th>Client</th><th>Drive ID</th><th>Space Needed (GB)</th></tr>"
+
+# Compare PRD and UAT and add rows to the HTML table only when space is needed
 foreach ($client in $clients) {
-    $difference = $uatTotalSpace[$client] - $prdUsedSpace[$client]
-    if ($difference -ge 0) {
-        Write-Output "$client: UAT needs $($difference) GB to add."
-    } else {
-        Write-Output "$client: UAT total space is $($difference * -1) GB less than PRD used space."
+    $difference = $prdUsedSpace[$client] - $uatTotalSpace[$client]
+    if ($difference > 0) {
+        $htmlTable += "<tr><td>$client</td><td>G:</td><td>$difference</td></tr>"
     }
+}
+
+$htmlTable += "</table>"
+
+# Output the HTML table
+if ($htmlTable -ne "<table border='1'><tr><th>Client</th><th>Drive ID</th><th>Space Needed (GB)</th></tr></table>") {
+    Write-Output $htmlTable
 }
