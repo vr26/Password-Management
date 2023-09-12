@@ -1,43 +1,38 @@
-Subject: Learning and Certification Insights for Moving Forward
+# PRD Section
+$clients = "MPMD"
+$prdUsedSpace = @{}  # Create a hashtable to store PRD used space values
 
-Dear Team,
+foreach ($client in $clients) {
+    $server = "ptlprddb$client" + "01.chicago.local"
+    $disk = Get-WmiObject Win32_logicaldisk -ComputerName $server -Filter "DeviceID='G:'"
+    $usedGB = [decimal]($disk.Size / 1gb - $disk.FreeSpace / 1gb)
+    $prdUsedSpace[$client] = $usedGB  # Store used space in the hashtable
+}
 
-I hope this message finds you well. I wanted to share some valuable insights regarding learning and certifications that can significantly benefit our professional growth. In a world where continuous learning is essential, pursuing certifications such as Azure Fundamentals and Azure Designs and Implementation (AZ-400) can be pivotal for our careers.
+# UAT Section
+$uatTotalSpace = @{}  # Create a hashtable to store UAT total space values
 
-**Azure Certifications:**
+foreach ($client in $clients) {
+    $server = "ptlpsdb$client" + "01.chicago.local"
+    $disk = Get-WmiObject Win32_logicaldisk -ComputerName $server -Filter "DeviceID='G:'"
+    $sizeGB = [decimal]($disk.Size / 1gb)
+    $uatTotalSpace[$client] = $sizeGB  # Store total space in the hashtable
+}
 
-- **Basic Level Certification for Azure:** [Link to Video](https://www.youtube.com/watch?v=KzTEJ_hen3c) (This video can serve as a useful resource for understanding fundamental concepts.)
+# Create an HTML table
+$htmlTable = "<table border='1'><tr><th>Client</th><th>Drive ID</th><th>Space Needed (GB)</th></tr>"
 
-- **Leveraging Previous Year Exam Dumps:** After completing the necessary labs and course material, it's often beneficial to familiarize ourselves with previous year exam questions. [ExamTopics](https://www.examtopics.com/exams/microsoft/) is a valuable resource where you can find exam dumps. (Please note that around 90% of the questions in certification exams are known to come from these dumps.)
+# Compare PRD and UAT and add rows to the HTML table only when space is needed
+foreach ($client in $clients) {
+    $difference = $prdUsedSpace[$client] - $uatTotalSpace[$client]
+    if ($difference > 0) {
+        $htmlTable += "<tr><td>$client</td><td>G:</td><td>$difference</td></tr>"
+    }
+}
 
-- **Prerequisite Intermediate Exams:** Before attempting the AZ-400 exam, it's essential to complete one of the intermediate-level exams, either Azure Administrator (AZ-104) or Azure Developer (AZ-103).
+$htmlTable += "</table>"
 
-**Management and Interpersonal Skills:**
-
-In addition to technical certifications, enhancing our management and interpersonal skills can be equally beneficial. Consider exploring the following topics:
-
-- **Storytelling in Business**
-- **ITIL V4**
-- **Time Management**
-- **Effective Listening**
-- **Effective Note-Taking**
-- **PMP Certification**
-
-**Additional Information:**
-
-- **DevOps Tools:** If you're interested in DevOps tools, the Kodekloud platform offers in-depth training (paid), and you can also explore their free Usecase labs in Kodekloud Engineer.
-
-- **GitHub Learning:** GitHub is a critical platform for many of our projects. To become proficient, it's recommended to learn about Pull Requests, branching strategies, branch protection, and GitHub Actions. Below are some resources to get you started:
-
-  - **LinkedIn Learning:**
-    - [GitHub Actions for CI/CD](https://www.linkedin.com/learning/github-actions-for-ci-cd/github-actions-for-ci-cd?u=119698138)
-    - [Automating with GitHub Actions](https://www.linkedin.com/learning/learning-github-actions-2/automating-with-github-actions-2?u=119698138)
-    - [Advanced GitHub Actions](https://www.linkedin.com/learning/advanced-github-actions/next-level-github-actions?u=119698138)
-
-Continuous learning is the key to our professional development, and these resources can empower us to excel in our roles. Please feel free to reach out if you have any questions or need further guidance on any of these topics.
-
-Let's embark on this learning journey together to achieve our career goals and contribute effectively to our team's success.
-
-Best regards,
-
-[Your Name]
+# Output the HTML table
+if ($htmlTable -ne "<table border='1'><tr><th>Client</th><th>Drive ID</th><th>Space Needed (GB)</th></tr></table>") {
+    Write-Output $htmlTable
+}
