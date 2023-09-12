@@ -1,3 +1,5 @@
+
+write-output "PORTAL SERVERS"
 # PRD Section for J Drive
 $clients = "BHAR", "BHME", "CCHHS", "LWWA", "MAMC", "MPMD", "NMHC", "NPA", "PHKY", "PMAK", "PMWA", "SMNY"
 $prdUsedSpaceJ = @{}  # Create a hashtable to store PRD used space values for J Drive
@@ -71,6 +73,8 @@ if ($tableI.Count -gt 1) {
     $tableI | Format-Table -AutoSize | Out-String | Write-Host
 }
 
+
+write-output "CORE SERVERS"
 # PRD Section for G Drive
 $clients = "BHAR", "BHME", "CCHHS", "LWWA", "MAMC", "MPMD", "NMHC", "NPA", "PHKY", "PMAK", "PMWA", "SMNY"
 $prdUsedSpaceG = @{}  # Create a hashtable to store PRD used space values for G Drive
