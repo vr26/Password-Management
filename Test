@@ -19,20 +19,19 @@ foreach ($client in $clients) {
     $uatTotalSpace[$client] = $sizeGB  # Store total space in the hashtable
 }
 
-# Create an HTML table
-$htmlTable = "<table border='1'><tr><th>Client</th><th>Drive ID</th><th>Space Needed (GB)</th></tr>"
+# Create a plain text table
+$table = @()
+$table += "Client`tDrive ID`tSpace Needed (GB)"
 
-# Compare PRD and UAT and add rows to the HTML table only when space is needed
+# Compare PRD and UAT and add rows to the table only when space is needed
 foreach ($client in $clients) {
     $difference = $prdUsedSpace[$client] - $uatTotalSpace[$client]
-    if ($difference > 0) {
-        $htmlTable += "<tr><td>$client</td><td>G:</td><td>$difference</td></tr>"
+    if ($difference -gt 0) {
+        $table += "$client`tG:`t$difference"
     }
 }
 
-$htmlTable += "</table>"
-
-# Output the HTML table
-if ($htmlTable -ne "<table border='1'><tr><th>Client</th><th>Drive ID</th><th>Space Needed (GB)</th></tr></table>") {
-    Write-Output $htmlTable
+# Output the plain text table
+if ($table.Count -gt 1) {
+    $table | Format-Table -AutoSize | Out-String | Write-Host
 }
