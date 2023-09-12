@@ -1,22 +1,35 @@
-
+# PRD Section
 Write-Output ("`nG Drive of PRD - Used Space `n")
+$clients = "bhar", "bhme", "cchhs"
+$prdUsedSpace = @{}  # Create a hashtable to store PRD used space values
 
 foreach ($client in $clients) {
-   
+    $server = "ptlprddb$client" + "01.chicago.local"
     $disk = Get-WmiObject Win32_logicaldisk -ComputerName $server -Filter "DeviceID='G:'"
-    $sizeGB = [decimal]($disk.Size / 1gb)
-    $freeGB = [decimal]($disk.FreeSpace / 1gb)
-    $usedGB = $sizeGB - $freeGB
-    Write-Host "$usedGB" -ForegroundColor Green
+    $usedGB = [decimal]($disk.Size / 1gb - $disk.FreeSpace / 1gb)
+    Write-Host "$client: $usedGB GB" -ForegroundColor Green
+    $prdUsedSpace[$client] = $usedGB  # Store used space in the hashtable
 }
 
-Write-Output ("`nG Drive of UAT - Total Space`n")
+# UAT Section
+Write-Output ("`nG Drive of UAT - Total Space `n")
+$uatTotalSpace = @{}  # Create a hashtable to store UAT total space values
 
 foreach ($client in $clients) {
-    
+    $server = "ptluatdb$client" + "01.chicago.local"
     $disk = Get-WmiObject Win32_logicaldisk -ComputerName $server -Filter "DeviceID='G:'"
     $sizeGB = [decimal]($disk.Size / 1gb)
-    $freeGB = [decimal]($disk.FreeSpace / 1gb)
-    $usedGB = $sizeGB - $freeGB
-    Write-Host "$sizeGB" -ForegroundColor Blue
+    Write-Host "$client: $sizeGB GB" -ForegroundColor Blue
+    $uatTotalSpace[$client] = $sizeGB  # Store total space in the hashtable
+}
+
+# Compare PRD and UAT
+Write-Output ("`nComparison between PRD and UAT `n")
+foreach ($client in $clients) {
+    $difference = $uatTotalSpace[$client] - $prdUsedSpace[$client]
+    if ($difference -ge 0) {
+        Write-Output "$client: UAT needs $($difference) GB to add."
+    } else {
+        Write-Output "$client: UAT total space is $($difference * -1) GB less than PRD used space."
+    }
 }
