@@ -1,28 +1,24 @@
-# PRD Section
-$clients = "bhar", "bhme", "cchhs"
-$prdUsedSpace = @{}  # Create a hashtable to store PRD used space values
+Hi Team,
+I am providing an insights about Learning and Certifications which can help us moving forward. As everyone is intrested to take azure fudamanetals and Azure Designs and Implementation (AZ400).
 
-foreach ($client in $clients) {
-    $server = "ptlprddb$client" + "01.chicago.local"
-    $disk = Get-WmiObject Win32_logicaldisk -ComputerName $server -Filter "DeviceID='G:'"
-    $usedGB = [decimal]($disk.Size / 1gb - $disk.FreeSpace / 1gb)
-    $prdUsedSpace[$client] = $usedGB  # Store used space in the hashtable
-}
+Azure Certifications – 
+•	Basic levele of Certification for Azure - https://www.youtube.com/watch?v=KzTEJ_hen3c (This video can help me for some of the intresting basic level labls)
+•	After completing the labs and learning – go with previous year dumps - https://www.examtopics.com/exams/microsoft/ - (Secret – 90% questions come from here for all kind of certification exams)	
+•	Before taking AZ400 exam you need to complete one of the Intermediate level exam One is Azure administrator (AZ104) and Azure Developer (AZ103)
 
-# UAT Section
-$uatTotalSpace = @{}  # Create a hashtable to store UAT total space values
+Few other topics you can take in Management and Interpersonal skill wise.
+	Story Telling in Business
+	ITIL V4
+	Time Management
+	Effectivie Listening
+	Effective Notes Taking
+	PMP Certification
 
-foreach ($client in $clients) {
-    $server = "ptluatdb$client" + "01.chicago.local"
-    $disk = Get-WmiObject Win32_logicaldisk -ComputerName $server -Filter "DeviceID='G:'"
-    $sizeGB = [decimal]($disk.Size / 1gb)
-    $uatTotalSpace[$client] = $sizeGB  # Store total space in the hashtable
-}
-
-# Compare PRD and UAT and display output only when space is needed
-foreach ($client in $clients) {
-    $difference = $prdUsedSpace[$client] - $uatTotalSpace[$client]
-    if ($difference > 0) {
-        Write-Output "$client: UAT needs $($difference) GB to add."
-    }
-}
+Additonal Info:
+	If you want to learn more about devops tools go with Kodekloud platform (Paid) & Usecase labs in Kodekloud Engineer (Free)
+Github learning – 
+	Get familarize about PR, branching strategies and protection, Github Actions, Keyword. Attached some docs and videos which can help you to get some basic level of understanding at initial stage.
+	Linkedin learning - 
+				Github Actions - https://www.linkedin.com/learning/github-actions-for-ci-cd/github-actions-for-ci-cd?u=119698138
+https://www.linkedin.com/learning/learning-github-actions-2/automating-with-github-actions-2?u=119698138
+Advanced Github - https://www.linkedin.com/learning/advanced-github-actions/next-level-github-actions?u=119698138
