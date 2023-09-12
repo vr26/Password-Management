@@ -1,10 +1,22 @@
-Write-Output ("`nI Drive of PRD - Used Space `n")
+
+Write-Output ("`nG Drive of PRD - Used Space `n")
 
 foreach ($client in $clients) {
-    
-    $disk = Get-WmiObject Win32_logicaldisk -ComputerName $server -Filter "DeviceID='I:'"
+   
+    $disk = Get-WmiObject Win32_logicaldisk -ComputerName $server -Filter "DeviceID='G:'"
     $sizeGB = [decimal]($disk.Size / 1gb)
     $freeGB = [decimal]($disk.FreeSpace / 1gb)
     $usedGB = $sizeGB - $freeGB
     Write-Host "$usedGB" -ForegroundColor Green
+}
+
+Write-Output ("`nG Drive of UAT - Total Space`n")
+
+foreach ($client in $clients) {
+    
+    $disk = Get-WmiObject Win32_logicaldisk -ComputerName $server -Filter "DeviceID='G:'"
+    $sizeGB = [decimal]($disk.Size / 1gb)
+    $freeGB = [decimal]($disk.FreeSpace / 1gb)
+    $usedGB = $sizeGB - $freeGB
+    Write-Host "$sizeGB" -ForegroundColor Blue
 }
