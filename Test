@@ -1,18 +1,39 @@
 # Define an array of server names
 $servers =  'ALDUATDBBHAR01.CHICAGO.LOCAL','ALDUATDBBHAR01.CHICAGO.LOCAL','ALDUATDBBHME01.CHICAGO.LOCAL','ALDUATDBMPMD01.CHICAGO.LOCAL','ALDUATDBSMNY01.CHICAGO.LOCAL','ALDUATDBLWWA01.CHICAGO.LOCAL','ALDUATDBBRIF01.CHICAGO.LOCAL','ALDUATDBPHKY01.CHICAGO.LOCAL','ALDUATDBCCHHS01.CHICAGO.LOCAL','ALDUATDBNMHC01.CHICAGO.LOCAL','ALDUATDBNPA01.CHICAGO.LOCAL','ALDUATDBCMIL01.CHICAGO.LOCAL','ALDUATDBMABR01.CHICAGO.LOCAL','ALDUATDBMAMC01.CHICAGO.LOCAL','ALDUATDBPMAK01.CHICAGO.LOCAL','ALDUATDBPMWA01.CHICAGO.LOCAL'
 # Define the number of days after which the files should be deleted
-$days = 59 
+$days = 59
 
 # Loop through each server in the array
 foreach ($server in $servers) {
+    Write-Host "Processing server: $server"
+    
     # Use Invoke-Command to run the script block on the remote server
-    Invoke-Command -Computername $server -ScriptBlock {
+    Invoke-Command -ComputerName $server -ScriptBlock {
         # Get all files in the "H:\BATCH\OutData\Extracts" folder, excluding the "Archive" folder
-        # and delete the files that are older than $days days
-        Get-ChildItem –Path "H:\BATCH\OutData\Extracts" -Recurse -exclude Archive | Where-Object {($_.LastWriteTime -lt (Get-Date).AddDays(-$using:days))} | Remove-Item
+        $extractsFolder = "H:\BATCH\OutData\Extracts"
+        $extractsArchiveFolder = Join-Path $extractsFolder "Archive"
+        $extractsFiles = Get-ChildItem -Path $extractsFolder -File -Recurse | Where-Object { $_.FullName -notlike "$extractsArchiveFolder\*" }
         
         # Get all files in the "H:\BATCH\OutData\PRINTFILES" folder, excluding the "Archive" folder
-        # and delete the files that are older than $days days
-        Get-ChildItem –Path "H:\BATCH\OutData\PRINTFILES" -Recurse -exclude Archive | Where-Object {($_.LastWriteTime -lt (Get-Date).AddDays(-$using:days))} | Remove-Item
+        $printFilesFolder = "H:\BATCH\OutData\PRINTFILES"
+        $printFilesArchiveFolder = Join-Path $printFilesFolder "Archive"
+        $printFiles = Get-ChildItem -Path $printFilesFolder -File -Recurse | Where-Object { $_.FullName -notlike "$printFilesArchiveFolder\*" }
+        
+        # Delete files older than $days days and log the deleted files
+        $deletedFiles = @()
+        
+        foreach ($file in $extractsFiles + $printFiles) {
+            if ($file.LastWriteTime -lt (Get-Date).AddDays(-$using:days)) {
+                $file | Remove-Item -Force
+                $deletedFiles += $file.FullName
+            }
+        }
+        
+        if ($deletedFiles.Count -gt 0) {
+            Write-Host "Deleted files on $env:COMPUTERNAME:"
+            $deletedFiles | ForEach-Object { Write-Host "  $_" }
+        } else {
+            Write-Host "No files older than $days days found on $env:COMPUTERNAME."
+        }
     }
 }
