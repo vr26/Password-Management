@@ -1,102 +1,18 @@
-# Function to fetch disk information and calculate used space
-function Get-UsedSpace($driveLetter, $server) {
-    $disk = Get-WmiObject Win32_logicaldisk -ComputerName $server -Filter "DeviceID='$($driveLetter):'"
-    return [decimal]($disk.Size / 1gb - $disk.FreeSpace / 1gb)
-}
+# Define an array of server names
+$servers =  'ALDUATDBBHAR01.CHICAGO.LOCAL','ALDUATDBBHAR01.CHICAGO.LOCAL','ALDUATDBBHME01.CHICAGO.LOCAL','ALDUATDBMPMD01.CHICAGO.LOCAL','ALDUATDBSMNY01.CHICAGO.LOCAL','ALDUATDBLWWA01.CHICAGO.LOCAL','ALDUATDBBRIF01.CHICAGO.LOCAL','ALDUATDBPHKY01.CHICAGO.LOCAL','ALDUATDBCCHHS01.CHICAGO.LOCAL','ALDUATDBNMHC01.CHICAGO.LOCAL','ALDUATDBNPA01.CHICAGO.LOCAL','ALDUATDBCMIL01.CHICAGO.LOCAL','ALDUATDBMABR01.CHICAGO.LOCAL','ALDUATDBMAMC01.CHICAGO.LOCAL','ALDUATDBPMAK01.CHICAGO.LOCAL','ALDUATDBPMWA01.CHICAGO.LOCAL'
+# Define the number of days after which the files should be deleted
+$days = 59 
 
-# Function to fetch total disk space
-function Get-TotalSpace($driveLetter, $server) {
-    $disk = Get-WmiObject Win32_logicaldisk -ComputerName $server -Filter "DeviceID='$($driveLetter):'"
-    return [decimal]($disk.Size / 1gb)
-}
-
-# Define clients
-$clients = "BHAR", "BHME", "CCHHS", "LWWA", "MAMC", "MPMD", "NMHC", "NPA", "PHKY", "PMAK", "PMWA", "SMNY"
-
-# Initialize arrays for storing results
-$portalServerResults = @()
-$coreServerResults = @()
-
-# Process PORTAL SERVERS (ptl starting servers)
-Write-Output "PORTAL SERVERS"
-
-foreach ($client in $clients) {
-    # PRD Servers for ptl
-    $prdServer = "ptlprddb$client" + "01.chicago.local"
-    $prdUsedSpaceI = Get-UsedSpace 'I' $prdServer
-    $prdUsedSpaceG = Get-UsedSpace 'G' $prdServer
-
-    # UAT Servers for ptl
-    $uatServer = "ptluatdb$client" + "01.chicago.local"
-    $uatTotalSpaceI = Get-TotalSpace 'I' $uatServer
-    $uatTotalSpaceG = Get-TotalSpace 'G' $uatServer
-
-    # Calculate space needed for I and G drives
-    $differenceI = $uatTotalSpaceI - $prdUsedSpaceI
-    $differenceG = $uatTotalSpaceG - $prdUsedSpaceG
-
-    if ($differenceI -gt 0) {
-        $portalServerResults += [PSCustomObject]@{
-            'Client' = $client
-            'Drive ID' = 'I'
-            'Space Needed (GB)' = [Math]::Round($differenceI * -1, 2)
-        }
+# Loop through each server in the array
+foreach ($server in $servers) {
+    # Use Invoke-Command to run the script block on the remote server
+    Invoke-Command -Computername $server -ScriptBlock {
+        # Get all files in the "H:\BATCH\OutData\Extracts" folder, excluding the "Archive" folder
+        # and delete the files that are older than $days days
+        Get-ChildItem –Path "H:\BATCH\OutData\Extracts" -Recurse -exclude Archive | Where-Object {($_.LastWriteTime -lt (Get-Date).AddDays(-$using:days))} | Remove-Item
+        
+        # Get all files in the "H:\BATCH\OutData\PRINTFILES" folder, excluding the "Archive" folder
+        # and delete the files that are older than $days days
+        Get-ChildItem –Path "H:\BATCH\OutData\PRINTFILES" -Recurse -exclude Archive | Where-Object {($_.LastWriteTime -lt (Get-Date).AddDays(-$using:days))} | Remove-Item
     }
-
-    if ($differenceG -gt 0) {
-        $portalServerResults += [PSCustomObject]@{
-            'Client' = $client
-            'Drive ID' = 'G'
-            'Space Needed (GB)' = [Math]::Round($differenceG * -1, 2)
-        }
-    }
-}
-
-# Display results for PORTAL SERVERS (ptl starting servers)
-if ($portalServerResults.Count -gt 0) {
-    $portalServerResults | Format-Table -AutoSize | Out-String | Write-Host
-} else {
-    Write-Host "No space needed for PORTAL SERVERS."
-}
-
-# Process CORE SERVERS (ald starting servers)
-Write-Output "CORE SERVERS"
-
-foreach ($client in $clients) {
-    # PRD Servers for ald
-    $prdServer = "aldprddb$client" + "01.chicago.local"
-    $prdUsedSpaceI = Get-UsedSpace 'I' $prdServer
-    $prdUsedSpaceJ = Get-UsedSpace 'J' $prdServer
-
-    # UAT Servers for ald
-    $uatServer = "alduatdb$client" + "01.chicago.local"
-    $uatTotalSpaceI = Get-TotalSpace 'I' $uatServer
-    $uatTotalSpaceJ = Get-TotalSpace 'J' $uatServer
-
-    # Calculate space needed for I and J drives
-    $differenceI = $uatTotalSpaceI - $prdUsedSpaceI
-    $differenceJ = $uatTotalSpaceJ - $prdUsedSpaceJ
-
-    if ($differenceI -gt 0) {
-        $coreServerResults += [PSCustomObject]@{
-            'Client' = $client
-            'Drive ID' = 'I'
-            'Space Needed (GB)' = [Math]::Round($differenceI * -1, 2)
-        }
-    }
-
-    if ($differenceJ -gt 0) {
-        $coreServerResults += [PSCustomObject]@{
-            'Client' = $client
-            'Drive ID' = 'J'
-            'Space Needed (GB)' = [Math]::Round($differenceJ * -1, 2)
-        }
-    }
-}
-
-# Display results for CORE SERVERS (ald starting servers)
-if ($coreServerResults.Count -gt 0) {
-    $coreServerResults | Format-Table -AutoSize | Out-String | Write-Host
-} else {
-    Write-Host "No space needed for CORE SERVERS."
 }
