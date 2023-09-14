@@ -7,14 +7,9 @@ $days = 59
 $endDate = Get-Date
 $startDate = $endDate.AddDays(-$days)
 
-# Function to display a clear section separator
-function Show-Separator {
-    Write-Host "=========================================="
-}
-
 # Loop through each server in the array
 foreach ($server in $servers) {
-    Show-Separator
+    Write-Host "=========================================="
     Write-Host "Processing server: $server"
     Write-Host "Deleting files from $($startDate.ToString('yyyy-MM-dd')) to $($endDate.ToString('yyyy-MM-dd'))"
 
@@ -41,12 +36,11 @@ foreach ($server in $servers) {
         }
         
         if ($deletedFiles.Count -gt 0) {
-            Show-Separator
             Write-Host "Deleted files on $env:COMPUTERNAME:"
             $deletedFiles | ForEach-Object { Write-Host "  $_" }
         } else {
-            Show-Separator
             Write-Host "No files older than $days days found on $env:COMPUTERNAME."
         }
     }
+    Write-Host "=========================================="
 }
