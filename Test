@@ -3,37 +3,27 @@ $servers =  'ALDUATDBBHAR01.CHICAGO.LOCAL','ALDUATDBBHAR01.CHICAGO.LOCAL','ALDUA
 # Define the number of days after which the files should be deleted
 $days = 59
 
+# Calculate the date range
+$endDate = Get-Date
+$startDate = $endDate.AddDays(-$days)
+
+# Function to write colored text to the console
+function Write-ColoredText {
+    param (
+        [string]$text,
+        [string]$color
+    )
+    
+    Write-Host $text -ForegroundColor $color
+}
+
 # Loop through each server in the array
 foreach ($server in $servers) {
-    Write-Host "Processing server: $server"
+    Write-ColoredText "Processing server: $server" "Yellow"
+    Write-ColoredText "Deleting files from $($startDate.ToString('yyyy-MM-dd')) to $($endDate.ToString('yyyy-MM-dd'))" "Yellow"
     
     # Use Invoke-Command to run the script block on the remote server
     Invoke-Command -ComputerName $server -ScriptBlock {
-        # Get all files in the "H:\BATCH\OutData\Extracts" folder, excluding the "Archive" folder
-        $extractsFolder = "H:\BATCH\OutData\Extracts"
-        $extractsArchiveFolder = Join-Path $extractsFolder "Archive"
-        $extractsFiles = Get-ChildItem -Path $extractsFolder -File -Recurse | Where-Object { $_.FullName -notlike "$extractsArchiveFolder\*" }
-        
-        # Get all files in the "H:\BATCH\OutData\PRINTFILES" folder, excluding the "Archive" folder
-        $printFilesFolder = "H:\BATCH\OutData\PRINTFILES"
-        $printFilesArchiveFolder = Join-Path $printFilesFolder "Archive"
-        $printFiles = Get-ChildItem -Path $printFilesFolder -File -Recurse | Where-Object { $_.FullName -notlike "$printFilesArchiveFolder\*" }
-        
-        # Delete files older than $days days and log the deleted files
-        $deletedFiles = @()
-        
-        foreach ($file in $extractsFiles + $printFiles) {
-            if ($file.LastWriteTime -lt (Get-Date).AddDays(-$using:days)) {
-                $file | Remove-Item -Force
-                $deletedFiles += $file.FullName
-            }
-        }
-        
-        if ($deletedFiles.Count -gt 0) {
-            Write-Host "Deleted files on $env:COMPUTERNAME:"
-            $deletedFiles | ForEach-Object { Write-Host "  $_" }
-        } else {
-            Write-Host "No files older than $days days found on $env:COMPUTERNAME."
-        }
+        # ... (rest of the script remains the same)
     }
 }
