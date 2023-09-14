@@ -7,22 +7,17 @@ $days = 59
 $endDate = Get-Date
 $startDate = $endDate.AddDays(-$days)
 
-# Function to write colored text to the console
-function Write-ColoredText {
-    param (
-        [string]$text,
-        [string]$color
-    )
-    
-    Write-Host $text -ForegroundColor $color
+# Function to display a clear section separator
+function Show-Separator {
+    Write-Host "=========================================="
 }
 
 # Loop through each server in the array
 foreach ($server in $servers) {
-    Write-ColoredText "[Pipeline] PowerShell" "Green"
-    Write-ColoredText "[YourScriptName] Processing server: $server" "Yellow"
-    Write-ColoredText "[YourScriptName] Deleting files from $($startDate.ToString('yyyy-MM-dd')) to $($endDate.ToString('yyyy-MM-dd'))" "Yellow"
-    
+    Show-Separator
+    Write-Host "Processing server: $server"
+    Write-Host "Deleting files from $($startDate.ToString('yyyy-MM-dd')) to $($endDate.ToString('yyyy-MM-dd'))"
+
     # Use Invoke-Command to run the script block on the remote server
     Invoke-Command -ComputerName $server -ScriptBlock {
         # Get all files in the "H:\BATCH\OutData\Extracts" folder, excluding the "Archive" folder
@@ -46,10 +41,12 @@ foreach ($server in $servers) {
         }
         
         if ($deletedFiles.Count -gt 0) {
-            Write-ColoredText "[YourScriptName] Deleted files on $env:COMPUTERNAME:" "Green"
-            $deletedFiles | ForEach-Object { Write-ColoredText "[YourScriptName]   $_" "Green" }
+            Show-Separator
+            Write-Host "Deleted files on $env:COMPUTERNAME:"
+            $deletedFiles | ForEach-Object { Write-Host "  $_" }
         } else {
-            Write-ColoredText "[YourScriptName] No files older than $days days found on $env:COMPUTERNAME." "Yellow"
+            Show-Separator
+            Write-Host "No files older than $days days found on $env:COMPUTERNAME."
         }
     }
 }
