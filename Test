@@ -1,5 +1,174 @@
-Hello Team,
+$username = "CHicago\Vrao"
+$apiToken = "11ac371fd67a50e53ddc78ab1e3e6c2048"
+$clients = "BHAR", "BHME", "BRIF", "MABR","CCHHS", "LWWA", "MAMC", "MPMD", "NPA", "PHKY", "PMAK", "PMWA", "SMNY", "CMIL"
+$applications = @("UAT_Core_Tests","PRD_Core_Tests")
+$envSuccessCounts = @{}
+$envTotalCounts = @{}
+$envSuccessRates = @{}
+$buildStatusResult = @()
+$date = Get-Date -Format "yyyy-MM-dd"
+$subject = "Environment Test Summary $date"
+foreach ($application in $applications) {
+    $envTotalCounts[$application] = 0
+}
 
-The test mentioned below is failing across all UAT environments, including SAAS clients. Please refer to the attached screenshot. I understand that this failure is due to the AVS migration in the UAT environment. As UAT has now completely transitioned to AVS, we need to make some configuration changes in the Jenkins Job and Environment Test JSON file. Could you please provide me with the values that need to be added to the JSON file? I've added the values below and tested them in one of the clients, but it indicates that the "Folder" value should be in the discovered virtual machine. Could you please confirm the values below and point out any incorrect ones?
+foreach ($client in $clients) {
+    foreach ($application in $applications) {
+        $envTotalCounts[$application]++
+        $jenkinsUrl = "https://jenkins.evolenthealth.com/view/HPS%20Prod%20Ops/job/Environment%20Mgt/job/$client/job/$client" + "_$application/lastBuild/api/json"
+        $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $username,$apiToken)))
+        $buildStatus = Invoke-RestMethod -Uri $jenkinsUrl -Headers @{Authorization=("Basic {0}" -f $base64AuthInfo)}
+        $shortAppName = $application -replace '_.*'
+        $status = if ($buildStatus.result -eq "SUCCESS") {
+            "Success"
+            $envSuccessCounts[$application]++
+        }
+        elseif ($buildStatus.result -eq "UNSTABLE") {
+            "Unstable"
+        }
+        else {
+            "Failed"
+        }
+        $buildStatusResult += [PSCustomObject]@{
+            Client = $client 
+            Environment = $shortAppName
+            Result = $status
+        }
+    }
+}
 
-Please let me know if you need any further information or assistance.
+foreach ($application in $applications) {
+    $successCount = $envSuccessCounts[$application]
+    $totalCount = $envTotalCounts[$application]
+    $successRate = if ($totalCount -eq 0) { 0 } else { [Math]::Round(($successCount / $totalCount) * 100) }
+    $envSuccessRates[$application] = $successRate
+}
+
+$sortedRates = $envSuccessRates.GetEnumerator() | Sort-Object Value
+
+$tableRows = ""
+foreach ($env in $sortedRates) {
+    $successRate = $env.Value
+    $envName = $env.Name -replace '_.*', ''
+    $successRateHtml = if ($successRate -ge 85) {
+        "<td class='success'>$successRate%</td>"
+    } elseif ($successRate -ge 50) {
+        "<td class='unstable'>$successRate%</td>"
+    } else {
+        "<td class='failed'>$successRate%</td>"
+    }
+    if ($env -eq "PRD_Core_Tests"){
+        $env = "PRD"
+    }
+    if ($env -eq "UAT_Core_Tests"){
+        $env = "UAT"
+    }
+    $tableRows += "<tr><td>$envName</td>$successRateHtml</tr>"
+}
+$html = @"
+   <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff; /* Set the background color to white */
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: left; /* Align the title to the left */
+            font-size: 20px; /* Set the font size to 20 */
+            color: #1A73E8; /* Set the title color to blue */
+            margin-top: 50px;
+            margin-bottom: 30px;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff; /* Set the background color to white */
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 90%; /* Set the table width to 90% */
+            border-collapse: collapse;
+            border-spacing: 0;
+            margin-bottom: 30px;
+            border: 1px solid #1A73E8; /* Set the table border to 1px solid blue */
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            vertical-align: middle;
+            border-top: 1px solid #dddddd;
+            border-bottom: 1px solid #1A73E8; /* Set the row border to 1px solid blue */
+        }
+
+        th {
+            background-color: #1A73E8; /* Set the column names style to blue background */
+            font-size: 19px; /* Set the font size to 19 */
+            font-weight: bold;
+            color: #ffffff; /* Set the column names style to white font color */
+            white-space: nowrap; /* Prevent text from wrapping in column headers */
+        }
+
+        td {
+            font-size: 14px;
+            color: #666666;
+        }
+
+        .success {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .failed {
+            color: #f44336;
+            font-weight: bold;
+        }
+
+        .unstable {
+            color: #ff9800;
+            font-weight: bold;
+        }
+
+        .green-bg {
+            background-color: #4CAF50;
+            color: #ffffff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .red-bg {
+            background-color: #f44336;
+            color: #ffffff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .yellow-bg {
+            background-color: #ff9800;
+            color: #ffffff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+    </style>
+
+<div class="container">
+    <h1 style="color: #1A73E8;">Environment Tests Overall Summary</h1>
+    <table>
+        <tr>
+            <th class="header">Environment</th>
+            <th class="header">Success Rate</th>
+        </tr>
+        $tableRows
+    </table>
+</div>
+"@
+
+$html | Set-Content -Path "email_body.html"
