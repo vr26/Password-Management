@@ -1,3 +1,4 @@
+# Define variables for the main clients
 $username = "CHicago\Vrao"
 $apiToken = "11ac371fd67a50e53ddc78ab1e3e6c2048"
 $clients = "BHAR", "BHME", "CCHHS", "LWWA", "MAMC", "MPMD", "NPA", "PHKY", "PMAK", "PMWA", "SMNY"
@@ -8,6 +9,18 @@ $envSuccessRates = @{}
 $buildStatusResult = @()
 $date = Get-Date -Format "yyyy-MM-dd"
 $subject = "Environment Test Summary $date"
+
+# Define variables for Saas clients
+$saasUsername = "YourSaasUsername"
+$saasApiToken = "YourSaasApiToken"
+$saasClients = "DQVIS", "CGHC"
+$saasApplications = @("UAT_Saas_Tests","PRD_Saas_Tests")
+$saasEnvSuccessCounts = @{}
+$saasEnvTotalCounts = @{}
+$saasEnvSuccessRates = @{}
+$saasBuildStatusResult = @()
+
+# Process main clients
 foreach ($application in $applications) {
     $envTotalCounts[$application] = 0
 }
@@ -65,9 +78,73 @@ foreach ($env in $sortedRates) {
     }
     $tableRows += "<tr><td>$envName</td>$successRateHtml</tr>"
 }
+
+# Process Saas clients
+foreach ($application in $saasApplications) {
+    $saasEnvTotalCounts[$application] = 0
+}
+
+foreach ($saasClient in $saasClients) {
+    foreach ($application in $saasApplications) {
+        $saasEnvTotalCounts[$application]++
+        $jenkinsUrl = "https://jenkins.evolenthealth.com/view/HPS%20Prod%20Ops/job/Environment%20Mgt/job/$saasClient/job/$saasClient" + "_$application/lastBuild/api/json"
+        $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $saasUsername,$saasApiToken)))
+        $buildStatus = Invoke-RestMethod -Uri $jenkinsUrl -Headers @{Authorization=("Basic {0}" -f $base64AuthInfo)}
+        $shortAppName = $application -replace '_.*'
+        $status = if ($buildStatus.result -eq "SUCCESS") {
+            "Success"
+            $saasEnvSuccessCounts[$application]++
+        }
+        elseif ($buildStatus.result -eq "UNSTABLE") {
+            "Unstable"
+        }
+        else {
+            "Failed"
+        }
+        $saasBuildStatusResult += [PSCustomObject]@{
+            Client = $saasClient 
+            Environment = $shortAppName
+            Result = $status
+        }
+    }
+}
+
+foreach ($application in $saasApplications) {
+    $successCount = $saasEnvSuccessCounts[$application]
+    $totalCount = $saasEnvTotalCounts[$application]
+    $successRate = if ($totalCount -eq 0) { 0 } else { [Math]::Round(($successCount / $totalCount) * 100) }
+    $saasEnvSuccessRates[$application] = $successRate
+}
+
+$saasSortedRates = $saasEnvSuccessRates.GetEnumerator() | Sort-Object Value
+
+$saasTableRows = ""
+foreach ($env in $saasSortedRates) {
+    $successRate = $env.Value
+    $envName = $env.Name -replace '_.*', ''
+    $successRateHtml = if ($successRate -ge 85) {
+        "<td class='success'>$successRate%</td>"
+    } elseif ($successRate -ge 50) {
+        "<td class='unstable'>$successRate%</td>"
+    } else {
+        "<td class='failed'>$successRate%</td>"
+    }
+    if ($env -eq "PRD_Saas_Tests"){
+        $env = "PRD"
+    }
+    if ($env -eq "UAT_Saas_Tests"){
+        $env = "UAT"
+    }
+    $saasTableRows += "<tr><td>$envName</td>$successRateHtml</tr>"
+}
+
+# Create HTML with both tables
 $html = @"
-   <style>
-        body {
+<html>
+<head>
+    <style>
+        /* Your CSS styles here */
+body {
             font-family: Arial, sans-serif;
             background-color: #ffffff; /* Set the background color to white */
             margin: 0;
@@ -157,18 +234,36 @@ $html = @"
             border-radius: 5px;
             font-weight: bold;
         }
-    </style>
 
-<div class="container">
-    <h1 style="color: #1A73E8;">Environment Tests Overall Summary</h1>
-    <table>
-        <tr>
-            <th class="header">Environment</th>
-            <th class="header">Success Rate</th>
-        </tr>
-        $tableRows
-    </table>
-</div>
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="color: #1A73E8;">Environment Tests Overall Summary</h1>
+        <table>
+            <tr>
+                <th class="header">Environment</th>
+                <th class="header">Success Rate</th>
+            </tr>
+            $tableRows
+        </table>
+    </div>
+    
+    <div class="container">
+        <h1 style="color: #1A73E8;">Saas Clients Environment Tests Summary</h1>
+        <table>
+            <tr>
+                <th class="header">Environment</th>
+                <th class="header">Success Rate</th>
+            </tr>
+            $saasTableRows
+        </table>
+    </div>
+</body>
+</html>
 "@
 
-$html | Set-Content -Path "email_body.html"
+$html | Set-Content -Path "combined_summary.html"
+
+        
