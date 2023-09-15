@@ -1,11 +1,11 @@
-# Define variables
 $username = "CHicago\Vrao"
 $apiToken = "11ac371fd67a50e53ddc78ab1e3e6c2048"
-$clients = "BHAR", "BHME", "BRIF", "MABR","CCHHS", "LWWA", "MAMC", "MPMD", "NPA", "PHKY", "PMAK", "PMWA", "SMNY", "CMIL"
-$applications = @("UAT_Core_Tests", "PRD_Core_Tests")
+#$clients = "BHAR", "BHME", "BRIF", "MABR","CCHHS", "LWWA", "MAMC", "MPMD", "NPA", "PHKY", "PMAK", "PMWA", "SMNY", "CMIL"
+$clients = "BHAR", "BHME","MABR"
+$applications = @("UAT_Core_Tests","PRD_Core_Tests")
 $envSuccessCounts = @{}
 $envTotalCounts = @{}
-$envSuccessRates = @{}
+$envSuccessRates = {}
 $buildStatusResult = @()
 $date = Get-Date -Format "yyyy-MM-dd"
 $subject = "Environment Test Summary $date"
@@ -13,21 +13,21 @@ $subject = "Environment Test Summary $date"
 # Define additional Saas clients
 $saasClients = "DQVIS", "CARE"
 
-# Initialize success counts for both main clients and Saas clients
-foreach ($application in $applications) {
-    $envSuccessCounts[$application] = @{}
-}
+# Initialize success counts and success rates for Saas clients
+$saasSuccessCounts = @{}
+$saasSuccessRates = @{}
 
-# Iterate through all clients
-foreach ($client in ($clients + $saasClients)) {
+# Iterate through Saas clients
+foreach ($client in $saasClients) {
     foreach ($application in $applications) {
         $envTotalCounts[$application]++
         $jenkinsUrl = "https://jenkins.evolenthealth.com/view/HPS%20Prod%20Ops/job/Environment%20Mgt/job/$client/job/$client" + "_$application/lastBuild/api/json"
-        $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $username, $apiToken)))
+        $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $username,$apiToken)))
         $buildStatus = Invoke-RestMethod -Uri $jenkinsUrl -Headers @{Authorization=("Basic {0}" -f $base64AuthInfo)}
         $shortAppName = $application -replace '_.*'
         $status = if ($buildStatus.result -eq "SUCCESS") {
             "Success"
+            $saasSuccessCounts[$application]++
         }
         elseif ($buildStatus.result -eq "UNSTABLE") {
             "Unstable"
@@ -35,13 +35,49 @@ foreach ($client in ($clients + $saasClients)) {
         else {
             "Failed"
         }
-        $envSuccessCounts[$application][$client] = $status
+        $buildStatusResult += [PSCustomObject]@{
+            Client = $client 
+            Environment = $shortAppName
+            Result = $status
+        }
     }
+}
+
+# Calculate success rates for Saas clients
+foreach ($application in $applications) {
+    $successCount = $saasSuccessCounts[$application]
+    $totalCount = $envTotalCounts[$application]
+    $successRate = if ($totalCount -eq 0) { 0 } else { [Math]::Round(($successCount / $totalCount) * 100) }
+    $saasSuccessRates[$application] = $successRate
+}
+
+# Sort the success rates for Saas clients
+$sortedSaasRates = $saasSuccessRates.GetEnumerator() | Sort-Object Value
+
+# Generate HTML code for the Saas clients table
+$saasTableRows = ""
+foreach ($env in $sortedSaasRates) {
+    $successRate = $env.Value
+    $envName = $env.Name -replace '_.*', ''
+    $successRateHtml = if ($successRate -ge 85) {
+        "<td class='success'>$successRate%</td>"
+    } elseif ($successRate -ge 50) {
+        "<td class='unstable'>$successRate%</td>"
+    } else {
+        "<td class='failed'>$successRate%</td>"
+    }
+    if ($env -eq "PRD_Core_Tests"){
+        $env = "PRD"
+    }
+    if ($env -eq "UAT_Core_Tests"){
+        $env = "UAT"
+    }
+    $saasTableRows += "<tr><td>$envName</td>$successRateHtml</tr>"
 }
 
 # Calculate success rates for main clients
 foreach ($application in $applications) {
-    $successCount = ($envSuccessCounts[$application].Values | Where-Object { $_ -eq "Success" }).Count
+    $successCount = $envSuccessCounts[$application]
     $totalCount = $envTotalCounts[$application]
     $successRate = if ($totalCount -eq 0) { 0 } else { [Math]::Round(($successCount / $totalCount) * 100) }
     $envSuccessRates[$application] = $successRate
@@ -50,134 +86,149 @@ foreach ($application in $applications) {
 # Sort the success rates for main clients
 $sortedRates = $envSuccessRates.GetEnumerator() | Sort-Object Value
 
-# Generate HTML code
+# Generate HTML code for the main clients table
+$tableRows = ""
+foreach ($env in $sortedRates) {
+    $successRate = $env.Value
+    $envName = $env.Name -replace '_.*', ''
+    $successRateHtml = if ($successRate -ge 85) {
+        "<td class='success'>$successRate%</td>"
+    } elseif ($successRate -ge 50) {
+        "<td class='unstable'>$successRate%</td>"
+    } else {
+        "<td class='failed'>$successRate%</td>"
+    }
+    if ($env -eq "PRD_Core_Tests"){
+        $env = "PRD"
+    }
+    if ($env -eq "UAT_Core_Tests"){
+        $env = "UAT"
+    }
+    $tableRows += "<tr><td>$envName</td>$successRateHtml</tr>"
+}
+
+# Generate the HTML email content
 $html = @"
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>$subject</title>
-<style>
-    <!-- Your CSS styles for tables and formatting go here -->
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #ffffff;
-        margin: 0;
-        padding: 0;
-    }
+   <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff; /* Set the background color to white */
+            margin: 0;
+            padding: 0;
+        }
 
-    h1 {
-        text-align: left;
-        font-size: 20px;
-        color: #1A73E8;
-        margin-top: 50px;
-        margin-bottom: 30px;
-    }
+        h1 {
+            text-align: left; /* Align the title to the left */
+            font-size: 20px; /* Set the font size to 20 */
+            color: #1A73E8; /* Set the title color to blue */
+            margin-top: 50px;
+            margin-bottom: 30px;
+        }
 
-    .container {
-        max-width: 960px;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #ffffff;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    }
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff; /* Set the background color to white */
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
 
-    table {
-        width: 90%;
-        border-collapse: collapse;
-        border-spacing: 0;
-        margin-bottom: 30px;
-        border: 1px solid #1A73E8;
-    }
+        table {
+            width: 90%; /* Set the table width to 90% */
+            border-collapse: collapse;
+            border-spacing: 0;
+            margin-bottom: 30px;
+            border: 1px solid #1A73E8; /* Set the table border to 1px solid blue */
+        }
 
-    th, td {
-        padding: 10px;
-        text-align: left;
-        vertical-align: middle;
-        border-top: 1px solid #dddddd;
-        border-bottom: 1px solid #1A73E8;
-    }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            vertical-align: middle;
+            border-top: 1px solid #dddddd;
+            border-bottom: 1px solid #1A73E8; /* Set the row border to 1px solid blue */
+        }
 
-    th {
-        background-color: #1A73E8;
-        font-size: 19px;
-        font-weight: bold;
-        color: #ffffff;
-        white-space: nowrap;
-    }
+        th {
+            background-color: #1A73E8; /* Set the column names style to blue background */
+            font-size: 19px; /* Set the font size to 19 */
+            font-weight: bold;
+            color: #ffffff; /* Set the column names style to white font color */
+            white-space: nowrap; /* Prevent text from wrapping in column headers */
+        }
 
-    td {
-        font-size: 14px;
-        color: #666666;
-    }
+        td {
+            font-size: 14px;
+            color: #666666;
+        }
 
-    .success {
-        color: #4CAF50;
-        font-weight: bold;
-    }
+        .success {
+            color: #4CAF50;
+            font-weight: bold;
+        }
 
-    .failed {
-        color: #f44336;
-        font-weight: bold;
-    }
+        .failed {
+            color: #f44336;
+            font-weight: bold;
+        }
 
-    .unstable {
-        color: #ff9800;
-        font-weight: bold;
-    }
+        .unstable {
+            color: #ff9800;
+            font-weight: bold;
+        }
 
-    .green-bg {
-        background-color: #4CAF50;
-        color: #ffffff;
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-weight: bold;
-    }
+        .green-bg {
+            background-color: #4CAF50;
+            color: #ffffff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
 
-    .red-bg {
-        background-color: #f44336;
-        color: #ffffff;
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-weight: bold;
-    }
+        .red-bg {
+            background-color: #f44336;
+            color: #ffffff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
 
-    .yellow-bg {
-        background-color: #ff9800;
-        color: #ffffff;
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-weight: bold;
-    }
+        .yellow-bg {
+            background-color: #ff9800;
+            color: #ffffff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
 
-    /* Additional CSS styles for Saas table */
-    .saas-table {
-        width: 90%;
-        border-collapse: collapse;
-        border-spacing: 0;
-        margin-bottom: 30px;
-        border: 1px solid #1A73E8;
-    }
+        /* Add styles for Saas table */
+        .saas-table {
+            width: 90%; /* Set the table width to 90% */
+            border-collapse: collapse;
+            border-spacing: 0;
+            margin-bottom: 30px;
+            border: 1px solid #1A73E8; /* Set the table border to 1px solid blue */
+        }
 
-    .saas-table th {
-        background-color: #1A73E8;
-        font-size: 19px;
-        font-weight: bold;
-        color: #ffffff;
-        white-space: nowrap;
-    }
+        /* Add styles for Saas table headers */
+        .saas-table th {
+            background-color: #1A73E8; /* Set the column names style to blue background */
+            font-size: 19px; /* Set the font size to 19 */
+            font-weight: bold;
+            color: #ffffff; /* Set the column names style to white font color */
+            white-space: nowrap; /* Prevent text from wrapping in column headers */
+        }
 
-    .saas-table td {
-        padding: 10px;
-        text-align: left;
-        vertical-align: middle;
-        border-top: 1px solid #dddddd;
-        border-bottom: 1px solid #1A73E8;
-    }
-</style>
-</head>
-<body>
+        /* Add styles for Saas table cells */
+        .saas-table td {
+            padding: 10px;
+            text-align: left;
+            vertical-align: middle;
+            border-top: 1px solid #dddddd;
+            border-bottom: 1px solid #1A73E8; /* Set the row border to 1px solid blue */
+        }
+    </style>
+
 <div class="container">
     <h1 style="color: #1A73E8;">Environment Tests Overall Summary</h1>
     <table>
@@ -198,8 +249,6 @@ $html = @"
         $saasTableRows
     </table>
 </div>
-</body>
-</html>
 "@
 
 $html | Set-Content -Path "email_body.html"
