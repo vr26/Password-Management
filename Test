@@ -1,5 +1,3 @@
-Team,
+Hello Team,
 
-General Update - Moving forward, we will be utilizing the "RMTasks" label in our tickets for various non-deployment related tasks within RM. Examples of such tasks include Environment Refresh Activities, Troubleshooting Activities, Update Keys/Config Tickets, and any other tickets that are unrelated to deployment activities. By implementing this label, we aim to simplify the process of tracking Mean Time to Resolve (MTTR) for our deployment-related tasks. It's important to note that tasks categorized as "RMTasks" often require more time for resolution, which can impact our MTTR metrics. We kindly request everyone's cooperation in adopting this label going forward. If you have any questions or need clarification, please don't hesitate to reach out. We have already applied the new labels to existing backlog tickets in our RM resolver group.
-
-Thank you for your understanding and cooperation.
+Below mentioned test is failing across all the UAT environment tests including SAAS clients.Please refer the attached screenshot.I know the above failure is because of AVS migration in UAT environment, As UAT its completely moved to AVS we need to change some configuration in Jenkins Job and Environment Test (JSON File). Can you please provide me the values which we need to add in JSON file. I have added the below values and tested in one of the client It says Folder value should be in discovered virtual machine, Can you please confirm the values below and please provide the incorrect values.
