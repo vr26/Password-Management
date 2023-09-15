@@ -8,17 +8,14 @@ $MiscenvSuccessRates = @{}
 $MiscbuildStatusResult = @()
 $date = Get-Date -Format "MM/dd/yy"
 
-
-
 foreach ($Miscapplication in $Miscapplications) {
     $MiscenvTotalCounts[$Miscapplication] = 0
 }
 
-
 foreach ($Miscclient in $Miscclients) {
     foreach ($Miscapplication in $Miscapplications) {
         $MiscenvTotalCounts[$Miscapplication]++
-        $jenkinsUrll = "https://jenkins.evolenthealth.com/view/HPS%20Prod%20Ops/job/Environment%20Mgt/job/$client/job/$client" + "_$application/lastBuild/api/json"
+        $jenkinsUrll = "https://jenkins.evolenthealth.com/view/HPS%20Prod%20Ops/job/Environment%20Mgt/job/$Miscclient/job/$Miscclient" + "_$Miscapplication/lastBuild/api/json"
         $base64AuthInfoo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $username,$apiToken)))
         $MiscbuildStatus = Invoke-RestMethod -Uri $jenkinsUrll -Headers @{Authorization=("Basic {0}" -f $base64AuthInfoo)}
         $MiscshortAppName = $Miscapplication -replace '_.*'
@@ -40,14 +37,12 @@ foreach ($Miscclient in $Miscclients) {
     }
 }
 
-
 foreach ($Miscapplication in $Miscapplications) {
     $MiscsuccessCount = $MiscenvSuccessCounts[$Miscapplication]
     $MisctotalCount = $MiscenvTotalCounts[$Miscapplication]
     $MiscsuccessRate = if ($MisctotalCount -eq 0) { 0 } else { [Math]::Round(($MiscsuccessCount / $MisctotalCount) * 100) }
     $MiscenvSuccessRates[$Miscapplication] = $MiscsuccessRate
 }
-
 
 $MiscsortedRates = $MiscenvSuccessRates.GetEnumerator() | Sort-Object Value
 
@@ -151,12 +146,9 @@ $html = @"
         }
     </style>
 
-
-
 <div class="container">
     <h1 style="color: #2874A6;">Environment Tests Overall Summary - $date</h1>
- 
-<h3 style = "color: #566573;">Miscellaneous Clients </h3>
+    <h3 style="color: #566573;">Miscellaneous Clients</h3>
     <table>
         <tr>
             <th class="header">Environment</th>
@@ -165,7 +157,6 @@ $html = @"
         $MisctableRows
     </table>
 </div>
-
 "@
 
 $html | Set-Content -Path "email_body.html"
