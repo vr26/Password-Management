@@ -1,6 +1,6 @@
 $username = "CHicago\Vrao"
 $apiToken = "11ac371fd67a50e53ddc78ab1e3e6c2048"
-$clients = "BHAR", "BHME", "BRIF", "MABR", "CCHHS", "LWWA", "MAMC", "MPMD", "NPA", "PHKY", "PMAK", "PMWA", "SMNY", "CMIL"
+$clients = "BHAR", "BHME", "BRIF", "MABR","CCHHS", "LWWA", "MAMC", "MPMD", "NPA", "PHKY", "PMAK", "PMWA", "SMNY", "CMIL"
 $applications = @("UAT_Core_Tests", "PRD_Core_Tests")
 $envSuccessCounts = @{}
 $envTotalCounts = @{}
@@ -17,25 +17,32 @@ $saasSuccessCounts = @{}
 $saasSuccessRates = @{}
 
 # Iterate through Saas clients
-foreach ($saasClient in $saasClients) {
+foreach ($client in $saasClients) {
     foreach ($application in $applications) {
         $envTotalCounts[$application]++
-        $jenkinsUrl = "https://jenkins.evolenthealth.com/view/HPS%20Prod%20Ops/job/Environment%20Mgt/job/$saasClient/job/$saasClient" + "_$application/lastBuild/api/json"
-        $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $username, $apiToken)))
+        $jenkinsUrl = "https://jenkins.evolenthealth.com/view/HPS%20Prod%20Ops/job/Environment%20Mgt/job/$client/job/$client" + "_$application/lastBuild/api/json"
+        $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $username,$apiToken)))
         $buildStatus = Invoke-RestMethod -Uri $jenkinsUrl -Headers @{Authorization=("Basic {0}" -f $base64AuthInfo)}
+        $shortAppName = $application -replace '_.*'
         $status = if ($buildStatus.result -eq "SUCCESS") {
             "Success"
             $saasSuccessCounts[$application]++
-        } elseif ($buildStatus.result -eq "UNSTABLE") {
+        }
+        elseif ($buildStatus.result -eq "UNSTABLE") {
             "Unstable"
-        } else {
+        }
+        else {
             "Failed"
+        }
+        $buildStatusResult += [PSCustomObject]@{
+            Client = $client 
+            Environment = $shortAppName
+            Result = $status
         }
     }
 }
 
 # Calculate success rates for Saas clients and store them in $saasSuccessRates
-$saasSuccessRates = @{}
 foreach ($application in $applications) {
     $successCount = $saasSuccessCounts[$application]
     $totalCount = $saasClients.Count * $envTotalCounts[$application]
@@ -43,173 +50,134 @@ foreach ($application in $applications) {
     $saasSuccessRates[$application] = $successRate
 }
 
-# Sort the success rates for Saas clients
-$sortedSaasRates = $saasSuccessRates.GetEnumerator() | Sort-Object Value
-
-# Generate HTML code for the Saas clients table
-$saasTableRows = ""
-foreach ($env in $sortedSaasRates) {
-    $successRate = $env.Value
-    $envName = $env.Name -replace '_.*', ''
-    $successRateHtml = if ($successRate -ge 85) {
-        "<td class='success'>$successRate%</td>"
-    } elseif ($successRate -ge 50) {
-        "<td class='unstable'>$successRate%</td>"
-    } else {
-        "<td class='failed'>$successRate%</td>"
-    }
-    if ($env -eq "PRD_Core_Tests") {
-        $env = "PRD"
-    }
-    if ($env -eq "UAT_Core_Tests") {
-        $env = "UAT"
-    }
-    $saasTableRows += "<tr><td>$envName</td>$successRateHtml</tr>"
-}
-
-# Iterate through main clients
-foreach ($client in $clients) {
-    foreach ($application in $applications) {
-        $envTotalCounts[$application]++
-        $jenkinsUrl = "https://jenkins.evolenthealth.com/view/HPS%20Prod%20Ops/job/Environment%20Mgt/job/$client/job/$client" + "_$application/lastBuild/api/json"
-        $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $username, $apiToken)))
-        $buildStatus = Invoke-RestMethod -Uri $jenkinsUrl -Headers @{Authorization=("Basic {0}" -f $base64AuthInfo)}
-        $status = if ($buildStatus.result -eq "SUCCESS") {
-            "Success"
-            $envSuccessCounts[$application]++
-        } elseif ($buildStatus.result -eq "UNSTABLE") {
-            "Unstable"
-        } else {
-            "Failed"
-        }
-    }
-}
-
 # Calculate success rates for main clients and store them in $envSuccessRates
-$envSuccessRates = @{}
 foreach ($application in $applications) {
     $successCount = $envSuccessCounts[$application]
-    $totalCount = $envTotalCounts[$application]
+    $totalCount = $clients.Count * $envTotalCounts[$application]
     $successRate = if ($totalCount -eq 0) { 0 } else { [Math]::Round(($successCount / $totalCount) * 100) }
     $envSuccessRates[$application] = $successRate
 }
 
-# Sort the success rates for main clients
-$sortedRates = $envSuccessRates.GetEnumerator() | Sort-Object Value
-
-# Generate HTML code for the main clients table
-$mainTableRows = ""
-foreach ($env in $sortedRates) {
-    $successRate = $env.Value
-    $envName = $env.Name -replace '_.*', ''
-    $successRateHtml = if ($successRate -ge 85) {
-        "<td class='success'>$successRate%</td>"
-    } elseif ($successRate -ge 50) {
-        "<td class='unstable'>$successRate%</td>"
-    } else {
-        "<td class='failed'>$successRate%</td>"
-    }
-    if ($env -eq "PRD_Core_Tests") {
-        $env = "PRD"
-    }
-    if ($env -eq "UAT_Core_Tests") {
-        $env = "UAT"
-    }
-    $mainTableRows += "<tr><td>$envName</td>$successRateHtml</tr>"
-}
-
-# Generate the HTML email content with CSS
+# Generate HTML code for the email
 $html = @"
 <!DOCTYPE html>
 <html>
 <head>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            max-width: 960px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #ffffff;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            text-align: left;
-            font-size: 20px;
-            color: #1A73E8;
-            margin-top: 50px;
-            margin-bottom: 30px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 30px;
-            border: 1px solid #1A73E8;
-        }
-
-        th, td {
-            padding: 10px;
-            text-align: left;
-            vertical-align: middle;
-            border-top: 1px solid #dddddd;
-            border-bottom: 1px solid #1A73E8;
-        }
-
-        th {
-            background-color: #1A73E8;
-            font-size: 19px;
-            font-weight: bold;
-            color: #ffffff;
-        }
-
-        td {
-            font-size: 14px;
-            color: #666666;
-        }
-
-        .success {
-            color: #4CAF50;
-            font-weight: bold;
-        }
-
-        .failed {
-            color: #f44336;
-            font-weight: bold;
-        }
-
-        .unstable {
-            color: #ff9800;
-            font-weight: bold;
-        }
-    </style>
+<style>
+    <!-- Styles for tables and formatting -->
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #ffffff;
+        margin: 0;
+        padding: 0;
+    }
+    
+    h1 {
+        text-align: left;
+        font-size: 20px;
+        color: #1A73E8;
+        margin-top: 50px;
+        margin-bottom: 30px;
+    }
+    
+    .container {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #ffffff;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    table {
+        width: 90%;
+        border-collapse: collapse;
+        border-spacing: 0;
+        margin-bottom: 30px;
+        border: 1px solid #1A73E8;
+    }
+    
+    th, td {
+        padding: 10px;
+        text-align: left;
+        vertical-align: middle;
+        border-top: 1px solid #dddddd;
+        border-bottom: 1px solid #1A73E8;
+    }
+    
+    th {
+        background-color: #1A73E8;
+        font-size: 19px;
+        font-weight: bold;
+        color: #ffffff;
+        white-space: nowrap;
+    }
+    
+    td {
+        font-size: 14px;
+        color: #666666;
+    }
+    
+    .success {
+        color: #4CAF50;
+        font-weight: bold;
+    }
+    
+    .failed {
+        color: #f44336;
+        font-weight: bold;
+    }
+    
+    .unstable {
+        color: #ff9800;
+        font-weight: bold;
+    }
+    
+    .saas-table {
+        width: 90%;
+        border-collapse: collapse;
+        border-spacing: 0;
+        margin-bottom: 30px;
+        border: 1px solid #1A73E8;
+    }
+    
+    .saas-table th {
+        background-color: #1A73E8;
+        font-size: 19px;
+        font-weight: bold;
+        color: #ffffff;
+        white-space: nowrap;
+    }
+    
+    .saas-table td {
+        padding: 10px;
+        text-align: left;
+        vertical-align: middle;
+        border-top: 1px solid #dddddd;
+        border-bottom: 1px solid #1A73E8;
+    }
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1>Environment Tests Overall Summary</h1>
-        <table>
-            <tr>
-                <th class="header">Environment</th>
-                <th class="header">Success Rate</th>
-            </tr>
-            $mainTableRows
-        </table>
-        
-        <h1>Saas Clients Environment Tests Summary</h1>
-        <table>
-            <tr>
-                <th class="header">Environment</th>
-                <th class="header">Success Rate</th>
-            </tr>
-            $saasTableRows
-        </table>
-    </div>
+<div class="container">
+    <h1 style="color: #1A73E8;">Environment Tests Overall Summary</h1>
+    <table>
+        <tr>
+            <th class="header">Environment</th>
+            <th class="header">Success Rate</th>
+        </tr>
+        $tableRows
+    </table>
+    
+    <!-- Add Saas clients table -->
+    <h1 style="color: #1A73E8;">Saas Clients Environment Tests Summary</h1>
+    <table class="saas-table">
+        <tr>
+            <th class="header">Environment</th>
+            <th class="header">Success Rate</th>
+        </tr>
+        $saasTableRows
+    </table>
+</div>
 </body>
 </html>
 "@
