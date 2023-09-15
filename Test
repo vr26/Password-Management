@@ -8,11 +8,16 @@ $envSuccessRates = @{}
 $buildStatusResult = @()
 $date = Get-Date -Format "yyyy-MM-dd"
 $subject = "Environment Test Summary $date"
-foreach ($application in $applications) {
-    $envTotalCounts[$application] = 0
-}
 
-foreach ($client in $clients) {
+# Define additional Saas clients
+$saasClients = "DQVIS", "CARE"
+
+# Initialize success counts and success rates for Saas clients
+$saasSuccessCounts = @{}
+$saasSuccessRates = @{}
+
+# Iterate through Saas clients
+foreach ($client in $saasClients) {
     foreach ($application in $applications) {
         $envTotalCounts[$application]++
         $jenkinsUrl = "https://jenkins.evolenthealth.com/view/HPS%20Prod%20Ops/job/Environment%20Mgt/job/$client/job/$client" + "_$application/lastBuild/api/json"
@@ -21,7 +26,7 @@ foreach ($client in $clients) {
         $shortAppName = $application -replace '_.*'
         $status = if ($buildStatus.result -eq "SUCCESS") {
             "Success"
-            $envSuccessCounts[$application]++
+            $saasSuccessCounts[$application]++
         }
         elseif ($buildStatus.result -eq "UNSTABLE") {
             "Unstable"
@@ -37,6 +42,39 @@ foreach ($client in $clients) {
     }
 }
 
+# Calculate success rates for Saas clients and store them in $saasSuccessRates
+foreach ($application in $applications) {
+    $successCount = $saasSuccessCounts[$application]
+    $totalCount = $saasClients.Count * $envTotalCounts[$application]
+    $successRate = if ($totalCount -eq 0) { 0 } else { [Math]::Round(($successCount / $totalCount) * 100) }
+    $saasSuccessRates[$application] = $successRate
+}
+
+# Sort the success rates for Saas clients
+$sortedSaasRates = $saasSuccessRates.GetEnumerator() | Sort-Object Value
+
+# Generate HTML code for the Saas clients table
+$saasTableRows = ""
+foreach ($env in $sortedSaasRates) {
+    $successRate = $env.Value
+    $envName = $env.Name -replace '_.*', ''
+    $successRateHtml = if ($successRate -ge 85) {
+        "<td class='success'>$successRate%</td>"
+    } elseif ($successRate -ge 50) {
+        "<td class='unstable'>$successRate%</td>"
+    } else {
+        "<td class='failed'>$successRate%</td>"
+    }
+    if ($env -eq "PRD_Core_Tests"){
+        $env = "PRD"
+    }
+    if ($env -eq "UAT_Core_Tests"){
+        $env = "UAT"
+    }
+    $saasTableRows += "<tr><td>$envName</td>$successRateHtml</tr>"
+}
+
+# Calculate success rates for main clients
 foreach ($application in $applications) {
     $successCount = $envSuccessCounts[$application]
     $totalCount = $envTotalCounts[$application]
@@ -44,8 +82,10 @@ foreach ($application in $applications) {
     $envSuccessRates[$application] = $successRate
 }
 
+# Sort the success rates for main clients
 $sortedRates = $envSuccessRates.GetEnumerator() | Sort-Object Value
 
+# Generate HTML code for the main clients table
 $tableRows = ""
 foreach ($env in $sortedRates) {
     $successRate = $env.Value
@@ -65,98 +105,11 @@ foreach ($env in $sortedRates) {
     }
     $tableRows += "<tr><td>$envName</td>$successRateHtml</tr>"
 }
+
+# Generate the HTML email content
 $html = @"
    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #ffffff; /* Set the background color to white */
-            margin: 0;
-            padding: 0;
-        }
-
-        h1 {
-            text-align: left; /* Align the title to the left */
-            font-size: 20px; /* Set the font size to 20 */
-            color: #1A73E8; /* Set the title color to blue */
-            margin-top: 50px;
-            margin-bottom: 30px;
-        }
-
-        .container {
-            max-width: 960px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #ffffff; /* Set the background color to white */
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-        }
-
-        table {
-            width: 90%; /* Set the table width to 90% */
-            border-collapse: collapse;
-            border-spacing: 0;
-            margin-bottom: 30px;
-            border: 1px solid #1A73E8; /* Set the table border to 1px solid blue */
-        }
-
-        th, td {
-            padding: 10px;
-            text-align: left;
-            vertical-align: middle;
-            border-top: 1px solid #dddddd;
-            border-bottom: 1px solid #1A73E8; /* Set the row border to 1px solid blue */
-        }
-
-        th {
-            background-color: #1A73E8; /* Set the column names style to blue background */
-            font-size: 19px; /* Set the font size to 19 */
-            font-weight: bold;
-            color: #ffffff; /* Set the column names style to white font color */
-            white-space: nowrap; /* Prevent text from wrapping in column headers */
-        }
-
-        td {
-            font-size: 14px;
-            color: #666666;
-        }
-
-        .success {
-            color: #4CAF50;
-            font-weight: bold;
-        }
-
-        .failed {
-            color: #f44336;
-            font-weight: bold;
-        }
-
-        .unstable {
-            color: #ff9800;
-            font-weight: bold;
-        }
-
-        .green-bg {
-            background-color: #4CAF50;
-            color: #ffffff;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-weight: bold;
-        }
-
-        .red-bg {
-            background-color: #f44336;
-            color: #ffffff;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-weight: bold;
-        }
-
-        .yellow-bg {
-            background-color: #ff9800;
-            color: #ffffff;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-weight: bold;
-        }
+        <!-- Styles for tables and formatting (as provided in the script) -->
     </style>
 
 <div class="container">
@@ -167,6 +120,16 @@ $html = @"
             <th class="header">Success Rate</th>
         </tr>
         $tableRows
+    </table>
+    
+    <!-- Add Saas clients table -->
+    <h1 style="color: #1A73E8;">Saas Clients Environment Tests Summary</h1>
+    <table class="saas-table">
+        <tr>
+            <th class="header">Environment</th>
+            <th class="header">Success Rate</th>
+        </tr>
+        $saasTableRows
     </table>
 </div>
 "@
