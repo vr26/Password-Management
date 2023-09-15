@@ -1,3 +1,4 @@
+# Define variables
 $username = "CHicago\Vrao"
 $apiToken = "11ac371fd67a50e53ddc78ab1e3e6c2048"
 $clients = "BHAR", "BHME", "BRIF", "MABR","CCHHS", "LWWA", "MAMC", "MPMD", "NPA", "PHKY", "PMAK", "PMWA", "SMNY", "CMIL"
@@ -12,21 +13,21 @@ $subject = "Environment Test Summary $date"
 # Define additional Saas clients
 $saasClients = "DQVIS", "CARE"
 
-# Initialize success counts and success rates for Saas clients
-$saasSuccessCounts = @{}
-$saasSuccessRates = @{}
+# Initialize success counts for both main clients and Saas clients
+foreach ($application in $applications) {
+    $envSuccessCounts[$application] = @{}
+}
 
-# Iterate through Saas clients
-foreach ($client in $saasClients) {
+# Iterate through all clients
+foreach ($client in ($clients + $saasClients)) {
     foreach ($application in $applications) {
         $envTotalCounts[$application]++
         $jenkinsUrl = "https://jenkins.evolenthealth.com/view/HPS%20Prod%20Ops/job/Environment%20Mgt/job/$client/job/$client" + "_$application/lastBuild/api/json"
-        $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $username,$apiToken)))
+        $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $username, $apiToken)))
         $buildStatus = Invoke-RestMethod -Uri $jenkinsUrl -Headers @{Authorization=("Basic {0}" -f $base64AuthInfo)}
         $shortAppName = $application -replace '_.*'
         $status = if ($buildStatus.result -eq "SUCCESS") {
             "Success"
-            $saasSuccessCounts[$application]++
         }
         elseif ($buildStatus.result -eq "UNSTABLE") {
             "Unstable"
@@ -34,44 +35,38 @@ foreach ($client in $saasClients) {
         else {
             "Failed"
         }
-        $buildStatusResult += [PSCustomObject]@{
-            Client = $client 
-            Environment = $shortAppName
-            Result = $status
-        }
+        $envSuccessCounts[$application][$client] = $status
     }
 }
 
-# Calculate success rates for Saas clients and store them in $saasSuccessRates
+# Calculate success rates for main clients
 foreach ($application in $applications) {
-    $successCount = $saasSuccessCounts[$application]
-    $totalCount = $saasClients.Count * $envTotalCounts[$application]
-    $successRate = if ($totalCount -eq 0) { 0 } else { [Math]::Round(($successCount / $totalCount) * 100) }
-    $saasSuccessRates[$application] = $successRate
-}
-
-# Calculate success rates for main clients and store them in $envSuccessRates
-foreach ($application in $applications) {
-    $successCount = $envSuccessCounts[$application]
-    $totalCount = $clients.Count * $envTotalCounts[$application]
+    $successCount = ($envSuccessCounts[$application].Values | Where-Object { $_ -eq "Success" }).Count
+    $totalCount = $envTotalCounts[$application]
     $successRate = if ($totalCount -eq 0) { 0 } else { [Math]::Round(($successCount / $totalCount) * 100) }
     $envSuccessRates[$application] = $successRate
 }
 
-# Generate HTML code for the email
+# Sort the success rates for main clients
+$sortedRates = $envSuccessRates.GetEnumerator() | Sort-Object Value
+
+# Generate HTML code
 $html = @"
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>$subject</title>
 <style>
-    <!-- Styles for tables and formatting -->
+    <!-- Your CSS styles for tables and formatting go here -->
     body {
         font-family: Arial, sans-serif;
         background-color: #ffffff;
         margin: 0;
         padding: 0;
     }
-    
+
     h1 {
         text-align: left;
         font-size: 20px;
@@ -79,7 +74,7 @@ $html = @"
         margin-top: 50px;
         margin-bottom: 30px;
     }
-    
+
     .container {
         max-width: 960px;
         margin: 0 auto;
@@ -87,7 +82,7 @@ $html = @"
         background-color: #ffffff;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     }
-    
+
     table {
         width: 90%;
         border-collapse: collapse;
@@ -95,7 +90,7 @@ $html = @"
         margin-bottom: 30px;
         border: 1px solid #1A73E8;
     }
-    
+
     th, td {
         padding: 10px;
         text-align: left;
@@ -103,7 +98,7 @@ $html = @"
         border-top: 1px solid #dddddd;
         border-bottom: 1px solid #1A73E8;
     }
-    
+
     th {
         background-color: #1A73E8;
         font-size: 19px;
@@ -111,27 +106,52 @@ $html = @"
         color: #ffffff;
         white-space: nowrap;
     }
-    
+
     td {
         font-size: 14px;
         color: #666666;
     }
-    
+
     .success {
         color: #4CAF50;
         font-weight: bold;
     }
-    
+
     .failed {
         color: #f44336;
         font-weight: bold;
     }
-    
+
     .unstable {
         color: #ff9800;
         font-weight: bold;
     }
-    
+
+    .green-bg {
+        background-color: #4CAF50;
+        color: #ffffff;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+
+    .red-bg {
+        background-color: #f44336;
+        color: #ffffff;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+
+    .yellow-bg {
+        background-color: #ff9800;
+        color: #ffffff;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+
+    /* Additional CSS styles for Saas table */
     .saas-table {
         width: 90%;
         border-collapse: collapse;
@@ -139,7 +159,7 @@ $html = @"
         margin-bottom: 30px;
         border: 1px solid #1A73E8;
     }
-    
+
     .saas-table th {
         background-color: #1A73E8;
         font-size: 19px;
@@ -147,7 +167,7 @@ $html = @"
         color: #ffffff;
         white-space: nowrap;
     }
-    
+
     .saas-table td {
         padding: 10px;
         text-align: left;
