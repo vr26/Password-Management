@@ -1,3 +1,5 @@
 Hello Team,
 
-Below mentioned test is failing across all the UAT environment tests including SAAS clients.Please refer the attached screenshot.I know the above failure is because of AVS migration in UAT environment, As UAT its completely moved to AVS we need to change some configuration in Jenkins Job and Environment Test (JSON File). Can you please provide me the values which we need to add in JSON file. I have added the below values and tested in one of the client It says Folder value should be in discovered virtual machine, Can you please confirm the values below and please provide the incorrect values.
+The test mentioned below is failing across all UAT environments, including SAAS clients. Please refer to the attached screenshot. I understand that this failure is due to the AVS migration in the UAT environment. As UAT has now completely transitioned to AVS, we need to make some configuration changes in the Jenkins Job and Environment Test JSON file. Could you please provide me with the values that need to be added to the JSON file? I've added the values below and tested them in one of the clients, but it indicates that the "Folder" value should be in the discovered virtual machine. Could you please confirm the values below and point out any incorrect ones?
+
+Please let me know if you need any further information or assistance.
