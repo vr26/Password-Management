@@ -1,3 +1,1 @@
-
-
-"We are experiencing multiple failures with EHS and SAAS clients in the UAT environment. This is due to our recent migration of the UAT environment to AVS. We need to update the credentials in the Jenkins configuration and make a couple of adjustments to the JSON file. Your assistance in providing the necessary configurations for the ticket would be greatly appreciated. We've successfully completed our Environment Refresh, Migration, and upgraded to SP56, but we are currently unable to perform general tests. Please let us know if you have any questions or require additional information."
+"Resolver Group" = Infrastructure AND "Resolver Group" = "Release Management" AND Status not in (closed)  and resolved >= -7d
