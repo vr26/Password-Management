@@ -1,1 +1,239 @@
-"Resolver Group" = Infrastructure AND "Resolver Group" = "Release Management" AND Status not in (closed)  and resolved >= -7d
+[ " <html>
+  <head>\r\n
+    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">
+    <meta name=\"Generator\" content=\"Microsoft Word 15 (filtered medium)\">
+   
+  </head>
+  <body lang=\"EN-US\" link=\"#0563C1\" vlink=\"#954F72\" style=\"word-wrap:break-word\">
+    <div class=\"WordSection1\">
+      <p class=\"MsoNormal\">&nbsp;</p>
+      <p class=\"MsoNormal\">&nbsp;</p>
+      <div>
+        <div style=\"border:none; border-top:solid #E1E1E1 1.0pt; padding:3.0pt 0cm 0cm 0cm\">
+          <p class=\"MsoNormal\">
+            <b>
+              <span style=\"\">From:</span>
+            </b>
+            <span style=\"\"> Venkatesh R &lt;VRao@evolent.com&gt; <br>
+              <b>Sent:</b> Wednesday, September 20, 2023 9:38 PM <br>
+              <b>To:</b> Venkatesh R &lt;VRao@evolent.com&gt; <br>
+              <b>Subject:</b> eCAB: Restart ipe1pr-cswb-002.ehpr.corp.evolenthealth.com server </span>
+          </p>
+        </div>
+      </div>
+      <p class=\"MsoNormal\">&nbsp;</p>
+      <p class=\"xmsonormal\">&nbsp;</p>
+      <", " class=\" MsoNormalTable\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" style=\"border-collapse:collapse\">
+        <tbody>
+          <tr style=\"height:21.6pt\">
+            <td width=\"23\" valign=\"top\" style=\"width:17.0pt; border:solid white 1.0pt; border-right:none; padding:0cm 5.4pt 0cm 5.4pt; height:21.6pt\">
+              <p class=\"xxxxmsonormal\">
+                <b>
+                  <span style=\"font-size:10.0pt; font-family:&quot;Calibri Light&quot;,sans-serif\">&nbsp;</span>
+                </b>
+              </p>
+            </td>
+            <td width=\"661\" colspan=\"2\" style=\"width:495.4pt; border:solid white 1.0pt; border-left:none; padding:0cm 5.4pt 0cm 5.4pt; height:21.6pt; background-image:initial; background-position:initial; background-size:initial; background-repeat:initial; background-attachment:initial; background-origin:initial; background-clip:initial\">
+              <p class=\"xxxxmsonormal\" align=\"center\" style=\"text-align:center\">Note: all fields below are required – any missing information will result in rejection of this eCAB request.</p>
+            </td>
+          </tr>
+          <tr style=\"height:21.6pt\">
+            <td width=\"23\" valign=\"top\" style=\"width:17.0pt; border:solid white 1.0pt; border-top:none; padding:0cm 5.4pt 0cm 5.4pt; height:21.6pt; background-image:initial; background-position:initial; background-size:initial; background-repeat:initial; background-attachment:initial; background-origin:initial; background-clip:initial\">
+              <p class=\"xxxxmsonormal\">
+                <span style=\"font-size:10.0pt; font-family:&quot;Calibri Light&quot;,sans-serif\">1</span>
+              </p>
+            </td>
+            <td width=\"180\" valign=\"top\" style=\"width:135.2pt; border-top:none; border-left:none; border-bottom:solid white 1.0pt; border-right:solid white 1.0pt; background:#999999; padding:0cm 5.4pt 0cm 5.4pt; height:21.6pt\">
+              <p class=\"xxxxmsonormal\">
+                <b>
+                  <span style=\"color:black\">Requester</span>
+                </b>
+              </p>
+            </td>
+            <td width=\"480\" valign=\"top\" style=\"width:360.2pt; border-top:none; border-left:none; border-bottom:solid white 1.0pt; border-right:solid white 1.0pt; background:#999999; padding:0cm 5.4pt 0cm 5.4pt; height:21.6pt\">
+              <p class=\"xxxxmsonormal\">
+                <span style=\"color:black\">Tejas Jade</span>
+              </p>
+            </td>
+          </tr>
+          <tr style=\"height:21.6pt\">
+            <td width=\"23\" valign=\"top\" style=\"width:17.0pt; border:solid white 1.0pt; border-top:none; padding:0cm 5.4pt 0cm 5.4pt; height:21.6pt; background-image:initial; background-position:initial; background-size:initial; background-repeat:initial; background-attachment:initial; background-origin:initial; background-clip:initial\">
+              <p class=\"xxxxmsonormal\">
+                <span style=\"font-size:10.0pt; font-family:&quot;Calibri Light&quot;,sans-serif\">2</span>
+              </p>
+            </td>
+            <td width=\"180\" valign=\"top\" style=\"width:135.2pt; border-top:none; border-left:none; border-bottom:solid white 1.0pt; border-right:solid white 1.0pt; background:#CCCCCC; padding:0cm 5.4pt 0cm 5.4pt; height:21.6pt\">
+              <p class=\"xxxxmsonormal\">
+                <b>
+                  <span style=\"color:black\">Detail reason for emergency change</span>
+                </b>
+              </p>
+            </td>
+            <td width=\"480\" valign=\"top\" style=\"width:360.2pt; border-top:none; border-left:none; border-bottom:solid white 1.0pt; border-right:solid white 1.0pt; background:#CCCCCC; padding:0cm 5.4pt 0cm 5.4pt; height:21.6pt\">
+              <p class=\"xxxxmsonormal\">
+                <span style=\"color:black\">CS windows services was found to be in stopped state on server ipe1pr-cswb-002.ehpr.corp.evolenthealth.com and unable to start it with below error for multiple services:</span>
+              </p>
+              <p class=\"xxxxmsonormal\">&nbsp;</p>
+              <p class=\"xxxxmsonormal\">
+                <span style=\"color:black\">
+                  <img width=\"381\" height=\"166\" id=\"Picture_x0020_2\" src=\"cid:image002.png@01D9EBCF.DD088120\" style=\"width:3.9701in; height:1.7313in\">
+                </span>
+              </p>
+            </td>
+          </tr>
+          <tr style=\"height:21.6pt\">
+            <td width=\"23\" valign=\"top\" style=\"width:17.0pt; border:solid white 1.0pt; border-top:none; padding:0cm 5.4pt 0cm 5.4pt; height:21.6pt; background-image:initial; background-position:initial; background-size:initial; background-repeat:initial; background-attachment:initial; background-origin:initial; background-clip:initial\">
+              <p class=\"xxxxmsonormal\">
+                <span style=\"font-size:10.0pt; font-family:&quot;Calibri Light&quot;,sans-serif\">3</span>
+              </p>
+            </td>
+            <td width=\"180\" valign=\"top\" style=\"width:135.2pt; border-top:none; border-left:none; border-bottom:solid white 1.0pt; border-right:solid white 1.0pt; background:#999999; padding:0cm 5.4pt 0cm 5.4pt; height:21.6pt\">
+              <p class=\"xxxxmsonormal\">
+                <b>
+                  <span style=\"color:black\">Deployment steps or scripts</span>
+                </b>
+              </p>
+            </td>
+            <td width=\"480\" valign=\"top\" style=\"width:360.2pt; border-top:none; border-left:none; border-bottom:solid white 1.0pt; border-right:solid white 1.0pt; background:#999999; padding:0cm 5.4pt 0cm 5.4pt; height:21.6pt\">
+              <ul type=\"disc\">
+                <li class=\"MsoNormal\" style=\"\">
+                  <span style=\"color:black\">Go to power option.</span>
+                  <span style=\"\"></span>
+                </li>
+                <li class=\"MsoNormal\" style=\"\">
+                  <span style=\"color:black\">Click on Restart tab</span>
+                  <span style=\"\"></span>
+                </li>
+              </ul>
+            </td>
+          </tr>
+          <tr style=\"height:21.6pt\">
+            <td width=\"23\" valign=\"top\" style=\"width:17.0pt; border:solid white 1.0pt; border-top:none; padding:0cm 5.4pt 0cm 5.4pt; height:21.6pt; background-image:initial; background-position:initial; background-size:initial; background-repeat:initial; background-attachment:initial; background-origin:initial; background-clip:initial\">
+              <p class=\"xxxxmsonormal\">
+                <span style=\"font-size:10.0pt; font-family:&quot;Calibri Light&quot;,sans-serif\">4</span>
+              </p>
+            </td>
+            <td width=\"180\" valign=\"top\" style=\"width:135.2pt; border-top:none; border-left:none; border-bottom:solid white 1.0pt; border-right:solid white 1.0pt; background:#CCCCCC; padding:0cm 5.4pt 0cm 5.4pt; height:21.6pt\">
+              <p class=\"xxxxmsonormal\">
+                <b>
+                  <span style=\"color:black\">Rollback steps or scripts</span>
+                </b>
+              </p>
+            </td>
+            <td width=\"480\" valign=\"top\" style=\"width:360.2pt; border-top:none; border-left:none; border-bottom:solid white 1.0pt; border-right:solid white 1.0pt; background:#CCCCCC; padding:0cm 5.4pt 0cm 5.4pt; height:21.6pt\">
+              <p class=\"xxxxmsonormal\">
+                <span style=\"color:black\">No rollback </span>
+              </p>
+            </td>
+          </tr>
+          <tr style=\"height:21.6pt\">
+            <td width=\"23\" valign=\"top\" style=\"width:17.0pt; border:solid white 1.0pt; border-top:none; padding:0cm 5.4pt 0cm 5.4pt; height:21.6pt; background-image:initial; background-position:initial; background-size:initial; background-repeat:initial; background-attachment:initial; background-origin:initial; background-clip:initial\">
+              <p class=\"xxxxmsonormal\">
+                <span style=\"font-size:10.0pt; font-family:&quot;Calibri Light&quot;,sans-serif\">5</span>
+              </p>
+            </td>
+            <td width=\"180\" valign=\"top\" style=\"width:135.2pt; border-top:none; border-left:none; border-bottom:solid white 1.0pt; border-right:solid white 1.0pt; background:#999999; padding:0cm 5.4pt 0cm 5.4pt; height:21.6pt\">
+              <p class=\"xxxxmsonormal\">
+                <b>
+                  <span style=\"color:black\">Verification steps</span>
+                </b>
+              </p>
+            </td>
+            <td width=\"480\" valign=\"top\" style=\"width:360.2pt; border-top:none; border-left:none; border-bottom:solid white 1.0pt; border-right:solid white 1.0pt; background:#999999; padding:0cm 5.4pt 0cm 5.4pt; height:21.6pt\">
+              <p class=\"xxxxmsonormal\">
+                <span style=\"color:black\">Tejas Jade will verify all required services are up and running and Rahul Surjani will check app insight data</span>
+              </p>
+            </td>
+          </tr>
+          <tr style=\"height:21.6pt\">
+            <td width=\"23\" valign=\"top\" style=\"width:17.0pt; border:solid white 1.0pt; border-top:none; padding:0cm 5.4pt 0cm 5.4pt; height:21.6pt; background-image:initial; background-position:initial; background-size:initial; background-repeat:initial; background-attachment:initial; background-origin:initial; background-clip:initial\">
+              <p class=\"xxxxmsonormal\">
+                <span style=\"font-size:10.0pt; font-family:&quot;Calibri Light&quot;,sans-serif\">6</span>
+              </p>
+            </td>
+            <td width=\"180\" valign=\"top\" style=\"width:135.2pt; border-top:none; border-left:none; border-bottom:solid white 1.0pt; border-right:solid white 1.0pt; background:#CCCCCC; padding:0cm 5.4pt 0cm 5.4pt; height:21.6pt\">
+              <p class=\"xxxxmsonormal\">
+                <b>
+                  <span style=\"color:black\">Evidence of successful UAT results</span>
+                </b>
+              </p>
+            </td>
+            <td width=\"480\" valign=\"top\" style=\"width:360.2pt; border-top:none; border-left:none; border-bottom:solid white 1.0pt; border-right:solid white 1.0pt; background:#CCCCCC; padding:0cm 5.4pt 0cm 5.4pt; height:21.6pt\">
+              <p class=\"xxxxmsonormal\">
+                <span style=\"color:black\">N/A</span>
+              </p>
+              <p class=\"xxxxmsonormal\">
+                <span style=\"color:black\">&nbsp;</span>
+              </p>
+            </td>
+          </tr>
+          <tr style=\"height:21.6pt\">
+            <td width=\"23\" valign=\"top\" style=\"width:17.0pt; border:solid white 1.0pt; border-top:none; padding:0cm 5.4pt 0cm 5.4pt; height:21.6pt; background-image:initial; background-position:initial; background-size:initial; background-repeat:initial; background-attachment:initial; background-origin:initial; background-clip:initial\">
+              <p class=\"xxxxmsonormal\">
+                <span style=\"font-size:10.0pt; font-family:&quot;Calibri Light&quot;,sans-serif\">7</span>
+              </p>
+            </td>
+            <td width=\"180\" valign=\"top\" style=\"width:135.2pt; border-top:none; border-left:none; border-bottom:solid white 1.0pt; border-right:solid white 1.0pt; background:#999999; padding:0cm 5.4pt 0cm 5.4pt; height:21.6pt\">
+              <p class=\"xxxxmsonormal\">
+                <b>
+                  <span style=\"color:black\">Deployment Date &amp; Time</span>
+                </b>
+              </p>
+            </td>
+            <td width=\"480\" valign=\"top\" style=\"width:360.2pt; border-top:none; border-left:none; border-bottom:solid white 1.0pt; border-right:solid white 1.0pt; background:#999999; padding:0cm 5.4pt 0cm 5.4pt; height:21.6pt\">
+              <p class=\"xxxxmsonormal\">
+                <span style=\"color:black\">ASAP&nbsp;</span>
+              </p>
+            </td>
+          </tr>
+          <tr style=\"height:21.6pt\">
+            <td width=\"23\" valign=\"top\" style=\"width:17.0pt; border:solid white 1.0pt; border-top:none; padding:0cm 5.4pt 0cm 5.4pt; height:21.6pt; background-image:initial; background-position:initial; background-size:initial; background-repeat:initial; background-attachment:initial; background-origin:initial; background-clip:initial\">
+              <p class=\"xxxxmsonormal\">
+                <span style=\"font-size:10.0pt; font-family:&quot;Calibri Light&quot;,sans-serif\">8</span>
+              </p>
+            </td>
+            <td width=\"180\" valign=\"top\" style=\"width:135.2pt; border-top:none; border-left:none; border-bottom:solid white 1.0pt; border-right:solid white 1.0pt; background:#CCCCCC; padding:0cm 5.4pt 0cm 5.4pt; height:21.6pt\">
+              <p class=\"xxxxmsonormal\">
+                <b>
+                  <span style=\"color:black\">Resources needed for deployment</span>
+                </b>
+              </p>
+            </td>
+            <td width=\"480\" valign=\"top\" style=\"width:360.2pt; border-top:none; border-left:none; border-bottom:solid white 1.0pt; border-right:solid white 1.0pt; background:#CCCCCC; padding:0cm 5.4pt 0cm 5.4pt; height:21.6pt\">
+              <p class=\"xxxxmsonormal\">
+                <span style=\"color:black\">Tejas Jade</span>
+              </p>
+            </td>
+          </tr>
+        </tbody>
+      </", ">
+								<p class=\" xxxxmsonormal\">&nbsp;&nbsp;</p>
+      <p class=\"xxxxmsonormal\">&nbsp;</p>
+      <p class=\"MsoNormal\">Thanks!</p>
+      <p class=\"MsoNormal\" style=\"text-autospace:none\">
+        <b>
+          <span style=\"font-size:12.0pt; font-family:&quot;Calibri Light&quot;,sans-serif; color:#2F5597\">Tejas Jade</span>
+        </b>
+      </p>
+      <p class=\"MsoNormal\" style=\"text-autospace:none\">
+        <span style=\"font-size:10.0pt; font-family:&quot;Calibri Light&quot;,sans-serif; color:#2F5597\">Lead, DevOps &amp; Release Management | Platform Engineering &amp; Ops | Enterprise IT</span>
+      </p>
+      <p class=\"MsoNormal\" style=\"text-autospace:none\">
+        <span style=\"font-size:10.0pt; font-family:&quot;Calibri Light&quot;,sans-serif; color:#2F5597; top:-10.0pt\">Time zone: IST |+91-9028227605 mobile | </span>
+        <span style=\"font-size:10.0pt; font-family:&quot;Calibri Light&quot;,sans-serif; top:-10.0pt\">
+          <a href=\"mailto:Tjade@evolent.com\">
+            <span style=\"color:blue\">Tjade@evolent.com</span>
+          </a>
+          <span style=\"color:#2F5597\"></span>
+        </span>
+      </p>
+      <p class=\"MsoNormal\" style=\"text-autospace:none\">
+        <span style=\"font-family:&quot;Arial&quot;,sans-serif; color:#1B1F56\">
+          <img border=\"0\" width=\"117\" height=\"47\" id=\"Picture_x0020_7\" src=\"cid:image001.png@01D9EBCE.234512E0\" alt=\"A logo with blue letters and dots\n\nDescription automatically generated\" style=\"width:1.2164in; height:.4925in\">
+        </span>
+        <span style=\"font-size:10.0pt; font-family:&quot;Calibri Light&quot;,sans-serif; color:#2F5597\"></span>
+      </p>
+      <p class=\"MsoNormal\">&nbsp;</p>
+    </div>
+  </body>
+</html>" ]
