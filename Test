@@ -50,3 +50,40 @@ The environment test setup is a comprehensive system designed to validate and ma
 
 **Conclusion:**
 The environment test setup is a robust and automated system that ensures the integrity of configurations across critical components. By combining PowerShell scripts, JSON configuration files, Jenkins automation, and structured processes, it provides confidence in the consistency and correctness of configurations in various environments while facilitating efficient monitoring and maintenance.
+
+
+Start
+
+-> Jenkins Triggered Environment Test Job
+
+--> PowerShell Scripts Execution
+    --> Retrieve Configuration Data from JSON Files
+    --> Retrieve Configuration Data from Environment Database
+
+----> Configuration Checks
+      --> Compare Actual Configurations with Expected Values (JSON & DB)
+      --> Identify Discrepancies
+
+------> Failure Detection
+        --> Any Discrepancies Detected?
+        --> If Yes:
+          ----> Categorize Failures
+          ----> Increment Failure Count
+        --> If No, Continue
+
+------> Generate Summary Report
+        --> Include Failure Count and Details
+        --> Prepare Report
+
+------> Send Email Notifications
+        --> If Failures Detected:
+          ----> Send Notifications to Stakeholders
+          ----> Attach Summary Report
+        --> If No Failures, Skip
+
+----> Jenkins Job: Synchronize Configuration Data
+      --> Update JSON Files (If Changes Were Made)
+      --> Update Environment Database Values
+      --> Sync with Jenkins Slave Nodes
+
+-> End
