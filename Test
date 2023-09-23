@@ -1,43 +1,16 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <style>
-        /* Define your CSS styles here */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
+Extract the values in table format and remove the columns deployment steps and Rollback steps and verification steps.
 
-        .container {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
+[Start of text]
+1	Requester	CJ Del Rosario
+2	Detail reason for emergency change	Tech Ops process failing due to expired cert in production database server
+3	Deployment steps or scripts	1 – Bind new cert to sql server (WPRDBEHTSO01.chicago.local)
+2 – Restart sql service
 
-        h1 {
-            color: #333;
-        }
 
-        p {
-            color: #666;
-        }
+4	Rollback steps or scripts	N/A
+5	Verification steps	CJ Del Rosario will verify processes are running
+6	Evidence of successful UAT results	N/A 
+7	Deployment Date & Time	09/22/2023 10:30AM CST
+8	Resources needed for deployment	Trushar Patel
 
-        /* Add any additional CSS styles as needed */
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>eCab Request Summary</h1>
-        <p>
-            Summary: @{outputs('Create_text_with_GPT_(preview)')?['body/responsev2/predictionOutput/text']}
-        </p>
-
-        <p>Kindly review the request and take necessary action. Your prompt attention to this matter is greatly appreciated.</p>
-
-        <p>Thank you</p>
-    </div>
-</body>
-</html>
+[End of text]
