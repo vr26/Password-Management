@@ -1,1 +1,20 @@
-The purpose of this below job is to extract environment data from the source HPS.Environments.Config and then place them to a single location on the Jenkins slave server. This will be the starting point for most automated builds and tests to reference off of for Environments Extended Info.
+	Note: all fields below are required – any missing information will result in rejection of this eCAB request.
+1	Requester	CJ Del Rosario
+2	Detail reason for emergency change	Tech Ops process failing due to expired cert in production database server
+3	Deployment steps or scripts	1 – Bind new cert to sql server (WPRDBEHTSO01.chicago.local)
+2 – Restart sql service
+
+
+4	Rollback steps or scripts	N/A
+5	Verification steps	CJ Del Rosario will verify processes are running
+6	Evidence of successful UAT results	N/A 
+7	Deployment Date & Time	09/22/2023 10:30AM CST
+8	Resources needed for deployment	Trushar Patel
+
+
+Christopher Del Rosario (CJ)
+Director, Site Reliability Engineering | Platform Engineering & Ops | Enterprise IT
+timezone: Central | 847-751-0693 mobile | cdelrosario@evolent.com
+ 
+
+
