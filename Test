@@ -1,9 +1,43 @@
-Hi ,
-We got an eCab , Please find the below information and do the needful
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        /* Define your CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
 
-Summary:
-@{outputs('Create_text_with_GPT_(preview)')?['body/responsev2/predictionOutput/text']}
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
 
-Kindly review the request and take necessary action. Your prompt attention to this matter is greatly appreciated
+        h1 {
+            color: #333;
+        }
 
-Thank you
+        p {
+            color: #666;
+        }
+
+        /* Add any additional CSS styles as needed */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>eCab Request Summary</h1>
+        <p>
+            Summary: @{outputs('Create_text_with_GPT_(preview)')?['body/responsev2/predictionOutput/text']}
+        </p>
+
+        <p>Kindly review the request and take necessary action. Your prompt attention to this matter is greatly appreciated.</p>
+
+        <p>Thank you</p>
+    </div>
+</body>
+</html>
