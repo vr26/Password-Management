@@ -1,16 +1,94 @@
-Extract the values in table format and remove the columns deployment steps and Rollback steps and verification steps.
+Job Title: Release Coordinator
+Experience:4+ years
 
-[Start of text]
-1	Requester	CJ Del Rosario
-2	Detail reason for emergency change	Tech Ops process failing due to expired cert in production database server
-3	Deployment steps or scripts	1 – Bind new cert to sql server (WPRDBEHTSO01.chicago.local)
-2 – Restart sql service
+Primary Skill: Service Now, Release Management
+Secondary Skill : Service management, change management, release and incident management with AWS or Azure Devops.
+
+The Ideal candidate should possess knowledge and expertise required for scheduling, planning, and controlling the software's development and delivery processes. 
+This position requires intermediate/senior level Release and Change Management skills to ensure code is deployed, maintained, and configured quickly and efficiently while still adhering to our core compliance standards.
+
+Roles and Responsibilities: Technical Skills _Required (4 + years)
+• Work experience on service Now.
+• Work experience on Azure DevOps or AWS technology 
+• Work experience in service management, change management, release and incident management.
+• Knowledge on Agile delivery process
+• Hands on deployment experience with SQL, .NET knowledge 
+
+Certifications
+• AWS Practitioner 
+• ITIL Certification
+
+Technical Skills _Good to Have
+• Appian
+• Azure DevOps knowledge
+
+Role Details 
+• Communicate scheduled and unscheduled local office issues to office personnel
+• Communicate proactively to personnel regarding office-wide issues and fixes
+• Enforce all IT policies, best practices, and standards.
+• Coordinates with management to determine when and where to most efficiently deploy applications they are packaged and tested.
+• Communicates the testing and deployment plans with all affected parties, from Management to Practice Management and lawyers and staff.
+• Maintains a Release calendar.
+• Defines and documents the release recommendation for each release and/or change to production. Includes release scope, schedule, deliverables, and roll back plan. Reviews release recommendation with key stakeholders.
+• Documents and communicates all changes for a release in release notes which are published to both the internal team and the client.
+• Attends change management and deployment planning meetings to collect data and information pertaining to the release.
+
+Soft Skills 
+• High Integrity
+• Problem solving skills and learning attitude
+• Good communication skills
+• Confident & Energetic
+• Good team management skills
+• Process oriented
 
 
-4	Rollback steps or scripts	N/A
-5	Verification steps	CJ Del Rosario will verify processes are running
-6	Evidence of successful UAT results	N/A 
-7	Deployment Date & Time	09/22/2023 10:30AM CST
-8	Resources needed for deployment	Trushar Patel
 
-[End of text]
+
+Release Management
+	Controlling the software development and deployment
+	Ensures deployed, maintained and configured quickly and effiecntly to core standard
+	Release Plan
+	Release Calender
+	Stakeholder Communication
+	Local Office Issues
+	Time Management to deploy applications
+	Packaging
+	Typical Stakeholder communication
+	Pre and Post calls
+	Documentation
+	Best Practices
+	Management to Practice Management
+
+Change Management
+Service Management
+Incident Management
+Ticketing Tool
+	Service Now
+Devops
+	Azure Devops
+	- How Release Pipeline and Builds are managed
+Cloud
+	Azure
+	- Key Vault
+	- App Config
+	- App Services
+	- Basic Cloud
+SDLC Methodology
+	Agile Process
+Backend
+	SQL
+	- Basic SQL Commands
+Development
+	.Net
+	- How Release Management work on .Net Environment
+
+Networking
+	- Basic Networking
+
+ITIL
+ITSM
+AGILE vs Waterfall
+
+
+
+
