@@ -1,94 +1,158 @@
-Job Title: Release Coordinator
-Experience:4+ years
+parameters:
+  - name: ENVIRONMENT
+    type: string
+    values: 
+      - Dev
+      - QA
+      - UAT
+      - Staging
+      - Production
+    default: Dev
+  - name: SERVER
+    type: string
+    values: 
+      - Dev-IDAP-001
+      - QA-IDAP-001
+      - QA-IDAP-002
+      - All_QA_Servers
+      - UAT-IDAP-001
+      - UAT-IDAP-002
+      - All_UAT_Servers
+      - ST-IDAP-001
+      - ST-IDAP-002
+      - All_ST_Servers
+      - PR-IDAP-001
+      - PR-IDAP-002
+      - PR-IDAP-003
+      - All_PR_Servers
+    default: Dev-IDAP-001
+  - name: WINDOWS_SERVICE_NAME
+    type: string
+    displayName: Choose Windows Service name which you want to restart
+    values:
+      - Identifi.UserAdmin.BulkProvisioningService
+      - Identifi.Care.Service
+      - Identifi.Care.ServiceBusHost
+      - Identifi.CM.Consumers
+      - Identifi.Edw.Integration
+      - Identifi.Engage.Service
+      - Identifi.ExternalAssessment.Ingestion.Service
+      - Identifi.Network.LifeCycleStatus.Host
+      - Identifi.Network.LifeCycleStatus.ServiceBusHost
+      - Identifi.Network.SyncService
+      - Identifi.Patient.Communications.Worker
+      - Identifi.Patient.Consumers
+      - Identifi.Person.Consumers
+      - Identifi.Practice.PanelInsightsIngestion.ServiceBusHost
+      - Identifi.Practice.ServiceBusHost
+      - Identifi.UM.ServiceBusHost
+      - Identifi.UM.ServiceBusHost-Old
+  - name: ACTION
+    type: string
+    values:
+      - start
+      - stop
+    default: start
 
-Primary Skill: Service Now, Release Management
-Secondary Skill : Service management, change management, release and incident management with AWS or Azure Devops.
+variables:
+  - ${{ if eq(parameters.ENVIRONMENT, 'Dev') }}:
+    - group: "Identifi Apps - c. Development"
+  - ${{ if eq(parameters.ENVIRONMENT, 'QA') }}:
+    - group: "Identifi Apps - d. QA"
+  - ${{ if eq(parameters.ENVIRONMENT, 'UAT') }}:
+    - group: "Identifi Apps - e. UAT"
+  - ${{ if eq(parameters.ENVIRONMENT, 'Staging') }}:
+    - group: "Identifi Apps - g. Staging"
+  - ${{ if eq(parameters.ENVIRONMENT, 'Production') }}:
+    - group: "Identifi Apps - z. Production"
 
-The Ideal candidate should possess knowledge and expertise required for scheduling, planning, and controlling the software's development and delivery processes. 
-This position requires intermediate/senior level Release and Change Management skills to ensure code is deployed, maintained, and configured quickly and efficiently while still adhering to our core compliance standards.
-
-Roles and Responsibilities: Technical Skills _Required (4 + years)
-• Work experience on service Now.
-• Work experience on Azure DevOps or AWS technology 
-• Work experience in service management, change management, release and incident management.
-• Knowledge on Agile delivery process
-• Hands on deployment experience with SQL, .NET knowledge 
-
-Certifications
-• AWS Practitioner 
-• ITIL Certification
-
-Technical Skills _Good to Have
-• Appian
-• Azure DevOps knowledge
-
-Role Details 
-• Communicate scheduled and unscheduled local office issues to office personnel
-• Communicate proactively to personnel regarding office-wide issues and fixes
-• Enforce all IT policies, best practices, and standards.
-• Coordinates with management to determine when and where to most efficiently deploy applications they are packaged and tested.
-• Communicates the testing and deployment plans with all affected parties, from Management to Practice Management and lawyers and staff.
-• Maintains a Release calendar.
-• Defines and documents the release recommendation for each release and/or change to production. Includes release scope, schedule, deliverables, and roll back plan. Reviews release recommendation with key stakeholders.
-• Documents and communicates all changes for a release in release notes which are published to both the internal team and the client.
-• Attends change management and deployment planning meetings to collect data and information pertaining to the release.
-
-Soft Skills 
-• High Integrity
-• Problem solving skills and learning attitude
-• Good communication skills
-• Confident & Energetic
-• Good team management skills
-• Process oriented
-
-
-
-
-Release Management
-	Controlling the software development and deployment
-	Ensures deployed, maintained and configured quickly and effiecntly to core standard
-	Release Plan
-	Release Calender
-	Stakeholder Communication
-	Local Office Issues
-	Time Management to deploy applications
-	Packaging
-	Typical Stakeholder communication
-	Pre and Post calls
-	Documentation
-	Best Practices
-	Management to Practice Management
-
-Change Management
-Service Management
-Incident Management
-Ticketing Tool
-	Service Now
-Devops
-	Azure Devops
-	- How Release Pipeline and Builds are managed
-Cloud
-	Azure
-	- Key Vault
-	- App Config
-	- App Services
-	- Basic Cloud
-SDLC Methodology
-	Agile Process
-Backend
-	SQL
-	- Basic SQL Commands
-Development
-	.Net
-	- How Release Management work on .Net Environment
-
-Networking
-	- Basic Networking
-
-ITIL
-ITSM
-AGILE vs Waterfall
-
-
-
-
+jobs:
+  - deployment: Dev_Windows_Services
+    displayName: "${{ parameters.ENVIRONMENT }} ${{ parameters.WINDOWS_SERVICE_NAME }} ${{ parameters.ACTION }}"
+    ${{ if or(eq(parameters.ENVIRONMENT, 'Dev'),eq(parameters.ENVIRONMENT, 'QA'),eq(parameters.ENVIRONMENT, 'UAT')) }}:
+        environment: "Clinical-DV-QA-UT-ManageServices"
+    ${{ else }}:
+        environment: "Clinical-ST-Prod-ManageServices"
+    workspace:
+      clean: outputs
+    pool:
+      name: '$(Pool_Name)'
+    strategy:
+      runOnce:
+        deploy:
+         steps:
+          - ${{ if eq(parameters.ACTION, 'stop') }}:
+            - task: StopWindowsService@8
+              inputs:
+                ServiceNames: '${{ parameters.WINDOWS_SERVICE_NAME }}'
+                StartupType: 'Automatic'
+                KillIfTimedOut: true
+                deploymentGroup: false
+                ${{ if eq( parameters['SERVER'], 'QA-IDAP-001') }}:
+                  EnvironmentName: 'ine1qa-idap-001.ehnp.corp.evolenthealth.com'
+                ${{ elseif eq( parameters['SERVER'], 'QA-IDAP-002') }}:
+                  EnvironmentName: 'ine1qa-idap-002.ehnp.corp.evolenthealth.com'
+                ${{ elseif eq( parameters['SERVER'], 'All_QA_Servers') }}:
+                  EnvironmentName: 'ine1qa-idap-001.ehnp.corp.evolenthealth.com,ine1qa-idap-002.ehnp.corp.evolenthealth.com'
+                ${{ elseif eq( parameters['SERVER'], 'UAT-IDAP-001') }}:
+                  EnvironmentName: 'ine1ut-idap-001.ehnp.corp.evolenthealth.com'
+                ${{ elseif eq( parameters['SERVER'], 'UAT-IDAP-002') }}:
+                  EnvironmentName: 'ine1ut-idap-002.ehnp.corp.evolenthealth.com'
+                ${{ elseif eq( parameters['SERVER'], 'All_UAT_Servers') }}:
+                  EnvironmentName: 'ine1ut-idap-001.ehnp.corp.evolenthealth.com,ine1ut-idap-002.ehnp.corp.evolenthealth.com'
+                ${{ elseif eq( parameters['SERVER'], 'ST-IDAP-001') }}:
+                  EnvironmentName: 'ipe1st-idap-001.ehpr.corp.evolenthealth.com'
+                ${{ elseif eq( parameters['SERVER'], 'ST-IDAP-002') }}:
+                  EnvironmentName: 'ipe1st-idap-002.ehpr.corp.evolenthealth.com'
+                ${{ elseif eq( parameters['SERVER'], 'All_ST_Servers') }}:
+                  EnvironmentName: 'ipe1st-idap-001.ehpr.corp.evolenthealth.com,ipe1st-idap-002.ehpr.corp.evolenthealth.com'
+                ${{ elseif eq( parameters['SERVER'], 'PR-IDAP-001') }}:
+                  EnvironmentName: 'ipe1pr-idap-001.ehpr.corp.evolenthealth.com'
+                ${{ elseif eq( parameters['SERVER'], 'PR-IDAP-002') }}:
+                  EnvironmentName: 'ipe1pr-idap-002.ehpr.corp.evolenthealth.com'
+                ${{ elseif eq( parameters['SERVER'], 'PR-IDAP-003') }}:
+                  EnvironmentName: 'ipe1pr-idap-003.ehpr.corp.evolenthealth.com'
+                ${{ elseif eq( parameters['SERVER'], 'All_PR_Servers') }}:
+                  EnvironmentName: 'ipe1pr-idap-001.ehpr.corp.evolenthealth.com,ipe1pr-idap-002.ehpr.corp.evolenthealth.com,ipe1pr-idap-003.ehpr.corp.evolenthealth.com'
+                ${{ else  }}:
+                  EnvironmentName: 'ine1dv-idap-001.ehnp.corp.evolenthealth.com'
+                AdminUserName: '$(adminserviceuser)'
+                AdminPassword: '$(adminservicepwd)'
+                WaitTimeoutInSeconds: '120'
+          - ${{ if eq(parameters.ACTION, 'start') }}:
+            - task: StartWindowsService@8
+              inputs:
+                ServiceNames: '${{ parameters.WINDOWS_SERVICE_NAME }}'
+                StartupType: 'Automatic'
+                WaitTimeoutInSeconds: '120'
+                deploymentGroup: false
+                ${{ if eq( parameters['SERVER'], 'QA-IDAP-001') }}:
+                  EnvironmentName: 'ine1qa-idap-001.ehnp.corp.evolenthealth.com'
+                ${{ elseif eq( parameters['SERVER'], 'QA-IDAP-002') }}:
+                  EnvironmentName: 'ine1qa-idap-002.ehnp.corp.evolenthealth.com'
+                ${{ elseif eq( parameters['SERVER'], 'All_QA_Servers') }}:
+                  EnvironmentName: 'ine1qa-idap-001.ehnp.corp.evolenthealth.com,ine1qa-idap-002.ehnp.corp.evolenthealth.com'
+                ${{ elseif eq( parameters['SERVER'], 'UAT-IDAP-001') }}:
+                  EnvironmentName: 'ine1ut-idap-001.ehnp.corp.evolenthealth.com'
+                ${{ elseif eq( parameters['SERVER'], 'UAT-IDAP-002') }}:
+                  EnvironmentName: 'ine1ut-idap-002.ehnp.corp.evolenthealth.com'
+                ${{ elseif eq( parameters['SERVER'], 'All_UAT_Servers') }}:
+                  EnvironmentName: 'ine1ut-idap-001.ehnp.corp.evolenthealth.com,ine1ut-idap-002.ehnp.corp.evolenthealth.com'
+                ${{ elseif eq( parameters['SERVER'], 'ST-IDAP-001') }}:
+                  EnvironmentName: 'ipe1st-idap-001.ehpr.corp.evolenthealth.com'
+                ${{ elseif eq( parameters['SERVER'], 'ST-IDAP-002') }}:
+                  EnvironmentName: 'ipe1st-idap-002.ehpr.corp.evolenthealth.com'
+                ${{ elseif eq( parameters['SERVER'], 'All_ST_Servers') }}:
+                  EnvironmentName: 'ipe1st-idap-001.ehpr.corp.evolenthealth.com,ipe1st-idap-002.ehpr.corp.evolenthealth.com'
+                ${{ elseif eq( parameters['SERVER'], 'PR-IDAP-001') }}:
+                  EnvironmentName: 'ipe1pr-idap-001.ehpr.corp.evolenthealth.com'
+                ${{ elseif eq( parameters['SERVER'], 'PR-IDAP-002') }}:
+                  EnvironmentName: 'ipe1pr-idap-002.ehpr.corp.evolenthealth.com'
+                ${{ elseif eq( parameters['SERVER'], 'PR-IDAP-003') }}:
+                  EnvironmentName: 'ipe1pr-idap-003.ehpr.corp.evolenthealth.com'
+                ${{ elseif eq( parameters['SERVER'], 'All_PR_Servers') }}:
+                  EnvironmentName: 'ipe1pr-idap-001.ehpr.corp.evolenthealth.com,ipe1pr-idap-002.ehpr.corp.evolenthealth.com,ipe1pr-idap-003.ehpr.corp.evolenthealth.com'
+                ${{ else  }}:
+                  EnvironmentName: 'ine1dv-idap-001.ehnp.corp.evolenthealth.com'
+                AdminUserName: '$(adminserviceuser)'
+                AdminPassword: '$(adminservicepwd)'
