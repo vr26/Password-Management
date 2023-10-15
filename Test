@@ -1,158 +1,58 @@
 parameters:
-  - name: ENVIRONMENT
+  - name: Environments
     type: string
-    values: 
-      - Dev
-      - QA
+    values:
       - UAT
-      - Staging
-      - Production
-    default: Dev
-  - name: SERVER
-    type: string
-    values: 
-      - Dev-IDAP-001
-      - QA-IDAP-001
-      - QA-IDAP-002
-      - All_QA_Servers
-      - UAT-IDAP-001
-      - UAT-IDAP-002
-      - All_UAT_Servers
-      - ST-IDAP-001
-      - ST-IDAP-002
-      - All_ST_Servers
-      - PR-IDAP-001
-      - PR-IDAP-002
-      - PR-IDAP-003
-      - All_PR_Servers
-    default: Dev-IDAP-001
-  - name: WINDOWS_SERVICE_NAME
-    type: string
-    displayName: Choose Windows Service name which you want to restart
-    values:
-      - Identifi.UserAdmin.BulkProvisioningService
-      - Identifi.Care.Service
-      - Identifi.Care.ServiceBusHost
-      - Identifi.CM.Consumers
-      - Identifi.Edw.Integration
-      - Identifi.Engage.Service
-      - Identifi.ExternalAssessment.Ingestion.Service
-      - Identifi.Network.LifeCycleStatus.Host
-      - Identifi.Network.LifeCycleStatus.ServiceBusHost
-      - Identifi.Network.SyncService
-      - Identifi.Patient.Communications.Worker
-      - Identifi.Patient.Consumers
-      - Identifi.Person.Consumers
-      - Identifi.Practice.PanelInsightsIngestion.ServiceBusHost
-      - Identifi.Practice.ServiceBusHost
-      - Identifi.UM.ServiceBusHost
-      - Identifi.UM.ServiceBusHost-Old
-  - name: ACTION
+      - PROD
+    default: UAT
+  - name: Servers
     type: string
     values:
-      - start
-      - stop
-    default: start
+      - All UAT Servers
+    default: All UAT Servers
+  - name: App Pools
+    type: string
+    displayName: Choose Application Pool name which you want to restart
+    values:
+      - 27xService
+      - AttachmentsService
+      - AuthorizationService
+      - ClaimAuthorization
+      - ClaimService
+      - All App Pools
+    default: All App Pools
 
 variables:
-  - ${{ if eq(parameters.ENVIRONMENT, 'Dev') }}:
-    - group: "Identifi Apps - c. Development"
-  - ${{ if eq(parameters.ENVIRONMENT, 'QA') }}:
-    - group: "Identifi Apps - d. QA"
-  - ${{ if eq(parameters.ENVIRONMENT, 'UAT') }}:
-    - group: "Identifi Apps - e. UAT"
-  - ${{ if eq(parameters.ENVIRONMENT, 'Staging') }}:
-    - group: "Identifi Apps - g. Staging"
-  - ${{ if eq(parameters.ENVIRONMENT, 'Production') }}:
-    - group: "Identifi Apps - z. Production"
+  - name: serverNames
+    ${{ if eq(parameters.Servers, 'All UAT Servers') }}
+    value:
+      - ALDUATAPPAPP01.chicago.local
+      - ALDUATAPPAPP02.chicago.local
+    ${{ else }}
+    value: []
+    ${{ endif }}
 
 jobs:
-  - deployment: Dev_Windows_Services
-    displayName: "${{ parameters.ENVIRONMENT }} ${{ parameters.WINDOWS_SERVICE_NAME }} ${{ parameters.ACTION }}"
-    ${{ if or(eq(parameters.ENVIRONMENT, 'Dev'),eq(parameters.ENVIRONMENT, 'QA'),eq(parameters.ENVIRONMENT, 'UAT')) }}:
-        environment: "Clinical-DV-QA-UT-ManageServices"
-    ${{ else }}:
-        environment: "Clinical-ST-Prod-ManageServices"
-    workspace:
-      clean: outputs
+  - job: StopAppPools
+    displayName: 'Stop App Pools'
     pool:
-      name: '$(Pool_Name)'
-    strategy:
-      runOnce:
-        deploy:
-         steps:
-          - ${{ if eq(parameters.ACTION, 'stop') }}:
-            - task: StopWindowsService@8
+      vmImage: 'windows-latest'
+    steps:
+      - ${{ if eq(parameters.App Pools, 'All App Pools') }}
+        - ${{ if eq(parameters.Servers, 'All UAT Servers') }}
+          - ${{ if eq(parameters.Environments, 'UAT') }}
+            - task: PowerShell@2
+              displayName: 'Stop All App Pools on All UAT Servers'
               inputs:
-                ServiceNames: '${{ parameters.WINDOWS_SERVICE_NAME }}'
-                StartupType: 'Automatic'
-                KillIfTimedOut: true
-                deploymentGroup: false
-                ${{ if eq( parameters['SERVER'], 'QA-IDAP-001') }}:
-                  EnvironmentName: 'ine1qa-idap-001.ehnp.corp.evolenthealth.com'
-                ${{ elseif eq( parameters['SERVER'], 'QA-IDAP-002') }}:
-                  EnvironmentName: 'ine1qa-idap-002.ehnp.corp.evolenthealth.com'
-                ${{ elseif eq( parameters['SERVER'], 'All_QA_Servers') }}:
-                  EnvironmentName: 'ine1qa-idap-001.ehnp.corp.evolenthealth.com,ine1qa-idap-002.ehnp.corp.evolenthealth.com'
-                ${{ elseif eq( parameters['SERVER'], 'UAT-IDAP-001') }}:
-                  EnvironmentName: 'ine1ut-idap-001.ehnp.corp.evolenthealth.com'
-                ${{ elseif eq( parameters['SERVER'], 'UAT-IDAP-002') }}:
-                  EnvironmentName: 'ine1ut-idap-002.ehnp.corp.evolenthealth.com'
-                ${{ elseif eq( parameters['SERVER'], 'All_UAT_Servers') }}:
-                  EnvironmentName: 'ine1ut-idap-001.ehnp.corp.evolenthealth.com,ine1ut-idap-002.ehnp.corp.evolenthealth.com'
-                ${{ elseif eq( parameters['SERVER'], 'ST-IDAP-001') }}:
-                  EnvironmentName: 'ipe1st-idap-001.ehpr.corp.evolenthealth.com'
-                ${{ elseif eq( parameters['SERVER'], 'ST-IDAP-002') }}:
-                  EnvironmentName: 'ipe1st-idap-002.ehpr.corp.evolenthealth.com'
-                ${{ elseif eq( parameters['SERVER'], 'All_ST_Servers') }}:
-                  EnvironmentName: 'ipe1st-idap-001.ehpr.corp.evolenthealth.com,ipe1st-idap-002.ehpr.corp.evolenthealth.com'
-                ${{ elseif eq( parameters['SERVER'], 'PR-IDAP-001') }}:
-                  EnvironmentName: 'ipe1pr-idap-001.ehpr.corp.evolenthealth.com'
-                ${{ elseif eq( parameters['SERVER'], 'PR-IDAP-002') }}:
-                  EnvironmentName: 'ipe1pr-idap-002.ehpr.corp.evolenthealth.com'
-                ${{ elseif eq( parameters['SERVER'], 'PR-IDAP-003') }}:
-                  EnvironmentName: 'ipe1pr-idap-003.ehpr.corp.evolenthealth.com'
-                ${{ elseif eq( parameters['SERVER'], 'All_PR_Servers') }}:
-                  EnvironmentName: 'ipe1pr-idap-001.ehpr.corp.evolenthealth.com,ipe1pr-idap-002.ehpr.corp.evolenthealth.com,ipe1pr-idap-003.ehpr.corp.evolenthealth.com'
-                ${{ else  }}:
-                  EnvironmentName: 'ine1dv-idap-001.ehnp.corp.evolenthealth.com'
-                AdminUserName: '$(adminserviceuser)'
-                AdminPassword: '$(adminservicepwd)'
-                WaitTimeoutInSeconds: '120'
-          - ${{ if eq(parameters.ACTION, 'start') }}:
-            - task: StartWindowsService@8
-              inputs:
-                ServiceNames: '${{ parameters.WINDOWS_SERVICE_NAME }}'
-                StartupType: 'Automatic'
-                WaitTimeoutInSeconds: '120'
-                deploymentGroup: false
-                ${{ if eq( parameters['SERVER'], 'QA-IDAP-001') }}:
-                  EnvironmentName: 'ine1qa-idap-001.ehnp.corp.evolenthealth.com'
-                ${{ elseif eq( parameters['SERVER'], 'QA-IDAP-002') }}:
-                  EnvironmentName: 'ine1qa-idap-002.ehnp.corp.evolenthealth.com'
-                ${{ elseif eq( parameters['SERVER'], 'All_QA_Servers') }}:
-                  EnvironmentName: 'ine1qa-idap-001.ehnp.corp.evolenthealth.com,ine1qa-idap-002.ehnp.corp.evolenthealth.com'
-                ${{ elseif eq( parameters['SERVER'], 'UAT-IDAP-001') }}:
-                  EnvironmentName: 'ine1ut-idap-001.ehnp.corp.evolenthealth.com'
-                ${{ elseif eq( parameters['SERVER'], 'UAT-IDAP-002') }}:
-                  EnvironmentName: 'ine1ut-idap-002.ehnp.corp.evolenthealth.com'
-                ${{ elseif eq( parameters['SERVER'], 'All_UAT_Servers') }}:
-                  EnvironmentName: 'ine1ut-idap-001.ehnp.corp.evolenthealth.com,ine1ut-idap-002.ehnp.corp.evolenthealth.com'
-                ${{ elseif eq( parameters['SERVER'], 'ST-IDAP-001') }}:
-                  EnvironmentName: 'ipe1st-idap-001.ehpr.corp.evolenthealth.com'
-                ${{ elseif eq( parameters['SERVER'], 'ST-IDAP-002') }}:
-                  EnvironmentName: 'ipe1st-idap-002.ehpr.corp.evolenthealth.com'
-                ${{ elseif eq( parameters['SERVER'], 'All_ST_Servers') }}:
-                  EnvironmentName: 'ipe1st-idap-001.ehpr.corp.evolenthealth.com,ipe1st-idap-002.ehpr.corp.evolenthealth.com'
-                ${{ elseif eq( parameters['SERVER'], 'PR-IDAP-001') }}:
-                  EnvironmentName: 'ipe1pr-idap-001.ehpr.corp.evolenthealth.com'
-                ${{ elseif eq( parameters['SERVER'], 'PR-IDAP-002') }}:
-                  EnvironmentName: 'ipe1pr-idap-002.ehpr.corp.evolenthealth.com'
-                ${{ elseif eq( parameters['SERVER'], 'PR-IDAP-003') }}:
-                  EnvironmentName: 'ipe1pr-idap-003.ehpr.corp.evolenthealth.com'
-                ${{ elseif eq( parameters['SERVER'], 'All_PR_Servers') }}:
-                  EnvironmentName: 'ipe1pr-idap-001.ehpr.corp.evolenthealth.com,ipe1pr-idap-002.ehpr.corp.evolenthealth.com,ipe1pr-idap-003.ehpr.corp.evolenthealth.com'
-                ${{ else  }}:
-                  EnvironmentName: 'ine1dv-idap-001.ehnp.corp.evolenthealth.com'
-                AdminUserName: '$(adminserviceuser)'
-                AdminPassword: '$(adminservicepwd)'
+                targetType: 'remoteMachine'
+                actionType: 'Inline'
+                scriptType: 'Inline'
+                inlineScript: |
+                  $appPools = @('27xService', 'AttachmentsService', 'AuthorizationService', 'ClaimAuthorization', 'ClaimService')
+                  foreach ($serverName in $env:serverNames) {
+                    foreach ($appPool in $appPools) {
+                      Stop-WebAppPool -Name $appPool -ComputerName $serverName
+                    }
+                  }
+          ${{ endif }}
+        ${{ endif }}
