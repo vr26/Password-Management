@@ -1,46 +1,12 @@
-parameters:
-  - name: Environments
-    type: string
-    values:
-      - UAT
-      - PROD
-    default: UAT
-  - name: Servers
-    type: string
-    values:
-      - All UAT Servers
-    default: All UAT Servers
-  - name: App Pools
-    type: string
-    displayName: Choose Application Pool name which you want to restart
-    values:
-      - 27xService
-      - AttachmentsService
-      - AuthorizationService
-      - ClaimAuthorization
-      - ClaimService
-      - All App Pools
-    default: All App Pools
-
-variables:
-  - name: serverNames
-    ${{ if eq(parameters.Servers, 'All UAT Servers') }}
-    value:
-      - ALDUATAPPAPP01.chicago.local
-      - ALDUATAPPAPP02.chicago.local
-    ${{ else }}
-    value: []
-    ${{ endif }}
-
 jobs:
   - job: StopAppPools
     displayName: 'Stop App Pools'
     pool:
       vmImage: 'windows-latest'
     steps:
-      - ${{ if eq(parameters.App Pools, 'All App Pools') }}
-        - ${{ if eq(parameters.Servers, 'All UAT Servers') }}
-          - ${{ if eq(parameters.Environments, 'UAT') }}
+      - ${{ if eq(parameters.App Pools, 'All App Pools') }} 
+        - ${{ if eq(parameters.Servers, 'All UAT Servers') }} 
+          - ${{ if eq(parameters.Environments, 'UAT') }} 
             - task: PowerShell@2
               displayName: 'Stop All App Pools on All UAT Servers'
               inputs:
@@ -56,3 +22,4 @@ jobs:
                   }
           ${{ endif }}
         ${{ endif }}
+      ${{ endif }}
