@@ -7,19 +7,19 @@ jobs:
       - ${{ if eq(parameters['App Pools'], 'All App Pools') }}:
         - ${{ if eq(parameters.Servers, 'All UAT Servers') }}:
           - ${{ if eq(parameters.Environments, 'UAT') }}:
-            - task: PowerShell@2
-              displayName: 'Stop All App Pools on All UAT Servers'
-              inputs:
-                targetType: 'remoteMachine'
-                actionType: 'Inline'
-                scriptType: 'Inline'
-                inlineScript: |
-                  $appPools = @('27xService', 'AttachmentsService', 'AuthorizationService', 'ClaimAuthorization', 'ClaimService')
-                  foreach ($serverName in $env:serverNames) {
-                    foreach ($appPool in $appPools) {
-                      Stop-WebAppPool -Name $appPool -ComputerName $serverName
+              - task: PowerShell@2
+                displayName: 'Stop All App Pools on All UAT Servers'
+                inputs:
+                  targetType: 'remoteMachine'
+                  actionType: 'Inline'
+                  scriptType: 'Inline'
+                  inlineScript: |
+                    $appPools = @('27xService', 'AttachmentsService', 'AuthorizationService', 'ClaimAuthorization', 'ClaimService')
+                    foreach ($serverName in $env:serverNames) {
+                      foreach ($appPool in $appPools) {
+                        Stop-WebAppPool -Name $appPool -ComputerName $serverName
+                      }
                     }
-                  }
+            ${{ endif }}
           ${{ endif }}
         ${{ endif }}
-      ${{ endif }}
