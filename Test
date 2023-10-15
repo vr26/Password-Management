@@ -4,9 +4,9 @@ jobs:
     pool:
       vmImage: 'windows-latest'
     steps:
-      - ${{ if eq(parameters.App Pools, 'All App Pools') }} 
-        - ${{ if eq(parameters.Servers, 'All UAT Servers') }} 
-          - ${{ if eq(parameters.Environments, 'UAT') }} 
+      - ${{ if eq(parameters['App Pools'], 'All App Pools') }}:
+        - ${{ if eq(parameters.Servers, 'All UAT Servers') }}:
+          - ${{ if eq(parameters.Environments, 'UAT') }}:
             - task: PowerShell@2
               displayName: 'Stop All App Pools on All UAT Servers'
               inputs:
