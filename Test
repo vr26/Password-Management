@@ -1,103 +1,37 @@
-parameters:
-  - name: Servers
-    type: string
-    values:
-      - All UAT Servers
-      - All PROD Servers
-      - ALDUATAPPAPP01.chicago.local
-    default: All UAT Servers
-  - name: App Pools
-    type: string
-    displayName: Choose Application Pool name which you want to restart
-    values:
-      - 27xService
-      - AttachmentsService
-      - AuthorizationService
-      - ClaimAuthorization
-      - ClaimService
-      - All App Pools
-    default: All App Pools
-variables:
-  - name: serverNames
-    value: ${{ if eq(parameters.Servers, 'All UAT Servers') }}
-      - ALDUATAPPAPP01.chicago.local
-      - ALDUATAPPAPP02.chicago.local
-      ${{ elseif eq(parameters.Servers, 'All Prod Servers') }}
-      - ALDPRDAPPAPP01.chicago.local
-      - ALDPRDAPPAPP02.chicago.local
-      - ALDPRDAPPAPP03.chicago.local
-      - ALDPRDAPPAPP04.chicago.local
-      ${{ elseif eq(parameters.Servers, 'ALDUATAPPAPP01.chicago.local') }}
-      - ALDUATAPPAPP01.chicago.local
-      ${{ endif }}
-  - name: appPools
-    value:
-      - '27xService'
-      - 'AttachmentsService'
-      - 'AuthorizationService'
-      - 'ClaimAuthorization'
-      - 'ClaimService'
 jobs:
   - job: StopAppPools
-    displayName: Stop App Pools
+    displayName: 'Stop App Pool'
     pool:
-      vmImage: windows-latest
+      vmImage: 'windows-latest'
     steps:
-      - "${{ if eq(parameters['App Pools'], 'All App Pools') }}":
-          - "${{ if eq(parameters.Servers, 'All UAT Servers') }}":
-              - task: PowerShell@2
-                displayName: Stop All App Pools on All UAT Servers
-                inputs:
-                  targetType: remoteMachine
-                  actionType: PowerShell
-                  inlineScript: |
-                    $ErrorActionPreference = "Stop"
-                    foreach ($serverName in $env:serverNames) {
-                      foreach ($appPool in $env:appPools) {
-                        try {
-                          Stop-WebAppPool -Name $appPool -ComputerName $serverName -ErrorAction Stop
-                        } catch {
-                          Write-Host "Error stopping application pool $appPool on server $serverName: $_"
-                        }
-                      }
-                    }
-                  AdminUserName: '$(adminserviceuser)'
-                  AdminPassword: '$(adminservicepwd)'
-                  
-          - "${{ if eq(parameters.Servers, 'All Prod Servers') }}":
-              - task: PowerShell@2
-                displayName: Stop All App Pools on All Prod Servers
-                inputs:
-                  targetType: remoteMachine
-                  actionType: PowerShell
-                  inlineScript: |
-                    $ErrorActionPreference = "Stop"
-                    foreach ($serverName in $env:serverNames) {
-                      foreach ($appPool in $env:appPools) {
-                        try {
-                          Stop-WebAppPool -Name $appPool -ComputerName $serverName -ErrorAction Stop
-                        } catch {
-                          Write-Host "Error stopping application pool $appPool on server $serverName: $_"
-                        }
-                      }
-                    }
-                  AdminUserName: '$(adminserviceuser)'
-                  AdminPassword: '$(adminservicepwd)'
-
-          - "${{ if eq(parameters.Servers, 'ALDUATAPPAPP01.chicago.local') }}":
-              - task: PowerShell@2
-                displayName: Stop All App Pools on ALDUATAPPAPP01.chicago.local
-                inputs:
-                  targetType: remoteMachine
-                  actionType: PowerShell
-                  inlineScript: |
-                    $ErrorActionPreference = "Stop"
-                    foreach ($appPool in $env:appPools) {
-                      try {
-                        Stop-WebAppPool -Name $appPool -ComputerName ALDUATAPPAPP01.chicago.local -ErrorAction Stop
-                      } catch {
-                        Write-Host "Error stopping application pool $appPool on server ALDUATAPPAPP01.chicago.local: $_"
-                      }
-                    }
-                  AdminUserName: '$(adminserviceuser)'
-                  AdminPassword: '$(adminservicepwd)'
+      - ${{ if eq(parameters['App Pools'], '27xService') }}:
+        - ${{ if eq(parameters['Servers'], 'All UAT Servers') }}:
+          - task: PowerShell@2
+            displayName: 'Stop 27x App Pool on All UAT Servers'
+            inputs:
+              targetType: 'remoteMachine'
+              actionType: 'Inline'
+              scriptType: 'Inline'
+              inlineScript: |
+                Stop-WebAppPool -Name '27xService' -ComputerName 'UATAPPAPP01'
+                Stop-WebAppPool -Name '27xService' -ComputerName 'UATAPPAPP02'
+          - ${{ elseif eq(parameters['Servers'], 'UATAPPAPP01.chicago.local') }}:
+            - task: PowerShell@2
+              displayName: 'Stop 27x App Pool on UATAPPAPP01'
+              inputs:
+                targetType: 'remoteMachine'
+                actionType: 'Inline'
+                scriptType: 'Inline'
+                inlineScript: |
+                  Stop-WebAppPool -Name '27xService' -ComputerName 'UATAPPAPP01'
+          - ${{ elseif eq(parameters['Servers'], 'UATAPPAPP02.chicago.local') }}:
+            - task: PowerShell@2
+              displayName: 'Stop 27x App Pool on UATAPPAPP02'
+              inputs:
+                targetType: 'remoteMachine'
+                actionType: 'Inline'
+                scriptType: 'Inline'
+                inlineScript: |
+                  Stop-WebAppPool -Name '27xService' -ComputerName 'UATAPPAPP02'
+        ${{ endif }}
+      ${{ endif }}
