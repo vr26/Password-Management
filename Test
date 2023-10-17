@@ -1,37 +1,20 @@
-jobs:
-  - job: StopAppPools
-    displayName: 'Stop App Pool'
-    pool:
-      vmImage: 'windows-latest'
-    steps:
-      - ${{ if eq(parameters['App Pools'], '27xService') }}:
-        - ${{ if eq(parameters['Servers'], 'All UAT Servers') }}:
-          - task: PowerShell@2
-            displayName: 'Stop 27x App Pool on All UAT Servers'
-            inputs:
-              targetType: 'remoteMachine'
-              actionType: 'Inline'
-              scriptType: 'Inline'
-              inlineScript: |
-                Stop-WebAppPool -Name '27xService' -ComputerName 'UATAPPAPP01'
-                Stop-WebAppPool -Name '27xService' -ComputerName 'UATAPPAPP02'
-          - ${{ elseif eq(parameters['Servers'], 'UATAPPAPP01.chicago.local') }}:
-            - task: PowerShell@2
-              displayName: 'Stop 27x App Pool on UATAPPAPP01'
-              inputs:
-                targetType: 'remoteMachine'
-                actionType: 'Inline'
-                scriptType: 'Inline'
-                inlineScript: |
-                  Stop-WebAppPool -Name '27xService' -ComputerName 'UATAPPAPP01'
-          - ${{ elseif eq(parameters['Servers'], 'UATAPPAPP02.chicago.local') }}:
-            - task: PowerShell@2
-              displayName: 'Stop 27x App Pool on UATAPPAPP02'
-              inputs:
-                targetType: 'remoteMachine'
-                actionType: 'Inline'
-                scriptType: 'Inline'
-                inlineScript: |
-                  Stop-WebAppPool -Name '27xService' -ComputerName 'UATAPPAPP02'
-        ${{ endif }}
-      ${{ endif }}
+Business Impact
+•	What type of fix/upgrade/etc. is being performed?
+•	Please elaborate which module(s) within the application(s) will be impacted?
+•	What will be the end user impact during deployment time?	This is a full upgrade of the Aldera platform (Core and Portal). 
+
+Answer There are different enhancements along with additional production support fixes included in this release. This is a very large number of changes both on the Core and Portal side. This affects the entire Aldera environment. This will require downtime for clients from 5:00 AM CST on Sunday 10/22/2023 until release is signed off on by validation teams. For DQVIS the downtime will require around 9:00 PM CST on Saturday 08/05/2023.Goal is to have the deployment completed by 9:00 AM CST on Sunday 08/06/2023 and validation complete by 1:00 PM Sunday. For DQVIS is to have the deployment completed by 10:00 PM CST and validation complete by 11:00 PM CST.
+
+Hi Team,
+
+A banner for Identifi - Review is needed in support of the SP55 release this weekend. The release deployment will occur on 8/6/23 from 5am CT to 9am CT. Could you please create a banner for and put up on Thursday, 8/3 or Friday, 8/4?
+
+Thank you!
+
+Sunday, October 22 from 5:00 AM CT to 9:00 AM CT.
+
+Banner Message:
+
+ 
+
+SCHEDULED MAINTENANCE: We are performing backend maintenances of our systems connected to Identifi.  These maintenances will occur from Sunday, August 6th from 5:00 AM CT to 9:00 AM CT.  You may experience intermittent connectivity while accessing features such as "Member Eligilibity and Benefit Lookup" during these times. You may continue routine operations as scheduled.  Please select "Contact Support" from within Identifi or submit a ticket via: https://support.myidentifi.com with any questions/concerns.
