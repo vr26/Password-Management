@@ -1,20 +1,15 @@
-Business Impact
-•	What type of fix/upgrade/etc. is being performed?
-•	Please elaborate which module(s) within the application(s) will be impacted?
-•	What will be the end user impact during deployment time?	This is a full upgrade of the Aldera platform (Core and Portal). 
+What type of fix/upgrade/etc. is being performed?
+This release constitutes a full upgrade of the Aldera platform, including enhancements and essential production support fixes on both the Core and Portal sides.
 
-Answer There are different enhancements along with additional production support fixes included in this release. This is a very large number of changes both on the Core and Portal side. This affects the entire Aldera environment. This will require downtime for clients from 5:00 AM CST on Sunday 10/22/2023 until release is signed off on by validation teams. For DQVIS the downtime will require around 9:00 PM CST on Saturday 08/05/2023.Goal is to have the deployment completed by 9:00 AM CST on Sunday 08/06/2023 and validation complete by 1:00 PM Sunday. For DQVIS is to have the deployment completed by 10:00 PM CST and validation complete by 11:00 PM CST.
+Please elaborate on which module(s) within the application(s) will be impacted?
+The changes will impact all modules within the Aldera application, both on the Core and Portal sides. Specific details about affected modules are available in the release documentation provided to your team.
+
+What will be the end user impact during deployment time?
+During the deployment period, which starts at 5:00 AM CST on Sunday, 10/22/2023, users might experience downtime. Access to the Aldera platform will be temporarily unavailable as we implement the upgrades. We appreciate your understanding and patience as we work to enhance our system to better serve your needs.
 
 Hi Team,
-
-A banner for Identifi - Review is needed in support of the SP55 release this weekend. The release deployment will occur on 8/6/23 from 5am CT to 9am CT. Could you please create a banner for and put up on Thursday, 8/3 or Friday, 8/4?
-
-Thank you!
-
-Sunday, October 22 from 5:00 AM CT to 9:00 AM CT.
+We require your assistance in creating a banner for Identifi's SP55 release, scheduled for this weekend. The release deployment is set for Sunday, October 22nd, from 5:00 AM CT to 9:00 AM CT. To facilitate a smooth transition, we kindly request the banner to be prepared and displayed starting from Wednesday, October 18th, until the deployment date.
+Thanks
 
 Banner Message:
-
- 
-
-SCHEDULED MAINTENANCE: We are performing backend maintenances of our systems connected to Identifi.  These maintenances will occur from Sunday, August 6th from 5:00 AM CT to 9:00 AM CT.  You may experience intermittent connectivity while accessing features such as "Member Eligilibity and Benefit Lookup" during these times. You may continue routine operations as scheduled.  Please select "Contact Support" from within Identifi or submit a ticket via: https://support.myidentifi.com with any questions/concerns.
+We want to inform you about scheduled backend maintenance activities on our systems connected to Identifi. This maintenance is planned for Sunday, October 22nd, from 5:00 AM CT to 9:00 AM CT. During this period, intermittent connectivity issues may arise, especially while accessing features like 'Member Eligibility and Benefit Lookup.' We recommend avoiding these functionalities during the maintenance window. Routine operations can continue as usual. For any inquiries or concerns, please utilize the 'Contact Support' option within Identifi or submit a ticket via our support portal: https://support.myidentifi.com. We appreciate your patience and understanding as we work to enhance our systems.
