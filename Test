@@ -1,1 +1,5 @@
-Jenkins jobs DiskSpace_Check_PS and DiskSpace_Check_SBX for checking disk space of Drives before performing Refresh activities on Prod Support and Sandbox environment. If any Drives space is low when compared with Production Drive space. In the Jenkins console output shows us the size of disk space needs to be added on Core and Portal servers.
+The Jenkins jobs, DiskSpace_Check_PS and DiskSpace_Check_SBX, are vital tools for evaluating drive space before initiating Production Support and Sandbox environment Refresh activities. These jobs ensure that adequate disk space is available for seamless operations. If any drives have insufficient space compared to Production, the Jenkins output highlights the necessary additional space on Core and Portal servers. This automated process significantly reduces over 1.15 hours of manual work, enhancing efficiency in disk space management.
+
+
+
+
