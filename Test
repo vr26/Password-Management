@@ -1,5 +1,136 @@
-The Jenkins jobs, DiskSpace_Check_PS and DiskSpace_Check_SBX, are vital tools for evaluating drive space before initiating Production Support and Sandbox environment Refresh activities. These jobs ensure that adequate disk space is available for seamless operations. If any drives have insufficient space compared to Production, the Jenkins output highlights the necessary additional space on Core and Portal servers. This automated process significantly reduces over 1.15 hours of manual work, enhancing efficiency in disk space management.
-
-
-
-
+2023-10-23T02:21:30.0704599Z ##[section]Starting: Validate Deployment
+2023-10-23T02:21:30.1044862Z ==============================================================================
+2023-10-23T02:21:30.1045036Z Task         : PowerShell
+2023-10-23T02:21:30.1045135Z Description  : Run a PowerShell script on Linux, macOS, or Windows
+2023-10-23T02:21:30.1045791Z Version      : 2.229.4
+2023-10-23T02:21:30.1045893Z Author       : Microsoft Corporation
+2023-10-23T02:21:30.1045978Z Help         : https://docs.microsoft.com/azure/devops/pipelines/tasks/utility/powershell
+2023-10-23T02:21:30.1046121Z ==============================================================================
+2023-10-23T02:21:31.7237843Z Generating script.
+2023-10-23T02:21:31.7697975Z ========================== Starting Command Output ===========================
+2023-10-23T02:21:31.7944010Z ##[command]"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Unrestricted -Command ". 'E:\agent3\_work\_temp\20c3a454-200e-48fa-ab1f-8aa32bf4b456.ps1'"
+2023-10-23T02:21:32.3933077Z WARNING: 2023-10-22 21:01:31.3472|ERROR|Aldera.Deploy.Helpers.SQLProcessingHelper|r3.9.5.56|SMNY_PS|SQLTableProcessor 
+2023-10-23T02:21:32.3933479Z Error: ***ERROR*** Processing file: 
+2023-10-23T02:21:32.3935514Z E:\agent3\_work\_temp\AlderaDeployCache\r3.9.5.56.10222023_242219_WQXrAI\3Table\dbo.Security_Roles.SQL  Params: 
+2023-10-23T02:21:32.3936040Z aldpsdbsmny01|build_process Msg 4121, Level 16, State 1, Server ALDPSDBSMNY01, Line 14Cannot find either column "dbo" 
+2023-10-23T02:21:32.3936473Z or the user-defined function or aggregate "dbo.isRegexMatch", or the name is ambiguous.Msg 4121, Level 16, State 1, 
+2023-10-23T02:21:32.3936906Z Server ALDPSDBSMNY01, Line 13Cannot find either column "dbo" or the user-defined function or aggregate 
+2023-10-23T02:21:32.3937276Z "dbo.isRegexMatch", or the name is ambiguous. 2023-10-22 
+2023-10-23T02:21:32.3937696Z 21:01:31.3749|ERROR|Aldera.Deploy.Helpers.SQLProcessingHelper|r3.9.5.56|SMNY_PS|SQLTableProcessor Error: ***ERROR*** 
+2023-10-23T02:21:32.3938165Z Processing file: E:\agent3\_work\_temp\AlderaDeployCache\r3.9.5.56.10222023_242219_WQXrAI\3Table\dbo.Security_Roles.SQL
+2023-10-23T02:21:32.3938597Z   Params: aldpsdbsmny01|build_process Msg 4121, Level 16, State 1, Server ALDPSDBSMNY01, Line 14Cannot find either 
+2023-10-23T02:21:32.3939030Z column "dbo" or the user-defined function or aggregate "dbo.isRegexMatch", or the name is ambiguous.Msg 4121, Level 16,
+2023-10-23T02:21:32.3939472Z  State 1, Server ALDPSDBSMNY01, Line 13Cannot find either column "dbo" or the user-defined function or aggregate 
+2023-10-23T02:21:32.3939838Z "dbo.isRegexMatch", or the name is ambiguous. 2023-10-22 
+2023-10-23T02:21:32.3940222Z 21:11:48.3621|ERROR|Aldera.Deploy.Helpers.SQLProcessingHelper|r3.9.5.56|SMNY_PS|SQLFunctionProcessor Error: ***ERROR***
+2023-10-23T02:21:32.3940557Z  Processing file: 
+2023-10-23T02:21:32.3940923Z E:\agent3\_work\_temp\AlderaDeployCache\r3.9.5.56.10222023_242219_WQXrAI\10Functions\CLRFunctions\Deploy_WebServiceCLR_
+2023-10-23T02:21:32.3941364Z Functions.sql  Params: aldpsdbsmny01|build_process Msg 6528, Level 16, State 1, Server ALDPSDBSMNY01, Procedure 
+2023-10-23T02:21:32.3941779Z WebService, Line 1Assembly 'WebService' was not found in the SQL catalog of database 'SMNYAPP'. 2023-10-22 
+2023-10-23T02:21:32.3942212Z 21:11:48.3801|ERROR|Aldera.Deploy.Helpers.SQLProcessingHelper|r3.9.5.56|SMNY_PS|SQLFunctionProcessor Error: ***ERROR***
+2023-10-23T02:21:32.3942556Z  Processing file: 
+2023-10-23T02:21:32.3942900Z E:\agent3\_work\_temp\AlderaDeployCache\r3.9.5.56.10222023_242219_WQXrAI\10Functions\CLRFunctions\Deploy_WebServiceCLR_
+2023-10-23T02:21:32.3943333Z Functions.sql  Params: aldpsdbsmny01|build_process Msg 6528, Level 16, State 1, Server ALDPSDBSMNY01, Procedure 
+2023-10-23T02:21:32.3943739Z WebService, Line 1Assembly 'WebService' was not found in the SQL catalog of database 'SMNYAPP'. 2023-10-22 
+2023-10-23T02:21:32.3944176Z 21:18:13.4877|ERROR|Aldera.Deploy.Helpers.SQLProcessingHelper|r3.9.5.56|SMNY_PS|SQLSprocProcessor Error: ***ERROR*** 
+2023-10-23T02:21:32.3947706Z Processing file: 
+2023-10-23T02:21:32.3948059Z E:\agent3\_work\_temp\AlderaDeployCache\r3.9.5.56.10222023_242219_WQXrAI\12AllStoreProcs\CLRStoredProcedures\Deploy_HPS
+2023-10-23T02:21:32.3949152Z _Common_SqlCLR.sql  Params: aldpsdbsmny01|build_process Dropping Assembly [System.ComponentModel.Annotations]Dropping 
+2023-10-23T02:21:32.3949951Z Assembly [System.Net.Http]Loading Assembly [System.ComponentModel.Annotations]Warning: The Microsoft .NET Framework 
+2023-10-23T02:21:32.3950313Z assembly 'system.componentmodel.annotations, version=4.0.0.0, culture=neutral, publickeytoken=b03f5f7f11d50a3a, 
+2023-10-23T02:21:32.3950665Z processorarchitecture=msil.' you are registering is not fully tested in the SQL Server hosted environment and is not 
+2023-10-23T02:21:32.3951009Z supported. In the future, if you upgrade or service this assembly or the .NET Framework, your CLR integration routine 
+2023-10-23T02:21:32.3951379Z may stop working. Please refer SQL Server Books Online for more details.Loading Assembly [System.Net.Http]Warning: The 
+2023-10-23T02:21:32.3951736Z Microsoft .NET Framework assembly 'system.net.http, version=4.0.0.0, culture=neutral, publickeytoken=b03f5f7f11d50a3a, 
+2023-10-23T02:21:32.3952089Z processorarchitecture=msil.' you are registering is not fully tested in the SQL Server hosted environment and is not 
+2023-10-23T02:21:32.3952432Z supported. In the future, if you upgrade or service this assembly or the .NET Framework, your CLR integration routine 
+2023-10-23T02:21:32.3952874Z may stop working. Please refer SQL Server Books Online for more details.Loading Assembly [Shared.Claim.Core.Model]Error
+2023-10-23T02:21:32.3953254Z  occured while loading assembly [Shared.Claim.Core.Model], ErrorCode:6501, ErrorMessage: CREATE ASSEMBLY failed because
+2023-10-23T02:21:32.3953709Z  it could not open the physical file '\\ALDPRDDBSMNY01\BATCH\BatJobs\HPSCommonSqlCLR\Shared.Claim.Core.Model.dll': 
+2023-10-23T02:21:32.3954146Z 5(Access is denied.).Loading Assembly [Accums.Model]Error occured while loading assembly [Accums.Model], 
+2023-10-23T02:21:32.3954557Z ErrorCode:6501, ErrorMessage: CREATE ASSEMBLY failed because it could not open the physical file 
+2023-10-23T02:21:32.3954972Z '\\ALDPRDDBSMNY01\BATCH\BatJobs\HPSCommonSqlCLR\Accums.Model.dll': 5(Access is denied.).Loading Assembly 
+2023-10-23T02:21:32.3955427Z [HPS.Common.CLRModels]Error occured while loading assembly [HPS.Common.CLRModels], ErrorCode:6501, ErrorMessage: CREATE
+2023-10-23T02:21:32.3955846Z  ASSEMBLY failed because it could not open the physical file 
+2023-10-23T02:21:32.3956221Z '\\ALDPRDDBSMNY01\BATCH\BatJobs\HPSCommonSqlCLR\HPS.Common.CLRModels.dll': 5(Access is denied.).Loading Assembly 
+2023-10-23T02:21:32.3956681Z [HPS.Common.CLRUtility]Error occured while loading assembly [HPS.Common.CLRUtility], ErrorCode:6501, ErrorMessage: 
+2023-10-23T02:21:32.3957096Z CREATE ASSEMBLY failed because it could not open the physical file 
+2023-10-23T02:21:32.3957507Z '\\ALDPRDDBSMNY01\BATCH\BatJobs\HPSCommonSqlCLR\HPS.Common.CLRUtility.dll': 5(Access is denied.).Loading Assembly 
+2023-10-23T02:21:32.3957975Z [HPS.Common.CLRStoredProcedures]Error occured while loading assembly [HPS.Common.CLRStoredProcedures], ErrorCode:6501, 
+2023-10-23T02:21:32.3958408Z ErrorMessage: CREATE ASSEMBLY failed because it could not open the physical file 
+2023-10-23T02:21:32.3958810Z '\\ALDPRDDBSMNY01\BATCH\BatJobs\HPSCommonSqlCLR\HPS.Common.CLRStoredProcedures.dll': 5(Access is denied.).Loading 
+2023-10-23T02:21:32.3959287Z Assembly [HPS.Common.CLRFunctions]Error occured while loading assembly [HPS.Common.CLRFunctions], ErrorCode:6501, 
+2023-10-23T02:21:32.3959711Z ErrorMessage: CREATE ASSEMBLY failed because it could not open the physical file 
+2023-10-23T02:21:32.3960113Z '\\ALDPRDDBSMNY01\BATCH\BatJobs\HPSCommonSqlCLR\HPS.Common.CLRFunctions.dll': 5(Access is denied.).Msg 6528, Level 16, 
+2023-10-23T02:21:32.3960555Z State 1, Server ALDPSDBSMNY01, Procedure prCLRProcessPaidThruDate, Line 3Assembly 'HPS.Common.CLRStoredProcedures' was 
+2023-10-23T02:21:32.3961920Z not found in the SQL catalog of database 'SMNYAPP'.Msg 6528, Level 16, State 1, Server ALDPSDBSMNY01, Procedure 
+2023-10-23T02:21:32.3962349Z prCLRProcessCensus, Line 6Assembly 'HPS.Common.CLRStoredProcedures' was not found in the SQL catalog of database 
+2023-10-23T02:21:32.3963054Z 'SMNYAPP'.Msg 6528, Level 16, State 1, Server ALDPSDBSMNY01, Procedure prCLRCalculateSubsidyCensus, Line 6Assembly 
+2023-10-23T02:21:32.3963491Z 'HPS.Common.CLRStoredProcedures' was not found in the SQL catalog of database 'SMNYAPP'.Msg 6528, Level 16, State 1, 
+2023-10-23T02:21:32.3963951Z Server ALDPSDBSMNY01, Procedure prCLRInitiate835, Line 6Assembly 'HPS.Common.CLRStoredProcedures' was not found in the 
+2023-10-23T02:21:32.3964393Z SQL catalog of database 'SMNYAPP'.Msg 6528, Level 16, State 1, Server ALDPSDBSMNY01, Procedure fnCLRGetExternalClaims, 
+2023-10-23T02:21:32.3964835Z Line 7Assembly 'HPS.Common.CLRFunctions' was not found in the SQL catalog of database 'SMNYAPP'.Msg 6528, Level 16, 
+2023-10-23T02:21:32.3965294Z State 1, Server ALDPSDBSMNY01, Procedure fnCLRGetMemberProfileExternalClaims, Line 5Assembly 'HPS.Common.CLRFunctions' 
+2023-10-23T02:21:32.3965736Z was not found in the SQL catalog of database 'SMNYAPP'.Msg 6528, Level 16, State 1, Server ALDPSDBSMNY01, Procedure 
+2023-10-23T02:21:32.3966169Z FnCLRGetProfileMaximums, Line 5Assembly 'HPS.Common.CLRFunctions' was not found in the SQL catalog of database 
+2023-10-23T02:21:32.3966615Z 'SMNYAPP'. 2023-10-22 21:18:13.5063|ERROR|Aldera.Deploy.Helpers.SQLProcessingHelper|r3.9.5.56|SMNY_PS|SQLSprocProcessor
+2023-10-23T02:21:32.3966995Z  Error: ***ERROR*** Processing file: 
+2023-10-23T02:21:32.3967361Z E:\agent3\_work\_temp\AlderaDeployCache\r3.9.5.56.10222023_242219_WQXrAI\12AllStoreProcs\CLRStoredProcedures\Deploy_HPS
+2023-10-23T02:21:32.3967802Z _Common_SqlCLR.sql  Params: aldpsdbsmny01|build_process Dropping Assembly [System.ComponentModel.Annotations]Dropping 
+2023-10-23T02:21:32.3968235Z Assembly [System.Net.Http]Loading Assembly [System.ComponentModel.Annotations]Warning: The Microsoft .NET Framework 
+2023-10-23T02:21:32.3968682Z assembly 'system.componentmodel.annotations, version=4.0.0.0, culture=neutral, publickeytoken=b03f5f7f11d50a3a, 
+2023-10-23T02:21:32.3969110Z processorarchitecture=msil.' you are registering is not fully tested in the SQL Server hosted environment and is not 
+2023-10-23T02:21:32.3969534Z supported. In the future, if you upgrade or service this assembly or the .NET Framework, your CLR integration routine 
+2023-10-23T02:21:32.3969953Z may stop working. Please refer SQL Server Books Online for more details.Loading Assembly [System.Net.Http]Warning: The 
+2023-10-23T02:21:32.3970404Z Microsoft .NET Framework assembly 'system.net.http, version=4.0.0.0, culture=neutral, publickeytoken=b03f5f7f11d50a3a, 
+2023-10-23T02:21:32.3970837Z processorarchitecture=msil.' you are registering is not fully tested in the SQL Server hosted environment and is not 
+2023-10-23T02:21:32.3971266Z supported. In the future, if you upgrade or service this assembly or the .NET Framework, your CLR integration routine 
+2023-10-23T02:21:32.3971690Z may stop working. Please refer SQL Server Books Online for more details.Loading Assembly [Shared.Claim.Core.Model]Error
+2023-10-23T02:21:32.3972163Z  occured while loading assembly [Shared.Claim.Core.Model], ErrorCode:6501, ErrorMessage: CREATE ASSEMBLY failed because
+2023-10-23T02:21:32.3972618Z  it could not open the physical file '\\ALDPRDDBSMNY01\BATCH\BatJobs\HPSCommonSqlCLR\Shared.Claim.Core.Model.dll': 
+2023-10-23T02:21:32.3973028Z 5(Access is denied.).Loading Assembly [Accums.Model]Error occured while loading assembly [Accums.Model], 
+2023-10-23T02:21:32.3973435Z ErrorCode:6501, ErrorMessage: CREATE ASSEMBLY failed because it could not open the physical file 
+2023-10-23T02:21:32.3973859Z '\\ALDPRDDBSMNY01\BATCH\BatJobs\HPSCommonSqlCLR\Accums.Model.dll': 5(Access is denied.).Loading Assembly 
+2023-10-23T02:21:32.3974657Z [HPS.Common.CLRModels]Error occured while loading assembly [HPS.Common.CLRModels], ErrorCode:6501, ErrorMessage: CREATE
+2023-10-23T02:21:32.3975260Z  ASSEMBLY failed because it could not open the physical file 
+2023-10-23T02:21:32.3975862Z '\\ALDPRDDBSMNY01\BATCH\BatJobs\HPSCommonSqlCLR\HPS.Common.CLRModels.dll': 5(Access is denied.).Loading Assembly 
+2023-10-23T02:21:32.3976264Z [HPS.Common.CLRUtility]Error occured while loading assembly [HPS.Common.CLRUtility], ErrorCode:6501, ErrorMessage: 
+2023-10-23T02:21:32.3976594Z CREATE ASSEMBLY failed because it could not open the physical file 
+2023-10-23T02:21:32.3976916Z '\\ALDPRDDBSMNY01\BATCH\BatJobs\HPSCommonSqlCLR\HPS.Common.CLRUtility.dll': 5(Access is denied.).Loading Assembly 
+2023-10-23T02:21:32.3977299Z [HPS.Common.CLRStoredProcedures]Error occured while loading assembly [HPS.Common.CLRStoredProcedures], ErrorCode:6501, 
+2023-10-23T02:21:32.3977670Z ErrorMessage: CREATE ASSEMBLY failed because it could not open the physical file 
+2023-10-23T02:21:32.3978000Z '\\ALDPRDDBSMNY01\BATCH\BatJobs\HPSCommonSqlCLR\HPS.Common.CLRStoredProcedures.dll': 5(Access is denied.).Loading 
+2023-10-23T02:21:32.3978375Z Assembly [HPS.Common.CLRFunctions]Error occured while loading assembly [HPS.Common.CLRFunctions], ErrorCode:6501, 
+2023-10-23T02:21:32.3978723Z ErrorMessage: CREATE ASSEMBLY failed because it could not open the physical file 
+2023-10-23T02:21:32.3979062Z '\\ALDPRDDBSMNY01\BATCH\BatJobs\HPSCommonSqlCLR\HPS.Common.CLRFunctions.dll': 5(Access is denied.).Msg 6528, Level 16, 
+2023-10-23T02:21:32.3979424Z State 1, Server ALDPSDBSMNY01, Procedure prCLRProcessPaidThruDate, Line 3Assembly 'HPS.Common.CLRStoredProcedures' was 
+2023-10-23T02:21:32.3979776Z not found in the SQL catalog of database 'SMNYAPP'.Msg 6528, Level 16, State 1, Server ALDPSDBSMNY01, Procedure 
+2023-10-23T02:21:32.3980124Z prCLRProcessCensus, Line 6Assembly 'HPS.Common.CLRStoredProcedures' was not found in the SQL catalog of database 
+2023-10-23T02:21:32.3980490Z 'SMNYAPP'.Msg 6528, Level 16, State 1, Server ALDPSDBSMNY01, Procedure prCLRCalculateSubsidyCensus, Line 6Assembly 
+2023-10-23T02:21:32.3980843Z 'HPS.Common.CLRStoredProcedures' was not found in the SQL catalog of database 'SMNYAPP'.Msg 6528, Level 16, State 1, 
+2023-10-23T02:21:32.3981204Z Server ALDPSDBSMNY01, Procedure prCLRInitiate835, Line 6Assembly 'HPS.Common.CLRStoredProcedures' was not found in the 
+2023-10-23T02:21:32.3981566Z SQL catalog of database 'SMNYAPP'.Msg 6528, Level 16, State 1, Server ALDPSDBSMNY01, Procedure fnCLRGetExternalClaims, 
+2023-10-23T02:21:32.3981941Z Line 7Assembly 'HPS.Common.CLRFunctions' was not found in the SQL catalog of database 'SMNYAPP'.Msg 6528, Level 16, 
+2023-10-23T02:21:32.3982298Z State 1, Server ALDPSDBSMNY01, Procedure fnCLRGetMemberProfileExternalClaims, Line 5Assembly 'HPS.Common.CLRFunctions' 
+2023-10-23T02:21:32.3982655Z was not found in the SQL catalog of database 'SMNYAPP'.Msg 6528, Level 16, State 1, Server ALDPSDBSMNY01, Procedure 
+2023-10-23T02:21:32.3983003Z FnCLRGetProfileMaximums, Line 5Assembly 'HPS.Common.CLRFunctions' was not found in the SQL catalog of database 
+2023-10-23T02:21:32.3983289Z 'SMNYAPP'. 2023-10-22 
+2023-10-23T02:21:32.3983565Z 21:21:19.0950|ERROR|Aldera.Deploy.Helpers.SQLProcessingHelper|r3.9.5.56|SMNY_PS|SQLEndScriptProcessor Error: 
+2023-10-23T02:21:32.3983838Z ***ERROR*** Processing file: 
+2023-10-23T02:21:32.3984123Z E:\agent3\_work\_temp\AlderaDeployCache\r3.9.5.56.10222023_242219_WQXrAI\18Deployment\Scripts\Admin.sql  Params: 
+2023-10-23T02:21:32.3984489Z aldpsdbsmny01|build_process Msg 4121, Level 16, State 1, Server ALDPSDBSMNY01, Line 157Cannot find either column "dbo" 
+2023-10-23T02:21:32.3984819Z or the user-defined function or aggregate "dbo.CreateHash", or the name is ambiguous. 2023-10-22 
+2023-10-23T02:21:32.3985154Z 21:21:19.1136|ERROR|Aldera.Deploy.Helpers.SQLProcessingHelper|r3.9.5.56|SMNY_PS|SQLEndScriptProcessor Error: 
+2023-10-23T02:21:32.3985426Z ***ERROR*** Processing file: 
+2023-10-23T02:21:32.3985962Z E:\agent3\_work\_temp\AlderaDeployCache\r3.9.5.56.10222023_242219_WQXrAI\18Deployment\Scripts\Admin.sql  Params: 
+2023-10-23T02:21:32.3986310Z aldpsdbsmny01|build_process Msg 4121, Level 16, State 1, Server ALDPSDBSMNY01, Line 157Cannot find either column "dbo" 
+2023-10-23T02:21:32.3986828Z or the user-defined function or aggregate "dbo.CreateHash", or the name is ambiguous.
+2023-10-23T02:21:32.4674183Z Errors in deployment
+2023-10-23T02:21:32.4675241Z At E:\agent3\_work\_temp\20c3a454-200e-48fa-ab1f-8aa32bf4b456.ps1:11 char:3
+2023-10-23T02:21:32.4675531Z +         Throw 'Errors in deployment'
+2023-10-23T02:21:32.4676508Z +         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2023-10-23T02:21:32.4676874Z     + CategoryInfo          : OperationStopped: (Errors in deployment:String) [], RuntimeException
+2023-10-23T02:21:32.4678784Z     + FullyQualifiedErrorId : Errors in deployment
+2023-10-23T02:21:32.4680132Z  
+2023-10-23T02:21:32.5563083Z ##[error]PowerShell exited with code '1'.
+2023-10-23T02:21:32.6035497Z ##[section]Finishing: Validate Deployment
