@@ -1,46 +1,18 @@
-
-1.	OKR - Own ticket backlog: 
-a.	Daily process established for ticket review/triage.
-b.	Ensure proper ticket hygiene (comments every week if in progress, proper statuses, proper assignment).
-c.	Establish process to reduce MTTR under 5 days.
-d.	Ensure backlog does not have FIX tickets greater than 30 days.
-e.	Own report out of tickets in weekly team mtg 
-
-2.	OKR - Managing/Owning Release tracker.
-a.	Create SOPs for weekly data maintenance (ensure there are no data gaps such as missing information, TSO/fix tickets)
-b.	Identify and drive 5 improvements to the tracker.
-
-3.	OKR
-a.	Champion Core/portal releases
-b.	get involved with RT releases.
-
-
-4.	OKR - Projects:
-a.	-Implement PowerBI with 3-4 used cases
-b.	-integrate Kibana/AppInsight/Splunk with release process
-
-5.	OKR
-a.	Professional Development – please think of a professional development goal for 2023.
-
- 1.	OKR-1
-a.	Standardizing release management process documentation
-i.	Create process documentation for:
-1.	Environment Test failure
-2.	UAT identify Deployment
-ii.	Group review by 1st Dec
-iii.	Finalizing documentation by 15th Dec
-2.	OKR-2
-a.	Managing/Owning Environment Test process
-i.	Monitoring environment Test (prod and non-prod environment)
-ii.	Tracking/fixing Failed test
-iii.	Owning/managing Ticket tracking matrix dashboard
-iv.	owning monthly review meeting
-v.	Implementing two process improvement
-vi.	Target completion day by 15th Dec
-3.	OKR-3
-a.	Managing/Owning UAT identify deployment
-i.	scheduling, coordinating UAT identify deployment
-ii.	Maintaining ticket hygiene
-iii.	Implementing two process improvement
-iv.	Target completion day by 15th Dec
-
+83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+   at _27xMicroservice.Infrastructure.ServiceClients.EnterpriseIdApiResolver.<>c__DisplayClass25_0`1.<<ExecuteRequest>b__0>d.MoveNext() in E:\003WA\w\8469\s\Services\src\27xMicroservice.Infrastructure\ServiceClients\EnterpriseIdApiResolver.cs:line 216
+--- End of stack trace from previous location ---
+   at Polly.Retry.AsyncRetryEngine.ImplementationAsync[TResult](Func`3 action, Context context, CancellationToken cancellationToken, ExceptionPredicates shouldRetryExceptionPredicates, ResultPredicates`1 shouldRetryResultPredicates, Func`5 onRetryAsync, Int32 permittedRetryCount, IEnumerable`1 sleepDurationsEnumerable, Func`4 sleepDurationProvider, Boolean continueOnCapturedContext)
+   at Polly.AsyncPolicy`1.ExecuteAsync(Func`3 action, Context context, CancellationToken cancellationToken, Boolean continueOnCapturedContext)
+   at _27xMicroservice.Infrastructure.ServiceClients.EnterpriseIdApiResolver.ExecuteRequest[TResponse](Boolean useRetryPolicy, String mediaType, Func`1 GetRequestMessage, String enterpriseId) in E:\003WA\w\8469\s\Services\src\27xMicroservice.Infrastructure\ServiceClients\EnterpriseIdApiResolver.cs:line 231
+   at _27xMicroservice.Infrastructure.ServiceClients.EnterpriseIdApiResolver.PostAsync[TRequest,TResponse](String action, TRequest toPost, String mediaType, MediaTypeFormatter mediaTypeFormatter, Boolean useRetryPolicy, String enterpriseId) in E:\003WA\w\8469\s\Services\src\27xMicroservice.Infrastructure\ServiceClients\EnterpriseIdApiResolver.cs:line 70
+   --- End of inner exception stack trace ---
+   at _27xMicroservice.Infrastructure.ServiceClients.EnterpriseIdApiResolver.Throw(String action, Exception e) in E:\003WA\w\8469\s\Services\src\27xMicroservice.Infrastructure\ServiceClients\EnterpriseIdApiResolver.cs:line 243
+   at _27xMicroservice.Infrastructure.ServiceClients.EnterpriseIdApiResolver.PostAsync[TRequest,TResponse](String action, TRequest toPost, String mediaType, MediaTypeFormatter mediaTypeFormatter, Boolean useRetryPolicy, String enterpriseId) in E:\003WA\w\8469\s\Services\src\27xMicroservice.Infrastructure\ServiceClients\EnterpriseIdApiResolver.cs:line 70
+   at _27xMicroservice.Infrastructure.ServiceClients.ClaimClient.GetClaimAccumDetails(ClaimAccumDetailsRequest request, String enterpriseId) in E:\003WA\w\8469\s\Services\src\27xMicroservice.Infrastructure\ServiceClients\ClaimClient.cs:line 98
+   at _27xMicroservice.Infrastructure.Services.ClaimService.GetClaimAccumDetails(ClaimAccumDetailsRequest request, String enterpriseId) in E:\003WA\w\8469\s\Services\src\27xMicroservice.Infrastructure\Services\ClaimService.cs:line 227
+   --- End of inner exception stack trace ---
+   at _27xMicroservice.Infrastructure.Services.ClaimService.GetClaimAccumDetails(ClaimAccumDetailsRequest request, String enterpriseId) in E:\003WA\w\8469\s\Services\src\27xMicroservice.Infrastructure\Services\ClaimService.cs:line 227
+   at _27xMicroservice.Infrastructure.Services.BenefitInfoService.<>c__DisplayClass6_0.<<GetBenefitInfos>b__0>d.MoveNext() in E:\003WA\w\8469\s\Services\src\27xMicroservice.Infrastructure\Services\BenefitInfoService.cs:line 76
+--- End of stack trace from previous location ---
+   at _27xMicroservice.Infrastructure.Services.BenefitInfoService.GetBenefitInfos(IEnumerable`1 serviceTypeList, IEnumerable`1 eligibilityPlanBenefitStrategyList, CrossWalkDetail crossWalkListsModel, String enterpriseId, Int32 messageLength, String clientCode, MemberSearchResult member, Nullable`1 memberAge, DateTime requestDate, ILookup`2 groupLookup) in E:\003WA\w\8469\s\Services\src\27xMicroservice.Infrastructure\Services\BenefitInfoService.cs:line 78
+   at _27xMicroservice.Infrastructure.Services.TwoSevenOneService.Get271(Transaction270 request) in E:\003WA\w\8469\s\Services\src\27xMicroservice.Infrastructure\Services\TwoSevenOneService.cs:line 582
