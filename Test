@@ -1,5 +1,8 @@
 # Run Pester and store the results in a variable
 $result = Invoke-Pester -Script .\Testservice.ps1 -PassThru
 
-# Generate an HTML report from the results and save it without BOM
-$result | Format-Pester -Format Html -ReportTitle "Report for Service" | Set-Content -Path "report.html" -Encoding UTF8
+# Generate an HTML report from the results
+$result | Format-Pester -Format Html -ReportTitle "Report for Service" | Out-File "report.html" -Encoding utf8
+
+# Remove BOM from the generated HTML file
+(Get-Content "report.html" -Raw) | Set-Content "report.html" -Encoding utf8 -NoByteOrderMark
