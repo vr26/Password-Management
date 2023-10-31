@@ -1,6 +1,5 @@
 # Run Pester and store the results in a variable
 $result = Invoke-Pester -Script .\Testservice.ps1 -PassThru
 
-# Generate an HTML report from the results
-$result | Format-Pester -Format Html -ReportTitle "Report for Service"
-ï»¿ 
+# Generate an HTML report from the results and specify UTF-8 encoding
+$result | Format-Pester -Format Html -ReportTitle "Report for Service" -Encoding utf8 | Out-File "report.html" -Encoding utf8
