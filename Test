@@ -1,10 +1,30 @@
-# Run Pester and store the results in a variable
-$result = Invoke-Pester -Script .\Testservice.ps1 -PassThru
+                   $result | Format-Pester -Format html -Path $env:TEMP -ReportTitle "Report for $($objEnvironmentApplication.Name)";
 
-# Generate an HTML report from the results and save it with BOM
-$result | Format-Pester -Format Html | Out-File "report.html" -Encoding utf8
+                    Send-MailMessage -From $SMTPFrom -to $SMTPTo -Subject "Failure Report for Environment '$($objEnvironmentApplication.Name)' - $($result.FailedCount) Failed Tests" -Body "$(Get-Content $Env:TEMP\Pester_Results.html)" -BodyAsHtml -SmtpServer $SMTPServer;
+            }
 
-# Read the content, remove BOM, and rewrite the file
-$fileContent = Get-Content "report.html" -Raw
-$fileContent = $fileContent -replace '^\xef\xbb\xbf', '' # Removes UTF-8 BOM
-$fileContent | Set-Content "report.html" -Encoding utf8
+
+# Read the JSON file
+$json = Get-Content -Path .\Filejson.json
+
+# Convert the JSON to a PowerShell object
+$serviceObject = $json | ConvertFrom-Json
+
+# Pester Test
+Describe "$($serviceObject.ServiceName) Service Test" {
+    Context "Service Existence" {
+        It "$($serviceObject.ServiceName) Service should exist" {
+            (Get-Service -Name $serviceObject.ServiceName | Should -Not -BeNullOrEmpty)
+        }
+    }
+
+    Context "Service Status" {
+        It "$($serviceObject.ServiceName) Service should be running" {
+            (Get-Service -Name $serviceObject.ServiceName).Status | Should -Be 'Runnin'
+        }
+    }
+}
+
+{
+    "ServiceName": "Intel PDS"
+}
