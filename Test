@@ -1,8 +1,13 @@
+Tests Passed: 1, Failed: 1, Skipped: 0, Pending: 0, Inconclusive: 0 
+Path '.\Pester_Results' is not a valid directory path.'
+At line:43 char:13
++             throw ($localized.InvalidDirectoryPathError -f $Path);
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (Path '.\Pester_...irectory path.':String) [], RuntimeException
+    + FullyQualifiedErrorId : Path '.\Pester_Results' is not a valid directory path.'
+
 # Run Pester and store the results in a variable
 $result = Invoke-Pester -Script .\Testservice.ps1 -PassThru
 
 # Generate an HTML report from the results
-$result | Format-Pester -Format Html -ReportTitle "Report for Service" | Out-File "report.html" -Encoding utf8
-
-# Remove BOM from the generated HTML file
-(Get-Content "report.html" -Raw) | Set-Content "report.html" -Encoding utf8 -NoByteOrderMark
+$result | Format-Pester -Format Html -Path ".\Pester_Results" -ReportTitle "Report for Service"
