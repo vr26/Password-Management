@@ -1,7 +1,73 @@
-o request the setup of a basic version of Power Automate for our IT Service Management (ITSM) team, specifically for the email address ITSMserviceManagement@evolent.com. This email address functions as a mailbox for our team's communication needs.
+Question 1
+Describe your achievements and progress on your OKRs, including real-life examples of their impact. Use metrics and data to illustrate your accomplishments. You can also attach documents to support your review on the next page. Furthermore, share your thoughts on the technical skills you used to achieve your OKRs. Highlight your strenghts as well as improvement areas, noting both what areas and how you plan to improve. 
+Consider how your actions and contributions help the organization thrive as One Evolent, including noting your adjustments to change, your critical thinking in new situations and how well you adjusted to new team dynamics and roles.
 
-Our objective is to send Emergency Change Advisory Board (ECAB) notifications via Teams using Power Automate. These notifications will serve as mid-level reminders, with alerts sent out at 30-minute and 45-minute intervals. To achieve this, we intend to leverage the newly created ITSM mailbox email for streamlined communication and efficiency.
+Question 2: The organization believes that “how” you accomplish something is just as important as what you have accomplished. Describe how you reached your OKRs above by demonstrating Evolent’s competency model and values (Start by Listening, Communicate with Candor, Foster Inclusion, and Own the Opportunity). Share your strengths and areas you want to improve and how you can improve. Consider how your actions and contributions help Evolent become more unified as One Evolent.
+1.	OKR - Own ticket backlog: 
+a.	Daily process established for ticket review/triage.
+b.	Ensure proper ticket hygiene (comments every week if in progress, proper statuses, proper assignment).
+c.	Establish process to reduce MTTR under 5 days.
+d.	Ensure backlog does not have FIX tickets greater than 30 days.
+e.	Own report out of tickets in weekly team mtg 
 
-I kindly request your assistance in setting up this Power Automate workflow or exploring alternative solutions, if any, to achieve our goal effectively. Your support in this matter is greatly appreciated.
+For OKR Own ticket backlog – Implemented Jira dashboard for quick assigning tickets and which make sure Old tickets, new tickets blocked tickets and deployed tickets as per the environments and it helps us to reduce MTTR to 2 days and Fixing the deployment tickets with in 15 days and sending out weekly ticket summary for quick look and mid level notification to the team it helps the team to look it out and fix it and As part of ticket hygiene I lookout and educated teams to self hygiene and implemented RMtasks label to give proper mttra to team and troubleshooting and other non deployment tasks goes to Rmtasks to take a look quickly.
+2.	OKR - Managing/Owning Release tracker.
+a.	Create SOPs for weekly data maintenance (ensure there are no data gaps such as missing information, TSO/fix tickets)
+b.	Identify and drive 5 improvements to the tracker.
+Managing release tracker and optimized the tracker to reduce the slowness and migrated the tracker to new domain and every week filling out missed information as it’s the source of truth. 
+As part of improvements We implemented New depllyment status to find out the priority of deployed with issues.
+Using power automate we are taking regular backups of the tracker to other location.
 
-Thank you for your attention and prompt action on this request. Please feel free to reach out if you need any additional information or clarification.
+3.	OKR
+a.	Champion Core/portal releases
+b.	get involved with RT releases.
+
+Took ownership of Core and Portal reelases, Initiated and drove couple of Core releases and took ownership of complete UAT, pS, SBX , Prod deployments and check the issues identified in UAT testing and Walkthrough the stsatus calls , gng, deployment walkthrough and checkpoint calls and other callsand optimized multiple confluence pages for easy use to stakeholders and reduced couple of checkpoint calls at the time of SP releases and For portal release implemented Powershell script to reduce the manual execution of base and upgrade script. Which save 5 to 10 minutes of time per client and I drove all the UAt and PS portal deployments and in SP56 drove production deployment as well.
+And as part of RT , I took complete ownership of UAT and Prod release, Iniates status pages, Check with internal stakeholders, and works on Common service calls for RT updates and implemented powershell script to recycle app pools in all 4 prod servers and 2 uat servers and restarted the services according to environment. Which saves more than 30 to 50 minites of work in prod and 20 mins in uat.
+Implemented CICD pipeliene for that which makes the server runs parallely and without affecting the load balancing which completes the job in 7 minutes
+4.	OKR - Projects:
+a.	-Implement PowerBI with 3-4 used cases
+b.	-integrate Kibana/AppInsight/Splunk with release process
+Implemented powerbi in release management, Which has Last 90 days deployments, Current versions according to applications (SP core and portal,Microservices,Claim counting rules,Identifi apps etc), Kpi metrics weekly and monthly which has overall information, Deployed with issues information and release schedule of SAAS.
+
+the kpi in powerbi which reduces 30 to 45 minutes of manual work monthly to add in kpi call
+
+5.	OKR
+a.	Professional Development – please think of a professional development goal for 2023.
+Completed Power automate certification
+Completed RPA essentials certification
+Completed RPA masters cert
+6.	OKR-1
+a.	Standardizing release management process documentation
+i.	Create process documentation for:
+1.	Environment Test failure
+2.	UAT identify Deployment
+Created confluence page for environment pages, Which include about env test and clients which has environment test, sop to resolve that and on point for prod env failures and following up with teams to fix asap. And Took full ownership of identify UAT deployments
+7.	OKR-2
+a.	Managing/Owning Environment Test process
+i.	Monitoring environment Test (prod and non-prod environment)
+ii.	Tracking/fixing Failed test
+iii.	Owning/managing Ticket tracking matrix dashboard
+Daily I spent 1 hour to reduce the environment tests failures and track in tickets and assign to appropriate teams and following up every 2 days with the team and 
+8.	OKR-3
+a.	Managing/Owning UAT identify deployment
+i.	scheduling, coordinating UAT identify deployment
+ii.	Maintaining ticket hygiene
+iii.	Implementing two process improvement
+On point to UAt identify deployment schedule and coordinate with identify teams and educated team to use cadence for every week and educated teams to help of proper tickets and proper proceducre. As part of improvement I created a dependency matrix of identif applications as part of deployment in confluence.
+
+As part of addition.
+Using powershell script – The below all are implemented Jenkins for easier issue and created SOP and educated the team to make necessary adjustments as per the need
+	Created App pool recycle and Restart windows services – which reduces 35 to 60 minutes of manual work every rt release
+	Created clearing batch script – Which helps to login every server and delete batch and printfiles old logs, Which helps 25 minutes of manual work every SP release 
+	Created a script to check disk space in UAT,PS,SBX by comparing with Prd, Which gives exact value fo space needed in Core and portal server which is used by AIM team, appops team as part of environment refresh. Which helps their 75 minutes manual work every 2 weeks for PS and Other environment refreshes as well.
+	Created a script to check SSL manually , It helps Aim team to login to server each time to check SSL expiry date.
+Power automate: 
+	Created Power automate solution to our team for to sendout weekly deployment summary which helps our team 30 to 45 minutes weekly redcues manual effort.
+	Created ecab notification in power automate, Which makes on time teams chat to business approvers about the ecab received by whom and about and it provides 30 minutes and 45 minutes notification to make the ecab is not missed.
+	Created power automatr for powerbi , Which helps the team to download the KPI metrics from the powerbi helps which helps 30 to 45 nminutes of monthly time.
+	Creted power automate alerts to Aim team and NOC team for certificate expiration alert about certs which are going to expire in 30 and 15 days as two separate emails and created 30 days alerts for noc in domain  and org id expiration, Which send alerts till they update the neccassry tickets which helps a lot to pickup the certs before the expiration and domain and or expirations.
+	Created power automate solution to pick the backup of release tracker which helps to have backup
+
+
+Achieved pat on the back and spot award from the team to support e2e deployment process and makes impact and got spot award for implemented powerbi solutions
