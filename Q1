@@ -1,0 +1,41 @@
+1. Own Ticket Backlog:
+Jira Dashboard Implementation:
+
+Established a Jira dashboard, aligning with the objective of daily ticket review/triage. This resulted in a remarkable reduction of MTTR to an impressive 2 days, surpassing the target of 5 days.
+The implemented RMtasks label and strategic use of Jira boards ensured not only proper ticket hygiene but also a comprehensive and efficient process for troubleshooting and non-deployment tasks.
+Power Automate Usage:
+
+Introduced a Power Automate solution for a Weekly Ticket Summary Notification, contributing to the objective of owning the report out of tickets in weekly team meetings. This not only streamlined communication but also saved the team 30 to 45 minutes weekly.
+2. Managing/Owning Release Tracker:
+Tracker Optimization:
+
+Utilized Power Automate for the migration of the release tracker, directly aligning with the OKR to manage/own the release tracker. This optimization not only addressed slowness but also resulted in more efficient data maintenance, aligning with the SOPs for weekly data maintenance.
+PowerShell Script for Backup:
+
+Implemented a PowerShell script, integrated with Power Automate, for regular backups of the tracker. This action directly contributes to maintaining data integrity, aligning with the OKR to ensure there are no data gaps and enhancing overall data security.
+3. Championing Core/Portal Releases and Involvement in RT Releases:
+PowerShell Scripts for Efficiency:
+
+Developed and implemented PowerShell scripts for App Pool Recycle, Service Restart, Clearing Batch, and Disk Space Check. These directly address the OKR to champion Core/Portal releases and involvement in RT releases, resulting in substantial time savings ranging from 25 to 60 minutes.
+CI/CD Pipeline Implementation:
+
+The introduction of a CI/CD pipeline aligns with the objective to champion Core/Portal releases. This not only optimized processes but also reduced deployment times to an impressive 7 minutes, surpassing expectations.
+4. Projects:
+Power BI Implementation:
+Implemented Power BI dashboards, directly aligning with the OKR to implement PowerBI with 3-4 use cases. These dashboards, showcasing Last 90 days deployments, Current versions, and KPI metrics, contribute to a data-driven approach and have saved 30 to 45 minutes of manual work monthly.
+5. Professional Development:
+Certifications:
+Completed Power Automate, RPA Essentials, and RPA Masters certifications. This aligns with the OKR for professional development in 2023, demonstrating a commitment to staying current with relevant technologies.
+6. Standardizing Release Management Process Documentation:
+Confluence Pages Creation:
+Established Confluence pages for environment test failures and identified UAT deployments, directly addressing the OKR to standardize release management process documentation.
+7. Managing/Owning Environment Test Process:
+PowerShell Script for Environment Test Failures:
+Developed PowerShell scripts to monitor environment test failures, directly aligning with the OKR to manage/own the environment test process. Daily efforts of 1 hour significantly reduced test failures and streamlined issue resolution.
+8. Managing/Owning UAT Identify Deployment:
+PowerShell Script for UAT Identify Deployment Coordination:
+
+Implemented PowerShell scripts for scheduling and coordinating UAT identify deployments, addressing the OKR to manage/own UAT identify deployments. This streamlined the process and improved overall coordination.
+Dependency Matrix Implementation:
+
+Created a dependency matrix of identified applications, directly aligning with the OKR to manage/own UAT identify deployments. This matrix enhanced visibility and coordination, reducing dependencies and improving overall deployment efficiency.
