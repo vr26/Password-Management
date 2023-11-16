@@ -1,73 +1,35 @@
-Question 1
-Describe your achievements and progress on your OKRs, including real-life examples of their impact. Use metrics and data to illustrate your accomplishments. You can also attach documents to support your review on the next page. Furthermore, share your thoughts on the technical skills you used to achieve your OKRs. Highlight your strenghts as well as improvement areas, noting both what areas and how you plan to improve. 
-Consider how your actions and contributions help the organization thrive as One Evolent, including noting your adjustments to change, your critical thinking in new situations and how well you adjusted to new team dynamics and roles.
-
-Question 2: The organization believes that “how” you accomplish something is just as important as what you have accomplished. Describe how you reached your OKRs above by demonstrating Evolent’s competency model and values (Start by Listening, Communicate with Candor, Foster Inclusion, and Own the Opportunity). Share your strengths and areas you want to improve and how you can improve. Consider how your actions and contributions help Evolent become more unified as One Evolent.
-1.	OKR - Own ticket backlog: 
-a.	Daily process established for ticket review/triage.
-b.	Ensure proper ticket hygiene (comments every week if in progress, proper statuses, proper assignment).
-c.	Establish process to reduce MTTR under 5 days.
-d.	Ensure backlog does not have FIX tickets greater than 30 days.
-e.	Own report out of tickets in weekly team mtg 
-
-For OKR Own ticket backlog – Implemented Jira dashboard for quick assigning tickets and which make sure Old tickets, new tickets blocked tickets and deployed tickets as per the environments and it helps us to reduce MTTR to 2 days and Fixing the deployment tickets with in 15 days and sending out weekly ticket summary for quick look and mid level notification to the team it helps the team to look it out and fix it and As part of ticket hygiene I lookout and educated teams to self hygiene and implemented RMtasks label to give proper mttra to team and troubleshooting and other non deployment tasks goes to Rmtasks to take a look quickly.
-2.	OKR - Managing/Owning Release tracker.
-a.	Create SOPs for weekly data maintenance (ensure there are no data gaps such as missing information, TSO/fix tickets)
-b.	Identify and drive 5 improvements to the tracker.
-Managing release tracker and optimized the tracker to reduce the slowness and migrated the tracker to new domain and every week filling out missed information as it’s the source of truth. 
-As part of improvements We implemented New depllyment status to find out the priority of deployed with issues.
-Using power automate we are taking regular backups of the tracker to other location.
-
-3.	OKR
-a.	Champion Core/portal releases
-b.	get involved with RT releases.
-
-Took ownership of Core and Portal reelases, Initiated and drove couple of Core releases and took ownership of complete UAT, pS, SBX , Prod deployments and check the issues identified in UAT testing and Walkthrough the stsatus calls , gng, deployment walkthrough and checkpoint calls and other callsand optimized multiple confluence pages for easy use to stakeholders and reduced couple of checkpoint calls at the time of SP releases and For portal release implemented Powershell script to reduce the manual execution of base and upgrade script. Which save 5 to 10 minutes of time per client and I drove all the UAt and PS portal deployments and in SP56 drove production deployment as well.
-And as part of RT , I took complete ownership of UAT and Prod release, Iniates status pages, Check with internal stakeholders, and works on Common service calls for RT updates and implemented powershell script to recycle app pools in all 4 prod servers and 2 uat servers and restarted the services according to environment. Which saves more than 30 to 50 minites of work in prod and 20 mins in uat.
-Implemented CICD pipeliene for that which makes the server runs parallely and without affecting the load balancing which completes the job in 7 minutes
-4.	OKR - Projects:
-a.	-Implement PowerBI with 3-4 used cases
-b.	-integrate Kibana/AppInsight/Splunk with release process
-Implemented powerbi in release management, Which has Last 90 days deployments, Current versions according to applications (SP core and portal,Microservices,Claim counting rules,Identifi apps etc), Kpi metrics weekly and monthly which has overall information, Deployed with issues information and release schedule of SAAS.
-
-the kpi in powerbi which reduces 30 to 45 minutes of manual work monthly to add in kpi call
-
-5.	OKR
-a.	Professional Development – please think of a professional development goal for 2023.
-Completed Power automate certification
-Completed RPA essentials certification
-Completed RPA masters cert
-6.	OKR-1
-a.	Standardizing release management process documentation
-i.	Create process documentation for:
-1.	Environment Test failure
-2.	UAT identify Deployment
-Created confluence page for environment pages, Which include about env test and clients which has environment test, sop to resolve that and on point for prod env failures and following up with teams to fix asap. And Took full ownership of identify UAT deployments
-7.	OKR-2
-a.	Managing/Owning Environment Test process
-i.	Monitoring environment Test (prod and non-prod environment)
-ii.	Tracking/fixing Failed test
-iii.	Owning/managing Ticket tracking matrix dashboard
-Daily I spent 1 hour to reduce the environment tests failures and track in tickets and assign to appropriate teams and following up every 2 days with the team and 
-8.	OKR-3
-a.	Managing/Owning UAT identify deployment
-i.	scheduling, coordinating UAT identify deployment
-ii.	Maintaining ticket hygiene
-iii.	Implementing two process improvement
-On point to UAt identify deployment schedule and coordinate with identify teams and educated team to use cadence for every week and educated teams to help of proper tickets and proper proceducre. As part of improvement I created a dependency matrix of identif applications as part of deployment in confluence.
-
-As part of addition.
-Using powershell script – The below all are implemented Jenkins for easier issue and created SOP and educated the team to make necessary adjustments as per the need
-	Created App pool recycle and Restart windows services – which reduces 35 to 60 minutes of manual work every rt release
-	Created clearing batch script – Which helps to login every server and delete batch and printfiles old logs, Which helps 25 minutes of manual work every SP release 
-	Created a script to check disk space in UAT,PS,SBX by comparing with Prd, Which gives exact value fo space needed in Core and portal server which is used by AIM team, appops team as part of environment refresh. Which helps their 75 minutes manual work every 2 weeks for PS and Other environment refreshes as well.
-	Created a script to check SSL manually , It helps Aim team to login to server each time to check SSL expiry date.
-Power automate: 
-	Created Power automate solution to our team for to sendout weekly deployment summary which helps our team 30 to 45 minutes weekly redcues manual effort.
-	Created ecab notification in power automate, Which makes on time teams chat to business approvers about the ecab received by whom and about and it provides 30 minutes and 45 minutes notification to make the ecab is not missed.
-	Created power automatr for powerbi , Which helps the team to download the KPI metrics from the powerbi helps which helps 30 to 45 nminutes of monthly time.
-	Creted power automate alerts to Aim team and NOC team for certificate expiration alert about certs which are going to expire in 30 and 15 days as two separate emails and created 30 days alerts for noc in domain  and org id expiration, Which send alerts till they update the neccassry tickets which helps a lot to pickup the certs before the expiration and domain and or expirations.
-	Created power automate solution to pick the backup of release tracker which helps to have backup
-
-
-Achieved pat on the back and spot award from the team to support e2e deployment process and makes impact and got spot award for implemented powerbi solutions
+I am taking over the task of code set governance which has been a very manual process in many ways. I came from API/Hl7/etc. driven updates where I collaborated with tech team to give the criteria and they built it. So, I am not well versed on how to do this.  and in need to create an easy, automated way to check for items that need ACTION (ADD, MODIFY, DELETE) in Aldera.
+I've managed to transform all the tables FROM Optum (Source of truth - via SFTP) and Aldera spaces (vai SQL query connection), as needed, but now I need a comparison between them. This is driven by a few parameters:
+TABLE 1 -- Source of truth (single version for each update)
+Columns 1-5 are ALWAYS used in all environments.
+This is compared with TABLE 2 (multiple variations/environments based on client for each update)
+TABLE 2-- Aldera data (this data can be manually modified by users)
+Columns 1-5 (when different) need to be populated with TABLE 1 data and flagged for action.
+End results is: When COLUMN 1 or COLUMN 2 or COLUMN 3 or COLUMN 4 or COLUMN 5 are a mismatch, then show on merged output.
+ADD Rows (no match in Table 2)
+MODIFY Rows (partial match – Column 2 matches, another column 1,3,4, or 5 does not)
+DELETE Rows (no match in Table 1)
+Rows with no change are not needed in the output because they are a match and no action needed (I can filter these out later if easier to keep them in the merge)
+This has to be repeated with TABLE 1 compared to each TABLE 2 by client. I know how to 'copy' advanced editor to repeat steps, but I have no idea how to achieve the first one, so If I can just get one done, I can take it from there.
+ 
+I've read several, several post, videos, articles, etc. and once again, I am not finding a standard formula/code for this type of comparison. Seems like there would be for such a common task.
+ 
+FINAL CODE SHOULD SAY
+ 
+The merged output should be based on when COLUMN 1 (primary key), COLUMN 2, COLUMN 3, COLUMN 4, or COLUMN 5 do not match. Any row in Table 1 that has different values in any of these columns compared to the corresponding row in Table 2 should be considered a mismatch.
+ 
+To identify the action for each mismatched line, Seems I may need to create a conditional column to Identify the Action for Each Mismatched Line. Ultimately, this is to POPULATE the value in {Action} column
+Here is an example (I don't know M code well, so this code doesn't work, but I hope it helps explain what I want)
+Action = IF(ISBLANK([Table 2: COL 1, COL 2, COL 3, COL 4, COL 5]),"ADD", ""
+and
+Action = IF(ISBLANK([Table 1: COL 1, COL 2, COL 3, COL 4, COL 5]),"DELETE", ""
+and 
+Action = IF([Action] = "" & [Table 2: COL 1 or COL 2 or COL 3 or COL 4 or COL 5]><[Table 2: COL 1 or COL 2 or COL 3 or COL 4 or COL 5]),"MODIFY", "No Change"
+"No Change" should technically not occur, because the merge should only have rows that mismatch – unless this is not possible.
+This formula is intended to return Add if the corresponding column 1-5 rows in Table 2 are blank (no match in table 2) and return DELETE if the corresponding column 1-5 rows in Table 1 are blank (no match in table 1). Then, when action is not ADD or DELETE (it is [blank]) and any of the columns from one table are not equal to the other, return Modify (only a partial match).
+ 
+All of the columns for each table are listed below. Note that Column 2, {Product ID}, is the common primary key):
+The blue columns of each table should always match in both and the sole purpose of the merge to check these 5 values. When any of the 5 values is a mismatch, Table 1 is the value to populate into table 2.
+The red columns only exist in table 2 as they hold the specific keys, version, etc. within the software database and will be blank for 'ADD' and populated for DELETE or MODIFY.
+Table 1: {"Product_qualifier", "Product_id", "Product_name", "effective_date", "termination_date"}
+Table 2: {"Product_qualifier", "Product_id", "Product_name", "effective_date", "termination_date", "default_class", "incentive_flag", "generic_product_id", "generic_name", "manufacturer_id", "manufacturer_name", "generic_code", "DEA_class_code", "Therapeutic_class_code", "Therapeutic_equiv_code", "RX_OTC_indicator", "third_party_rest_code", "GPPC_code", "metric_strength", "strength_UOM", "dosage_form", "package_size", "package_UOM", "package_QTY", "total_package_QTY", "legend_change_date", "DESI_code", "maintenance_drug_code", "dispensing_unit_code", "unit_dose_code", "route_admin_code", "form_type_code", "dollar_rank_code", "RX_rank_code", "single_comb_code", "repackager_IND", "product_id.1", "product_name.1", "product_id2", "product_name2", "last_change_date", "drug_status", "int_EXT_Code", "package_description", "OTC_EQUIV_IND", "stc_code", "gcn_code", "HICL_SeqNo", "GTC_Code", "HIC3_Code", "Quadrant_Req", "Tooth_Req", "Surface_Req", "tooth_type", "Auto_Adjudicate", "Clinical_Doc", "Credentialling_Req", "color_code", "hist_multiplier", "min_num_surfaces", "max_num_surfaces", "Time_Units", "asc_grouper", "apc_classification", "base_units", "Default_Unit_Basis", "RoomAndBoardCharges", "Action", "Entity", "Key_1", "Key_2", "Key_3", "Key_4", "Key_5", "Key_6", "Key_7", "Key_8", "Key_9", "Key_10", "DateTimeModified"}, 
